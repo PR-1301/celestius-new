@@ -9,7 +9,151 @@
     color: #ffffff;
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
   }
+
+  /* Custom styled scrollbars for telemetry console */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 204, 0, 0.2);
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 204, 0, 0.4);
+  }
+}
+
+/* 3D Orbiting Engine Utilities */
+.perspective-1000 {
+  perspective: 1200px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.orbit-3d-1 {
+  transform: rotateX(68deg) rotateY(-12deg);
+}
+
+.orbit-3d-2 {
+  transform: rotateX(60deg) rotateY(20deg);
+}
+
+.orbit-3d-3 {
+  transform: rotateX(72deg) rotateY(-30deg);
+}
+
+/* Neon & Glassmorphism helpers */
+.text-glow-gold {
+  text-shadow: 0 0 10px rgba(255, 204, 0, 0.4), 0 0 20px rgba(255, 204, 0, 0.2);
+}
+
+.border-glow-gold {
+  box-shadow: 0 0 15px rgba(255, 204, 0, 0.08);
+}
+
+.border-glow-gold-hover:hover {
+  box-shadow: 0 0 25px rgba(255, 204, 0, 0.25);
+  border-color: rgba(255, 204, 0, 0.4) !important;
+}
+
+/* Starfield canvas overlay styling */
+.neon-nebula {
+  background: radial-gradient(circle at 50% 50%, rgba(255, 204, 0, 0.05) 0%, transparent 60%);
+  filter: blur(80px);
+}
+
+/* Metallic Glossy Shine reflection animation */
+@keyframes shineSweep {
+  0% {
+    left: -150%;
+  }
+  50% {
+    left: 200%;
+  }
+  100% {
+    left: 200%;
+  }
+}
+
+.animate-shine-reflection {
+  position: relative;
+  overflow: hidden;
+}
+
+.animate-shine-reflection::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -150%;
+  width: 60%;
+  height: 200%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.22) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(25deg);
+  animation: shineSweep 4.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Text Gradient Shimmer Animation */
+@keyframes textShimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-text-shimmer {
+  background: linear-gradient(
+    to right,
+    #ffffff 0%,
+    #ffcc00 25%,
+    #ffe066 50%,
+    #ffcc00 75%,
+    #ffffff 100%
+  );
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  text-fill-color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: textShimmer 5s linear infinite;
+  display: inline-block;
+}
+
+/* Letter-by-letter wave bounce and glow animation */
+@keyframes letterWave {
+  0%, 100% {
+    transform: translateY(0);
+    text-shadow: none;
+    color: #ffcc00;
+  }
+  50% {
+    transform: translateY(-4px);
+    color: #ffe066;
+    text-shadow: 0 0 12px rgba(255, 204, 0, 0.8), 0 0 4px rgba(255, 255, 255, 0.3);
+  }
+}
+
+.animate-letter-wave {
+  display: inline-block;
+  animation: letterWave 2.5s ease-in-out infinite;
 }
 
 /* Reduced motion accessibility support */

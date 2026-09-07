@@ -91,6 +91,22 @@
   animation: glyphBlink 1.8s ease-in-out infinite;
 }
 
+@keyframes modalPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.93) translateY(16px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-modal-pop {
+  animation: modalPop 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
 /* Unique Diverse Recruitment Section Animations */
 @keyframes recruitTitleReveal {
   0% {
@@ -126,6 +142,28 @@
   100% {
     opacity: 1;
     transform: translateX(0);
+  }
+}
+
+@keyframes heroReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes statueReveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.92) translateY(24px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
   }
 }
 
@@ -295,6 +333,48 @@
   100% {
     opacity: 1;
     transform: translateY(0) scale(1);
+  }
+}
+
+/* Dynamic Ambient Background Keyframes */
+@keyframes nebulaDriftA {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  33% {
+    transform: translate3d(50px, -35px, 0) scale(1.08);
+  }
+  66% {
+    transform: translate3d(-35px, 45px, 0) scale(0.94);
+  }
+}
+
+@keyframes nebulaDriftB {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  33% {
+    transform: translate3d(-45px, 50px, 0) scale(0.96);
+  }
+  66% {
+    transform: translate3d(45px, -25px, 0) scale(1.1);
+  }
+}
+
+@keyframes scanbeamSweep {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.04;
+  }
+  85% {
+    opacity: 0.04;
+  }
+  100% {
+    transform: translateY(1100%);
+    opacity: 0;
   }
 }
 

@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import EventModal from './components/EventModal';
 import IntroAnimation from './components/IntroAnimation';
+import DynamicBackground from './components/DynamicBackground';
 
 import Home from './pages/Home';
 import Events from './pages/Events';
@@ -86,16 +87,8 @@ export default function App() {
         <IntroAnimation onComplete={handleIntroComplete} />
       )}
 
-      {/* Nothing OS Iconic Pixel Dot Grid Canvas */}
-      <div className="fixed inset-0 nothing-dot-grid opacity-25 pointer-events-none z-0" />
-      
-      {/* Subtle Celestius Gold Ambient Glow following cursor */}
-      <div 
-        className="pointer-events-none fixed -inset-px opacity-60 transition-opacity duration-300 z-0"
-        style={{
-          background: `radial-gradient(600px circle at ${mousePos.x}px ${mousePos.y}px, rgba(255, 204, 0, 0.04), transparent 80%)`
-        }}
-      />
+      {/* Minimal Animated Dynamic Celestial Background (Common across all pages) */}
+      <DynamicBackground mousePos={mousePos} />
 
       {/* Floating Nothing OS Navbar with Mechanical Holder */}
       <Navbar 

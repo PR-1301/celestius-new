@@ -11,7 +11,11 @@ import {
   Sparkles,
   X,
   ArrowRight,
-  ArrowUpRight
+  ArrowUpRight,
+  Terminal,
+  CheckCircle2,
+  Layers,
+  Compass
 } from 'lucide-react';
 import { recruitmentDivisions } from '../data/recruitmentData';
 
@@ -323,116 +327,187 @@ export default function Recruitment({ introCompleted = true }) {
 
       </section>
 
-      {/* Role Brief Description Popup Modal */}
+      {/* Redesigned Role Brief Description Popup Modal (Cyber Bento Deck) */}
       {selectedRole && createPortal(
         <div 
-          className="fixed inset-0 z-[999] flex items-center justify-center p-4 sm:p-6 bg-black/85 backdrop-blur-md animate-fadeIn"
+          className="fixed inset-0 z-[999] flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-xl animate-fade-in"
           onClick={() => setSelectedRole(null)}
           style={{ margin: 0, top: 0, left: 0, right: 0, bottom: 0 }}
         >
           {(() => {
             const isRoleTech = selectedRole.division === 'Technical';
             const roleBorder = isRoleTech ? 'border-[#FFCC00]/40' : 'border-sky-400/40';
-            const roleShadow = isRoleTech ? 'shadow-[0_0_50px_rgba(255,204,0,0.18)]' : 'shadow-[0_0_50px_rgba(56,189,248,0.18)]';
+            const roleShadow = isRoleTech ? 'shadow-[0_20px_70px_rgba(255,204,0,0.18)]' : 'shadow-[0_20px_70px_rgba(56,189,248,0.18)]';
             const roleBg = isRoleTech ? 'bg-[#FFCC00]/10' : 'bg-sky-400/10';
             const roleText = isRoleTech ? 'text-[#FFCC00]' : 'text-sky-400';
             const roleBtn = isRoleTech ? 'bg-[#FFCC00] text-black hover:bg-[#FFE066]' : 'bg-sky-400 text-black hover:bg-sky-300';
 
             return (
               <div 
-                className={`relative w-full max-w-xl max-h-[88vh] bg-[#0d0d0f] ${roleBorder} rounded-2xl ${roleShadow} flex flex-col overflow-hidden text-left animate-scaleUp`}
+                className={`relative w-full max-w-3xl max-h-[92vh] bg-[#0a0a0e]/95 ${roleBorder} rounded-3xl ${roleShadow} flex flex-col overflow-hidden text-left animate-modal-pop border backdrop-blur-2xl`}
                 onClick={(e) => e.stopPropagation()}
               >
-                {/* Modal Header */}
-                <div className="p-4 sm:p-5 border-b border-white/10 flex items-center justify-between shrink-0 bg-black/40">
-                  <div className="flex items-center gap-3">
-                    <div className={`w-11 h-11 rounded-xl ${roleBg} border ${roleBorder} ${roleText} flex items-center justify-center shrink-0`}>
-                      {React.createElement(roleIcons[selectedRole.id] || Sparkles, { className: 'w-5 h-5' })}
-                    </div>
-                    <div>
-                      <span className={`font-mono text-[9px] ${roleText} uppercase tracking-widest block`}>
-                        [{selectedRole.division.toUpperCase()} DIVISION]
+                {/* Ambient background glows */}
+                <div className={`absolute -top-32 -right-32 w-80 h-80 rounded-full blur-[100px] pointer-events-none opacity-20 ${isRoleTech ? 'bg-[#FFCC00]' : 'bg-sky-400'}`} />
+                <div className={`absolute -bottom-32 -left-32 w-80 h-80 rounded-full blur-[100px] pointer-events-none opacity-15 ${isRoleTech ? 'bg-[#FFCC00]' : 'bg-sky-400'}`} />
+                <div className="absolute inset-0 nothing-dot-grid opacity-15 pointer-events-none" />
+
+                {/* 1. Modal Top Navigation & Title Bar */}
+                <div className="relative z-10 p-5 sm:p-7 pb-5 border-b border-white/10 shrink-0 bg-black/40 backdrop-blur-md">
+                  
+                  {/* Top Status & Close Line */}
+                  <div className="flex items-center justify-between gap-4 mb-4">
+                    <div className="flex items-center gap-2.5 flex-wrap">
+                      <span className={`px-3 py-1 rounded-full font-mono text-[10px] font-bold uppercase tracking-wider ${roleBg} border ${roleBorder} ${roleText}`}>
+                        [ {selectedRole.division.toUpperCase()} DIVISION ]
                       </span>
+                      <span className="flex items-center gap-1.5 font-mono text-[10px] text-zinc-400 bg-white/5 px-2.5 py-1 rounded-full border border-white/10">
+                        <span className={`w-1.5 h-1.5 rounded-full ${isRoleTech ? 'bg-[#FFCC00]' : 'bg-sky-400'} animate-pulse`} />
+                        <span>STATUS: STANDBY COHORT</span>
+                      </span>
+                    </div>
+
+                    <button
+                      onClick={() => setSelectedRole(null)}
+                      className={`w-9 h-9 rounded-2xl bg-white/5 hover:bg-white/15 border border-white/10 text-zinc-400 hover:text-white transition-all flex items-center justify-center shrink-0 cursor-pointer active:scale-95 ${
+                        isRoleTech ? 'hover:border-[#FFCC00]/50 hover:text-[#FFCC00]' : 'hover:border-sky-400/50 hover:text-sky-400'
+                      }`}
+                      title="Close popup"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+
+                  {/* Title & Icon Podium */}
+                  <div className="flex items-start gap-4 sm:gap-5">
+                    <div className={`w-14 h-14 sm:w-16 sm:h-16 rounded-2xl ${roleBg} border ${roleBorder} ${roleText} flex items-center justify-center shrink-0 shadow-lg`}>
+                      {React.createElement(roleIcons[selectedRole.id] || Sparkles, { className: 'w-7 h-7 sm:w-8 sm:h-8' })}
+                    </div>
+
+                    <div className="space-y-1">
                       <h3 
-                        className="font-ndot text-2xl sm:text-3xl text-white tracking-wide uppercase leading-tight"
+                        className="font-ndot text-3xl sm:text-5xl text-white tracking-wide uppercase leading-none"
+                        style={{ fontFamily: "'VT323', monospace" }}
                       >
                         {selectedRole.name}
                       </h3>
+                      <p className="font-mono text-xs sm:text-sm text-zinc-300">
+                        // {selectedRole.tagline}
+                      </p>
                     </div>
                   </div>
 
-                  <button
-                    onClick={() => setSelectedRole(null)}
-                    className={`w-8 h-8 rounded-full bg-zinc-900/90 border border-white/20 text-zinc-400 hover:text-black ${
-                      isRoleTech ? 'hover:bg-[#FFCC00] hover:border-[#FFCC00]' : 'hover:bg-sky-400 hover:border-sky-400'
-                    } transition-all flex items-center justify-center shrink-0 ml-2 cursor-pointer`}
-                    title="Close"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
                 </div>
 
-                {/* Scrollable Modal Content */}
-                <div className="p-4 sm:p-5 overflow-y-auto space-y-4 font-sans text-xs text-zinc-300">
+                {/* 2. Scrollable Content Bento Deck */}
+                <div className="relative z-10 p-5 sm:p-7 overflow-y-auto space-y-6 text-zinc-200">
                   
-                  {/* Tagline Badge */}
-                  <div className={`font-mono text-xs ${roleText} ${roleBg} px-3 py-1.5 rounded-lg border ${roleBorder} inline-block`}>
-                    // {selectedRole.tagline}
-                  </div>
-
-                  {/* Brief Description */}
-                  <div className="p-3.5 rounded-xl bg-black border border-white/10 space-y-1">
-                    <span className={`font-mono text-[9px] ${roleText} uppercase tracking-widest block`}>
-                      // BRIEF_DESCRIPTION
-                    </span>
-                    <p className="text-xs sm:text-sm text-zinc-200 leading-relaxed">
+                  {/* Mission Briefing Overview Card */}
+                  <div className="relative p-5 rounded-2xl bg-black/60 border border-white/10 overflow-hidden space-y-2">
+                    <div className={`absolute top-0 left-0 bottom-0 w-1 ${isRoleTech ? 'bg-[#FFCC00]' : 'bg-sky-400'}`} />
+                    <div className="flex items-center gap-2">
+                      <Terminal className={`w-4 h-4 ${roleText}`} />
+                      <span className={`font-mono text-[11px] font-bold uppercase tracking-wider ${roleText}`}>
+                        MISSION BRIEFING & SCOPE
+                      </span>
+                    </div>
+                    <p className="text-xs sm:text-sm text-zinc-300 font-sans leading-relaxed pl-1">
                       {selectedRole.description}
                     </p>
                   </div>
 
-                  {/* Key Responsibilities */}
-                  <div className="space-y-1.5">
-                    <span className="font-mono text-[10px] text-zinc-400 uppercase tracking-widest block">
-                      // KEY_RESPONSIBILITIES:
-                    </span>
-                    <ul className="space-y-1.5 text-xs text-zinc-300">
-                      {selectedRole.responsibilities.map((resp, i) => (
-                        <li key={i} className="flex items-start gap-2">
-                          <span className={`${roleText} font-mono text-xs font-bold shrink-0`}>›</span>
-                          <span>{resp}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Expected Skills */}
-                  <div className="space-y-1.5">
-                    <span className="font-mono text-[10px] text-zinc-400 uppercase tracking-widest block">
-                      // PROFILE_EXPECTATIONS:
-                    </span>
-                    <div className="flex flex-wrap gap-1.5 pt-0.5">
-                      {selectedRole.skillsLookedFor.map((skill, i) => (
-                        <span key={i} className="px-2 py-0.5 rounded-md bg-zinc-900 border border-white/15 font-mono text-[10px] text-zinc-300">
-                          {skill}
+                  {/* Responsive Two-Column Bento Layout */}
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+                    
+                    {/* Left Column: Key Responsibilities (7 cols) */}
+                    <div className="lg:col-span-7 space-y-3">
+                      <div className="flex items-center justify-between pb-1 border-b border-white/10">
+                        <span className="font-mono text-[11px] text-zinc-400 uppercase tracking-widest font-bold">
+                          // KEY_RESPONSIBILITIES [{selectedRole.responsibilities.length}]
                         </span>
-                      ))}
+                      </div>
+
+                      <div className="space-y-2.5">
+                        {selectedRole.responsibilities.map((resp, i) => (
+                          <div 
+                            key={i}
+                            className="p-3.5 rounded-xl bg-white/[0.02] border border-white/10 hover:border-white/20 transition-all flex items-start gap-3 group"
+                          >
+                            <span className={`font-mono text-[11px] font-bold px-2 py-0.5 rounded-md ${roleBg} ${roleText} shrink-0 mt-0.5`}>
+                              0{i + 1}
+                            </span>
+                            <span className="text-xs sm:text-[13px] text-zinc-300 leading-relaxed font-sans group-hover:text-white transition-colors">
+                              {resp}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
+
+                    {/* Right Column: Skills & Profile Expectations (5 cols) */}
+                    <div className="lg:col-span-5 space-y-4">
+                      <div className="flex items-center justify-between pb-1 border-b border-white/10">
+                        <span className="font-mono text-[11px] text-zinc-400 uppercase tracking-widest font-bold">
+                          // PROFILE_EXPECTATIONS
+                        </span>
+                      </div>
+
+                      {/* Skill Tags */}
+                      <div className="flex flex-wrap gap-2">
+                        {selectedRole.skillsLookedFor.map((skill, i) => (
+                          <span 
+                            key={i} 
+                            className="px-3 py-1.5 rounded-xl bg-black border border-white/15 hover:border-white/30 font-mono text-xs text-zinc-300 flex items-center gap-2 transition-colors"
+                          >
+                            <span className={`w-1.5 h-1.5 rounded-full ${isRoleTech ? 'bg-[#FFCC00]' : 'bg-sky-400'}`} />
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
+
+                      {/* Preparation Standby Advice Box */}
+                      <div className={`p-4 rounded-2xl ${roleBg} border ${roleBorder} space-y-1.5 mt-4`}>
+                        <div className="flex items-center gap-1.5">
+                          <Layers className={`w-3.5 h-3.5 ${roleText}`} />
+                          <span className={`font-mono text-[10px] font-bold tracking-wider uppercase ${roleText}`}>
+                            STANDBY ADVICE
+                          </span>
+                        </div>
+                        <p className="font-sans text-xs text-zinc-300 leading-relaxed">
+                          {isRoleTech
+                            ? "Curate your GitHub repositories with clean code, README docs, or deployment links to stand out when submissions unlock."
+                            : "Organize your Figma files, poster designs, video reels, or past event organizing achievements in a shareable link."}
+                        </p>
+                      </div>
+
+                    </div>
+
                   </div>
 
                 </div>
 
-                {/* Modal Footer */}
-                <div className="p-3.5 sm:p-4 border-t border-white/10 flex items-center justify-between font-mono text-xs shrink-0 bg-black/40">
-                  <div className="text-zinc-500 text-[10px]">
-                    <span className={`font-semibold uppercase tracking-wider ${roleText}`}>{selectedRole.division}</span>
-                    <span className={`ml-2.5 ${roleText} font-bold`}>[STANDBY]</span>
+                {/* 3. Modal Bottom Action Bar */}
+                <div className="relative z-10 p-4 sm:p-5 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 bg-black/60 shrink-0">
+                  <div className="flex items-center gap-2 font-mono text-xs text-zinc-400">
+                    <span className={`w-2 h-2 rounded-full ${isRoleTech ? 'bg-[#FFCC00]' : 'bg-sky-400'} animate-pulse`} />
+                    <span>ADMISSIONS STANDBY // SEMESTER COHORT</span>
                   </div>
-                  <button
-                    onClick={() => setSelectedRole(null)}
-                    className={`px-4 py-1.5 rounded-full ${roleBtn} font-mono text-xs font-bold active:scale-95 transition-all shadow-sm cursor-pointer`}
-                  >
-                    DISMISS
-                  </button>
+
+                  <div className="flex items-center gap-2.5 w-full sm:w-auto">
+                    <button
+                      onClick={() => setSelectedRole(null)}
+                      className="flex-1 sm:flex-initial px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-zinc-300 hover:text-white font-mono text-xs tracking-wider uppercase transition-all active:scale-95 cursor-pointer"
+                    >
+                      DISMISS
+                    </button>
+                    <button
+                      onClick={() => setSelectedRole(null)}
+                      className={`flex-1 sm:flex-initial px-5 py-2 rounded-xl ${roleBtn} font-mono text-xs font-bold tracking-wider uppercase transition-all shadow-md active:scale-95 flex items-center justify-center gap-1.5 cursor-pointer`}
+                    >
+                      <CheckCircle2 className="w-3.5 h-3.5" />
+                      <span>GOT IT</span>
+                    </button>
+                  </div>
                 </div>
 
               </div>
@@ -442,52 +517,149 @@ export default function Recruitment({ introCompleted = true }) {
         document.body
       )}
 
-      {/* 3. Preparation Checklist for Applicants */}
+      {/* 3. Redesigned Preparation Hub for Applicants (Nothing OS Cyber Bento) */}
       <section 
-        className="nothing-card p-8 border border-white/10 space-y-6"
+        className="relative rounded-3xl p-6 sm:p-8 md:p-10 border border-white/15 bg-gradient-to-b from-[#0f0f15]/90 via-[#0a0a0e]/95 to-[#060608] shadow-[0_20px_60px_rgba(0,0,0,0.85)] space-y-8 overflow-hidden backdrop-blur-xl"
         style={getAnimStyle('recruitBentoExpand', 0.65, '0.75s')}
       >
-        <div className="space-y-1">
-          <span className="font-mono text-[10px] text-[#FFCC00] uppercase tracking-widest">
-            (CANDIDATE_GUIDE // PREPARATION)
-          </span>
-          <h3 
-            className="font-ndot text-3xl sm:text-4xl text-white uppercase tracking-wide"
-            style={{ fontFamily: "'VT323', monospace" }}
-          >
-            How to Prepare While in Standby
-          </h3>
+        {/* Subtle Ambient Radial Gradients & Texture */}
+        <div className="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-[#FFCC00]/5 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-sky-400/5 blur-3xl pointer-events-none" />
+        <div className="absolute inset-0 nothing-dot-grid opacity-15 pointer-events-none" />
+
+        {/* Header Block with Metadata */}
+        <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-5 pb-6 border-b border-white/10">
+          <div className="space-y-2 max-w-2xl">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#FFCC00] animate-pulse" />
+              <span className="font-mono text-[11px] text-[#FFCC00] uppercase tracking-widest font-bold">
+                CANDIDATE_GUIDE // PREPARATION_PROTOCOL
+              </span>
+            </div>
+            <h3 
+              className="font-ndot text-3xl sm:text-5xl text-white uppercase tracking-wide leading-none"
+              style={{ fontFamily: "'VT323', monospace" }}
+            >
+              HOW TO PREPARE WHILE IN STANDBY
+            </h3>
+            <p className="text-xs sm:text-sm text-zinc-400 font-sans leading-relaxed">
+              Applications will unlock shortly for our upcoming semester cohort. Ensure your proof-of-work, repositories, and portfolios are ready to present before submissions go live.
+            </p>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 font-mono text-xs">
+        {/* Three Multi-Layered Interactive Track Cards */}
+        <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-5">
+          
+          {/* 01 Technical Card */}
           <div 
-            className="p-4 rounded-xl bg-black border border-white/10 space-y-2 hover:border-[#FFCC00]/40 transition-colors"
+            className="group relative rounded-2xl p-6 bg-gradient-to-b from-[#18150d] via-[#0d0d12] to-[#070709] border border-[#FFCC00]/40 shadow-[0_0_25px_rgba(255,204,0,0.12)] hover:border-[#FFCC00] hover:shadow-[0_12px_40px_rgba(255,204,0,0.25)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between overflow-hidden"
             style={getAnimStyle('checklistStepFade', 0.75, '0.6s')}
           >
-            <span className="text-[#FFCC00] font-bold">[01] TECHNICAL TRACKS</span>
-            <p className="text-zinc-400 font-sans text-xs leading-relaxed">
-              Curate your GitHub profile with clean code repositories, personal projects, or course experiments.
-            </p>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="w-11 h-11 rounded-xl bg-black/70 border border-[#FFCC00]/40 text-[#FFCC00] flex items-center justify-center group-hover:scale-110 group-hover:bg-[#FFCC00]/20 transition-all duration-300 shadow-sm">
+                  <Code2 className="w-5 h-5" />
+                </div>
+                <span className="font-mono text-xs font-bold text-[#FFCC00] bg-[#FFCC00]/10 px-2.5 py-1 rounded-lg border border-[#FFCC00]/25">
+                  01 TECH
+                </span>
+              </div>
+
+              <div>
+                <h4 
+                  className="font-ndot text-2xl sm:text-3xl text-white tracking-wide uppercase group-hover:text-[#FFCC00] transition-colors"
+                  style={{ fontFamily: "'VT323', monospace" }}
+                >
+                  CODEBASE & GITHUB
+                </h4>
+                <p className="text-zinc-400 font-sans text-xs sm:text-sm mt-2 leading-relaxed">
+                  Curate your public repositories with clean code, README documentation, deployed project demos, or course experiments.
+                </p>
+              </div>
+            </div>
+
+            <div className="pt-4 mt-6 border-t border-[#FFCC00]/15 flex flex-wrap gap-1.5">
+              <span className="font-mono text-[10px] text-zinc-300 px-2 py-0.5 rounded-md bg-black/60 border border-white/10">Clean Git History</span>
+              <span className="font-mono text-[10px] text-zinc-300 px-2 py-0.5 rounded-md bg-black/60 border border-white/10">Live Demos</span>
+            </div>
           </div>
 
+          {/* 02 Creative Card */}
           <div 
-            className="p-4 rounded-xl bg-black border border-white/10 space-y-2 hover:border-[#FFCC00]/40 transition-colors"
+            className="group relative rounded-2xl p-6 bg-gradient-to-b from-[#0a1827] via-[#0d0d12] to-[#070709] border border-sky-400/40 shadow-[0_0_25px_rgba(56,189,248,0.12)] hover:border-sky-400 hover:shadow-[0_12px_40px_rgba(56,189,248,0.25)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between overflow-hidden"
             style={getAnimStyle('checklistStepFade', 0.83, '0.6s')}
           >
-            <span className="text-[#FFCC00] font-bold">[02] CREATIVE & MEDIA</span>
-            <p className="text-zinc-400 font-sans text-xs leading-relaxed">
-              Assemble your Figma mockups, poster designs, video edits, or photography samples into a shareable link.
-            </p>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="w-11 h-11 rounded-xl bg-black/70 border border-sky-400/40 text-sky-400 flex items-center justify-center group-hover:scale-110 group-hover:bg-sky-400/20 transition-all duration-300 shadow-sm">
+                  <Palette className="w-5 h-5" />
+                </div>
+                <span className="font-mono text-xs font-bold text-sky-400 bg-sky-400/10 px-2.5 py-1 rounded-lg border border-sky-400/25">
+                  02 MEDIA
+                </span>
+              </div>
+
+              <div>
+                <h4 
+                  className="font-ndot text-2xl sm:text-3xl text-white tracking-wide uppercase group-hover:text-sky-400 transition-colors"
+                  style={{ fontFamily: "'VT323', monospace" }}
+                >
+                  PORTFOLIO & ASSETS
+                </h4>
+                <p className="text-zinc-400 font-sans text-xs sm:text-sm mt-2 leading-relaxed">
+                  Assemble your Figma mockups, event poster designs, video reels, motion clips, or photography showcases into a shareable link.
+                </p>
+              </div>
+            </div>
+
+            <div className="pt-4 mt-6 border-t border-sky-400/15 flex flex-wrap gap-1.5">
+              <span className="font-mono text-[10px] text-zinc-300 px-2 py-0.5 rounded-md bg-black/60 border border-white/10">Figma Files</span>
+              <span className="font-mono text-[10px] text-zinc-300 px-2 py-0.5 rounded-md bg-black/60 border border-white/10">Showreels</span>
+            </div>
           </div>
 
+          {/* 03 Operations Card */}
           <div 
-            className="p-4 rounded-xl bg-black border border-white/10 space-y-2 hover:border-[#FFCC00]/40 transition-colors"
+            className="group relative rounded-2xl p-6 bg-gradient-to-b from-[#1c1405] via-[#0d0d12] to-[#070709] border border-amber-400/40 shadow-[0_0_25px_rgba(251,191,36,0.12)] hover:border-amber-400 hover:shadow-[0_12px_40px_rgba(251,191,36,0.25)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between overflow-hidden"
             style={getAnimStyle('checklistStepFade', 0.91, '0.6s')}
           >
-            <span className="text-[#FFCC00] font-bold">[03] OPERATIONS & PUBLIC SPEAKING</span>
-            <p className="text-zinc-400 font-sans text-xs leading-relaxed">
-              Note down your event organizing experience, stage presentations, or school/college involvement.
-            </p>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="w-11 h-11 rounded-xl bg-black/70 border border-amber-400/40 text-amber-400 flex items-center justify-center group-hover:scale-110 group-hover:bg-amber-400/20 transition-all duration-300 shadow-sm">
+                  <Mic2 className="w-5 h-5" />
+                </div>
+                <span className="font-mono text-xs font-bold text-amber-400 bg-amber-400/10 px-2.5 py-1 rounded-lg border border-amber-400/25">
+                  03 ORATORY
+                </span>
+              </div>
+
+              <div>
+                <h4 
+                  className="font-ndot text-2xl sm:text-3xl text-white tracking-wide uppercase group-hover:text-amber-400 transition-colors"
+                  style={{ fontFamily: "'VT323', monospace" }}
+                >
+                  STAGE & OPERATIONS
+                </h4>
+                <p className="text-zinc-400 font-sans text-xs sm:text-sm mt-2 leading-relaxed">
+                  Prepare your event organizing achievements, stage anchoring experiences, team management examples, or club contributions.
+                </p>
+              </div>
+            </div>
+
+            <div className="pt-4 mt-6 border-t border-amber-400/15 flex flex-wrap gap-1.5">
+              <span className="font-mono text-[10px] text-zinc-300 px-2 py-0.5 rounded-md bg-black/60 border border-white/10">Event Logistics</span>
+              <span className="font-mono text-[10px] text-zinc-300 px-2 py-0.5 rounded-md bg-black/60 border border-white/10">Public Speaking</span>
+            </div>
+          </div>
+
+        </div>
+
+        {/* Bottom Callout Bar */}
+        <div className="relative z-10 pt-4 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-zinc-400 font-mono text-xs">
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-[#FFCC00]" />
+            <span>Open to all department students across 1st years.</span>
           </div>
         </div>
       </section>

@@ -1,26 +1,276 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import logoImg from '../assets/logo.png';
+import { Menu, X, User, LogOut, LogIn, ChevronDown } from 'lucide-react';
+import { useAuthContext } from '../context/AuthContext';
 
-export default function Navbar() {
+export default function Navbar({ activePage, setActivePage }) {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  const { isSignedIn, user, signOut } = useAuthContext();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Close user dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setUserDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const navItems = [
+    { id: 'home', label: 'HOME', code: '01' },
+    { id: 'events', label: 'EVENTS', code: '02' },
+    { id: 'team', label: 'TEAM', code: '03' },
+    { id: 'recruitment', label: 'RECRUITMENT', code: '04' },
+    { id: 'contact', label: 'CONTACT', code: '05' },
+  ];
+
+  const handleNavClick = (id) => {
+    setActivePage(id);
+    setMobileMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const getInitials = (name, email) => {
+    if (name && name.trim()) {
+      const parts = name.trim().split(' ');
+      if (parts.length >= 2) {
+        return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+      }
+      return parts[0].slice(0, 2).toUpperCase();
+    }
+    if (email) {
+      return email.slice(0, 2).toUpperCase();
+    }
+    return 'CU';
+  };
+
   return (
-    <header className="w-full pt-8 pb-4 px-6 md:px-16 flex items-center justify-between z-30 relative bg-black">
-      {/* Official Celestius Logo Asset */}
-      <a href="#" className="flex items-center">
-        <img 
-          src={logoImg} 
-          alt="Celestius" 
-          className="h-9 sm:h-10 w-auto object-contain"
-        />
-      </a>
+    <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-3 sm:px-6 pt-3 sm:pt-4">
+      <div 
+        className={`max-w-6xl mx-auto rounded-full sm:rounded-2xl transition-all duration-300 ${
+          scrolled 
+            ? 'bg-[#08080c]/95 backdrop-blur-2xl border border-white/15 shadow-[0_12px_40px_rgba(0,0,0,0.8)] py-2.5 px-4 sm:px-6' 
+            : 'bg-[#0e0e14]/85 backdrop-blur-xl border border-white/10 py-3 px-4 sm:px-6'
+        }`}
+      >
+        <div className="flex items-center justify-between">
+          
+          {/* Brand & Plain Celestius Logo */}
+          <button 
+            onClick={() => handleNavClick('home')}
+            className="flex items-center gap-3 group text-left focus:outline-none select-none"
+          >
+            {/* Plain Celestius Logo without container */}
+            <img 
+              src={logoImg} 
+              alt="Celestius" 
+              className="h-7 sm:h-8 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+            />
 
-      {/* Navigation items matching original website */}
-      <nav className="hidden md:flex items-center space-x-8 text-sm font-medium text-white">
-        <a href="#we" className="hover:text-celestius-gold transition-colors underline decoration-white underline-offset-8">We</a>
-        <a href="#events" className="hover:text-celestius-gold transition-colors">Events</a>
-        <a href="#projects" className="hover:text-celestius-gold transition-colors">Projects</a>
-        <a href="#blogs" className="hover:text-celestius-gold transition-colors">Blogs</a>
-        <a href="#timeline" className="hover:text-celestius-gold transition-colors">Timeline</a>
-      </nav>
+            <div className="flex flex-col">
+              <span 
+                style={{ fontFamily: "'VT323', monospace" }} 
+                className="font-ndot text-xl sm:text-2xl tracking-widest text-white group-hover:text-[#FFCC00] transition-colors"
+              >
+                CELESTIUS
+              </span>
+              <span className="font-mono text-[10px] text-zinc-500 tracking-tight hidden md:block">
+                CHENNAI INSTITUTE OF TECHNOLOGY
+              </span>
+            </div>
+          </button>
+
+          {/* Desktop Nav Items (Nothing OS Monospace / Pixel Pill Tabs) */}
+          <nav className="hidden md:flex items-center gap-1.5 bg-black/70 p-1.5 rounded-full border border-white/10">
+            {navItems.map((item) => {
+              const isActive = activePage === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleNavClick(item.id)}
+                  className={`font-mono text-xs px-3.5 py-1.5 rounded-full transition-all duration-200 flex items-center gap-1.5 tracking-wider ${
+                    isActive
+                      ? 'bg-[#FFCC00] text-black font-bold shadow-md shadow-[#FFCC00]/15'
+                      : 'text-zinc-400 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  <span className={`text-[9px] ${isActive ? 'text-black/60' : 'text-zinc-600'}`}>
+                    {item.code}
+                  </span>
+                  <span>{item.label}</span>
+                  {item.badge && (
+                    <span className={`text-[8px] px-1.5 py-0.2 rounded-full font-mono font-bold ${
+                      isActive 
+                        ? 'bg-black text-[#FFCC00]' 
+                        : 'bg-[#FFCC00]/20 text-[#FFCC00] border border-[#FFCC00]/30'
+                    }`}>
+                      {item.badge}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </nav>
+
+          {/* Action CTA & Mobile Toggle */}
+          <div className="flex items-center gap-2.5">
+            {isSignedIn && user ? (
+              // Authenticated User Profile Pill + Dropdown
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+                  className="flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-full bg-black/80 hover:bg-black border border-[#FFCC00]/40 hover:border-[#FFCC00] transition-all duration-200 focus:outline-none"
+                >
+                  {user.imageUrl ? (
+                    <img 
+                      src={user.imageUrl} 
+                      alt={user.fullName} 
+                      className="w-6 h-6 rounded-full object-cover border border-[#FFCC00]"
+                    />
+                  ) : (
+                    <div className="w-6 h-6 rounded-full bg-[#FFCC00] text-black font-mono font-bold text-[10px] flex items-center justify-center">
+                      {getInitials(user.fullName, user.email)}
+                    </div>
+                  )}
+                  <span className="font-mono text-xs font-semibold text-white tracking-wide max-w-[100px] truncate">
+                    {user.firstName || user.fullName || 'Member'}
+                  </span>
+                  <ChevronDown className={`w-3.5 h-3.5 text-[#FFCC00] transition-transform duration-200 ${userDropdownOpen ? 'rotate-180' : ''}`} />
+                </button>
+
+                {/* Dropdown Menu */}
+                {userDropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-64 bg-[#0a0a0e] border border-white/20 rounded-2xl shadow-2xl p-3 space-y-3 z-50 animate-fade-in">
+                    {/* User Summary */}
+                    <div className="p-2.5 rounded-xl bg-black/60 border border-white/10 space-y-1 font-mono">
+                      <div className="text-[10px] text-zinc-500 uppercase tracking-wider">MEMBER_SESSION</div>
+                      <div className="text-xs font-bold text-white truncate">{user.fullName || 'Celestius Member'}</div>
+                      <div className="text-[11px] text-[#FFCC00] truncate">{user.email}</div>
+                    </div>
+
+                    <div className="px-2 py-1 font-mono text-[10px] text-zinc-400 flex items-center justify-between border-b border-white/10 pb-2">
+                      <span>STATUS</span>
+                      <span className="text-[#FFCC00] font-bold">AUTHENTICATED</span>
+                    </div>
+
+                    {/* Sign Out CTA */}
+                    <button
+                      onClick={async () => {
+                        setUserDropdownOpen(false);
+                        await signOut();
+                      }}
+                      className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 font-mono text-xs font-semibold border border-red-500/30 transition-colors"
+                    >
+                      <LogOut className="w-3.5 h-3.5" />
+                      <span>SIGN_OUT</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              // Unauthenticated: Sign In Button (Navigates to dedicated Auth page)
+              <button
+                onClick={() => handleNavClick('auth')}
+                className={`hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-full font-mono text-xs font-bold active:scale-95 transition-all shadow-md ${
+                  activePage === 'auth'
+                    ? 'bg-white text-black shadow-white/20'
+                    : 'bg-[#FFCC00] text-black hover:bg-[#FFE066] shadow-[#FFCC00]/10'
+                }`}
+              >
+                <LogIn className="w-3.5 h-3.5 text-black" />
+                <span>SIGN_IN</span>
+              </button>
+            )}
+
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 rounded-full text-zinc-400 hover:text-white bg-black/60 border border-white/10 focus:outline-none"
+              aria-label="Toggle navigation"
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
+
+        </div>
+
+        {/* Mobile Dropdown Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden mt-3 pt-3 border-t border-white/10 space-y-1.5 animate-fade-in">
+            {navItems.map((item) => {
+              const isActive = activePage === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleNavClick(item.id)}
+                  className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl font-mono text-xs transition-all ${
+                    isActive
+                      ? 'bg-[#FFCC00] text-black font-bold'
+                      : 'text-zinc-400 hover:text-white hover:bg-white/5 border border-transparent'
+                  }`}
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] opacity-60">[{item.code}]</span>
+                    <span className="font-ndot tracking-wide text-sm">{item.label}</span>
+                  </div>
+                  {item.badge && (
+                    <span className={`text-[9px] px-2 py-0.5 rounded-full font-mono ${
+                      isActive ? 'bg-black text-[#FFCC00]' : 'bg-[#FFCC00]/20 text-[#FFCC00] border border-[#FFCC00]/40'
+                    }`}>
+                      {item.badge}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+
+            {/* Mobile Auth Button */}
+            <div className="pt-2">
+              {isSignedIn && user ? (
+                <div className="p-3 bg-black/70 border border-[#FFCC00]/30 rounded-xl space-y-2 font-mono">
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 rounded-full bg-[#FFCC00] text-black font-bold text-[10px] flex items-center justify-center">
+                      {getInitials(user.fullName, user.email)}
+                    </div>
+                    <div className="text-xs text-white truncate font-bold">{user.fullName}</div>
+                  </div>
+                  <button
+                    onClick={async () => {
+                      setMobileMenuOpen(false);
+                      await signOut();
+                    }}
+                    className="w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-red-500/10 text-red-400 text-xs border border-red-500/30"
+                  >
+                    <LogOut className="w-3.5 h-3.5" />
+                    <span>SIGN_OUT</span>
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => handleNavClick('auth')}
+                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-[#FFCC00] text-black font-mono text-xs font-bold hover:bg-[#FFE066] transition-colors"
+                >
+                  <LogIn className="w-3.5 h-3.5 text-black" />
+                  <span>SIGN IN // ACCOUNT</span>
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+
+      </div>
     </header>
   );
 }

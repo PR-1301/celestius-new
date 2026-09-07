@@ -13,9 +13,23 @@ import Auth from './pages/Auth';
 
 export default function App() {
   const getInitialPage = () => {
-    const hash = window.location.hash.replace('#', '').toLowerCase();
+    const rawPath = window.location.pathname.replace(/^\/+|\/+$/g, '').toLowerCase();
+    const rawHash = window.location.hash.replace('#', '').toLowerCase();
     const validPages = ['home', 'events', 'team', 'recruitment', 'contact', 'auth'];
-    return validPages.includes(hash) ? hash : 'home';
+
+    if (validPages.includes(rawPath)) {
+      if (rawPath === 'home') {
+        window.history.replaceState(null, '', '/');
+      }
+      return rawPath;
+    }
+    // Automatically migrate any legacy #hash links (e.g. /#recruitment -> /recruitment)
+    if (validPages.includes(rawHash)) {
+      const cleanPath = rawHash === 'home' ? '/' : `/${rawHash}`;
+      window.history.replaceState(null, '', cleanPath);
+      return rawHash;
+    }
+    return 'home';
   };
 
   const [activePage, setActivePage] = useState(getInitialPage);
@@ -36,17 +50,17 @@ export default function App() {
     setShowIntro(true);
   };
 
+  // Browser back/forward navigation support
   useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash.replace('#', '').toLowerCase();
+    const handlePopState = () => {
+      const rawPath = window.location.pathname.replace(/^\/+|\/+$/g, '').toLowerCase();
       const validPages = ['home', 'events', 'team', 'recruitment', 'contact', 'auth'];
-      if (validPages.includes(hash)) {
-        setActivePage(hash);
-      }
+      const page = validPages.includes(rawPath) ? rawPath : 'home';
+      setActivePage(page);
     };
 
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
   const handleMouseMove = (e) => {
@@ -55,7 +69,10 @@ export default function App() {
 
   const handlePageChange = (newPage) => {
     setActivePage(newPage);
-    window.location.hash = newPage;
+    const targetPath = newPage === 'home' ? '/' : `/${newPage}`;
+    if (window.location.pathname !== targetPath) {
+      window.history.pushState(null, '', targetPath);
+    }
     window.scrollTo(0, 0);
   };
 

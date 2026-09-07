@@ -24,12 +24,15 @@ export default function App() {
   
   // Always show intro animation on load
   const [showIntro, setShowIntro] = useState(true);
+  const [introCompleted, setIntroCompleted] = useState(false);
 
   const handleIntroComplete = () => {
     setShowIntro(false);
+    setIntroCompleted(true);
   };
 
   const handleReplayIntro = () => {
+    setIntroCompleted(false);
     setShowIntro(true);
   };
 
@@ -53,7 +56,7 @@ export default function App() {
   const handlePageChange = (newPage) => {
     setActivePage(newPage);
     window.location.hash = newPage;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo(0, 0);
   };
 
   return (
@@ -77,8 +80,12 @@ export default function App() {
         }}
       />
 
-      {/* Floating Nothing OS Navbar */}
-      <Navbar activePage={activePage} setActivePage={handlePageChange} />
+      {/* Floating Nothing OS Navbar with Mechanical Holder */}
+      <Navbar 
+        activePage={activePage} 
+        setActivePage={handlePageChange} 
+        introCompleted={introCompleted}
+      />
 
       {/* Main Page Container */}
       <main key={activePage} className="relative z-10 flex-1 w-full animate-page-enter">
@@ -86,6 +93,7 @@ export default function App() {
           <Home 
             setActivePage={handlePageChange} 
             setSelectedEvent={setSelectedEvent} 
+            introCompleted={introCompleted}
           />
         )}
         {activePage === 'events' && (
@@ -97,7 +105,7 @@ export default function App() {
           <Team />
         )}
         {activePage === 'recruitment' && (
-          <Recruitment />
+          <Recruitment introCompleted={introCompleted} />
         )}
         {activePage === 'contact' && (
           <Contact />

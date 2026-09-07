@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { 
   ArrowRight, 
   Code2, 
@@ -42,13 +42,13 @@ function HephaestusShowpiece() {
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
-      className="relative w-full flex items-end justify-center lg:justify-end select-none cursor-pointer py-2"
+      className="relative flex items-center justify-center p-4 select-none cursor-pointer"
     >
-      {/* 3D Interactive Container */}
+      {/* 3D Tilt Card Frame with Zero Shadows */}
       <div 
-        className="relative z-10 transition-transform duration-300 ease-out will-change-transform flex flex-col items-center"
+        className="transition-transform duration-200 ease-out will-change-transform"
         style={{
-          transform: `perspective(900px) rotateX(${transform.rotateX}deg) rotateY(${transform.rotateY}deg) scale(${isHovered ? 1.03 : 1})`,
+          transform: `perspective(900px) rotateX(${transform.rotateX}deg) rotateY(${transform.rotateY}deg) scale(${isHovered ? 1.02 : 1})`,
         }}
       >
         {/* Hand-Drawn Line-Art Statue with Pure 3D Tilt Effect & Zero Shadows */}
@@ -68,7 +68,18 @@ function HephaestusShowpiece() {
   );
 }
 
-export default function Home({ setActivePage, setSelectedEvent }) {
+export default function Home({ setActivePage, setSelectedEvent, introCompleted = true }) {
+  const isFirstMount = useRef(true);
+
+  useEffect(() => {
+    if (introCompleted) {
+      const timer = setTimeout(() => {
+        isFirstMount.current = false;
+      }, 2400);
+      return () => clearTimeout(timer);
+    }
+  }, [introCompleted]);
+  
   const featuredEvents = eventsData.filter(e => e.featured);
 
   const pillars = [
@@ -129,22 +140,47 @@ export default function Home({ setActivePage, setSelectedEvent }) {
           {/* Clean Display Headline */}
           <div className="space-y-3">
             <h1 
-              style={{ fontFamily: "'VT323', monospace" }} 
-              className="font-ndot text-5xl sm:text-7xl lg:text-8xl text-white tracking-tight leading-[0.98] uppercase font-normal"
+              style={{ 
+                fontFamily: "'VT323', monospace",
+                ...(introCompleted && isFirstMount.current
+                  ? { animation: 'heroReveal 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.65s both' }
+                  : {})
+              }} 
+              className={`font-ndot text-5xl sm:text-7xl lg:text-8xl text-white tracking-tight leading-[0.98] uppercase font-normal ${
+                !introCompleted ? 'opacity-0' : ''
+              }`}
             >
               Innovate. <br />
               Build. <br />
               <span className="text-[#FFCC00]">Collaborate.</span>
             </h1>
 
-            <p className="text-sm sm:text-base text-zinc-400 leading-relaxed font-sans max-w-lg pt-1">
+            <p 
+              style={
+                introCompleted && isFirstMount.current
+                  ? { animation: 'heroReveal 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.85s both' }
+                  : {}
+              }
+              className={`text-sm sm:text-base text-zinc-400 leading-relaxed font-sans max-w-lg pt-1 ${
+                !introCompleted ? 'opacity-0' : ''
+              }`}
+            >
               Celestius is the premier student-run technical community of Chennai Institute of Technology. 
               Forging open-source systems, competitive engineering, artificial intelligence, and shared craftsmanship.
             </p>
           </div>
 
           {/* Tactile Action Buttons */}
-          <div className="flex flex-wrap items-center gap-3 pt-2">
+          <div 
+            style={
+              introCompleted && isFirstMount.current
+                ? { animation: 'heroReveal 0.75s cubic-bezier(0.16, 1, 0.3, 1) 1.05s both' }
+                : {}
+            }
+            className={`flex flex-wrap items-center gap-3 pt-2 ${
+              !introCompleted ? 'opacity-0' : ''
+            }`}
+          >
             <button
               onClick={() => setActivePage('recruitment')}
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#FFCC00] text-black font-mono text-xs font-bold hover:bg-[#FFE066] active:scale-95 transition-all shadow-lg shadow-[#FFCC00]/15"
@@ -165,14 +201,32 @@ export default function Home({ setActivePage, setSelectedEvent }) {
         </div>
 
         {/* Right Side: Cool Hephaestus 3D Tilt & Forge Glow Showpiece */}
-        <div className="lg:col-span-5 flex justify-center lg:justify-end">
+        <div 
+          style={
+            introCompleted && isFirstMount.current
+              ? { animation: 'statueReveal 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.75s both' }
+              : {}
+          }
+          className={`lg:col-span-5 flex justify-center lg:justify-end ${
+            !introCompleted ? 'opacity-0' : ''
+          }`}
+        >
           <HephaestusShowpiece />
         </div>
 
       </section>
 
       {/* 2. Bento Stats Grid */}
-      <section className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <section 
+        style={
+          introCompleted && isFirstMount.current
+            ? { animation: 'heroReveal 0.75s cubic-bezier(0.16, 1, 0.3, 1) 1.25s both' }
+            : {}
+        }
+        className={`grid grid-cols-2 lg:grid-cols-4 gap-3 ${
+          !introCompleted ? 'opacity-0' : ''
+        }`}
+      >
         {stats.map((stat) => (
           <div 
             key={stat.code}

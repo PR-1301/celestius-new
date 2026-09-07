@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logoImg from '../assets/logo.png';
 import { Github, Linkedin, Instagram, Mail, MapPin, ArrowUpRight } from 'lucide-react';
+import PolicyModal from './PolicyModal';
 
 export default function Footer({ setActivePage, onReplayIntro }) {
+  const [activePolicy, setActivePolicy] = useState(null);
   const handlePageChange = (page) => {
     setActivePage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo(0, 0);
   };
 
   return (
@@ -17,10 +19,6 @@ export default function Footer({ setActivePage, onReplayIntro }) {
           <div className="lg:col-span-5 space-y-4">
             <div className="flex items-center gap-3">
               <img src={logoImg} alt="Celestius Logo" className="h-7 w-auto object-contain" />
-              <div>
-                <span className="font-ndot text-lg text-[#FFCC00] tracking-wider block">CELESTIUS</span>
-                <span className="block font-mono text-[10px] text-[#FFCC00]/70">// CIT_CHENNAI_TECH_CLUB</span>
-              </div>
             </div>
 
             <p className="font-sans text-xs text-zinc-400 leading-relaxed max-w-md">
@@ -133,36 +131,41 @@ export default function Footer({ setActivePage, onReplayIntro }) {
                 </a>
               </div>
             </div>
-
-            <div className="pt-2">
-              <div className="inline-block px-3 py-1 rounded-full bg-[#FFCC00]/10 border border-[#FFCC00]/30 font-mono text-[9px] text-[#FFCC00]">
-                CENTRE FOR INNOVATION & STUDENT TECH CULTURE
-              </div>
-            </div>
           </div>
 
         </div>
 
-        {/* Bottom copyright row */}
+        {/* Bottom copyright & policy links row */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-[11px] text-zinc-500">
           <p className="text-zinc-400">© {new Date().getFullYear()} <span className="text-[#FFCC00] font-bold">CELESTIUS</span>. CIT CHENNAI. ALL RIGHTS RESERVED.</p>
-          <div className="flex items-center gap-4">
-            {onReplayIntro && (
-              <button
-                onClick={onReplayIntro}
-                className="text-[#FFCC00] hover:underline transition-colors font-bold"
-                title="Replay Intro Boot Sequence"
-              >
-                [REPLAY_INTRO]
-              </button>
-            )}
-            <span className="text-zinc-600">// NOTHING_OS_PIXEL_SPEC</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-[#FFCC00] animate-pulse" />
-            <span className="text-[#FFCC00] font-medium">STATUS: NOMINAL</span>
+          <div className="flex items-center gap-4 text-xs">
+            <button
+              type="button"
+              onClick={() => setActivePolicy('privacy')}
+              className="text-zinc-400 hover:text-[#FFCC00] transition-colors cursor-pointer"
+            >
+              Privacy Policy
+            </button>
+            <span className="text-zinc-700">//</span>
+            <button
+              type="button"
+              onClick={() => setActivePolicy('refund')}
+              className="text-zinc-400 hover:text-[#FFCC00] transition-colors cursor-pointer"
+            >
+              Refund Policy
+            </button>
           </div>
         </div>
 
       </div>
+
+      {/* Privacy Policy & Refund Policy Modal Popup */}
+      {activePolicy && (
+        <PolicyModal 
+          type={activePolicy} 
+          onClose={() => setActivePolicy(null)} 
+        />
+      )}
     </footer>
   );
 }

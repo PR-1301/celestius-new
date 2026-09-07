@@ -16,7 +16,6 @@
     margin: 0;
     padding: 0;
     overflow-x: hidden;
-    scroll-behavior: smooth;
   }
 
   /* Custom Celestius Gold tactile scrollbar */
@@ -64,15 +63,17 @@
   box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.7), 0 0 15px -3px rgba(255, 204, 0, 0.08);
 }
 
-/* Animations */
+/* Smooth Section Transition */
 @keyframes pageEnter {
   0% {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(14px);
+    filter: blur(3px);
   }
   100% {
     opacity: 1;
     transform: translateY(0);
+    filter: blur(0);
   }
 }
 
@@ -82,11 +83,219 @@
 }
 
 .animate-page-enter {
-  animation: pageEnter 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: pageEnter 0.42s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity, filter;
 }
 
 .animate-glyph-blink {
   animation: glyphBlink 1.8s ease-in-out infinite;
+}
+
+/* Unique Diverse Recruitment Section Animations */
+@keyframes recruitTitleReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(-26px);
+    letter-spacing: 0.04em;
+    filter: blur(5px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    letter-spacing: normal;
+    filter: blur(0);
+  }
+}
+
+@keyframes recruitSlideLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-36px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes recruitSlideRight {
+  0% {
+    opacity: 0;
+    transform: translateX(36px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes recruitHeaderZoom {
+  0% {
+    opacity: 0;
+    transform: scale(0.92) translateY(18px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Individual Role Card Diverse Entrance Animations */
+@keyframes cardDiagonalLeft {
+  0% {
+    opacity: 0;
+    transform: translate(-30px, 30px) scale(0.94);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+@keyframes cardVerticalRise {
+  0% {
+    opacity: 0;
+    transform: translateY(42px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes cardDiagonalRight {
+  0% {
+    opacity: 0;
+    transform: translate(30px, 30px) scale(0.94);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+@keyframes cardFlipUp {
+  0% {
+    opacity: 0;
+    transform: perspective(600px) rotateX(16deg) translateY(32px);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(600px) rotateX(0deg) translateY(0);
+  }
+}
+
+@keyframes cardPopScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.86);
+  }
+  68% {
+    transform: scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes cardFocusBlur {
+  0% {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translateY(24px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+@keyframes cardGlideRight {
+  0% {
+    opacity: 0;
+    transform: translateX(28px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes recruitBentoExpand {
+  0% {
+    opacity: 0;
+    transform: perspective(900px) rotateX(7deg) translateY(36px);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(900px) rotateX(0deg) translateY(0);
+  }
+}
+
+@keyframes checklistStepFade {
+  0% {
+    opacity: 0;
+    transform: translateY(18px) scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Intro-to-Home Sequential Entrance Animations */
+@keyframes holderDrop {
+  0% {
+    opacity: 0;
+    transform: translateY(-36px);
+  }
+  65% {
+    opacity: 1;
+    transform: translateY(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes navbarDock {
+  0% {
+    opacity: 0;
+    transform: translateY(-24px) scale(0.985);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(2px) scale(1.004);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes heroReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes statueReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(48px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 /* Accessibility */

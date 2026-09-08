@@ -2,21 +2,37 @@ import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import EventModal from './components/EventModal';
+import OnboardingModal from './components/OnboardingModal';
 import IntroAnimation from './components/IntroAnimation';
 import DynamicBackground from './components/DynamicBackground';
+import { useAuthContext, isClerkKeyValid } from './context/AuthContext';
+import { AuthenticateWithRedirectCallback } from '@clerk/clerk-react';
 
 import Home from './pages/Home';
 import Events from './pages/Events';
 import Team from './pages/Team';
 import Recruitment from './pages/Recruitment';
 import Contact from './pages/Contact';
-import Auth from './pages/Auth';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+import Profile from './pages/Profile';
 
 export default function App() {
+  const { isOnboardingOpen, setIsOnboardingOpen } = useAuthContext();
+
   const getInitialPage = () => {
     const rawPath = window.location.pathname.replace(/^\/+|\/+$/g, '').toLowerCase();
     const rawHash = window.location.hash.replace('#', '').toLowerCase();
-    const validPages = ['home', 'events', 'team', 'recruitment', 'contact', 'auth'];
+    const validPages = ['home', 'events', 'team', 'recruitment', 'contact', 'login', 'dashboard', 'profile'];
+
+    if (rawPath === 'sso-callback') {
+      return 'sso-callback';
+    }
+
+    if (rawPath === 'sign-in' || rawPath === 'sign-up' || rawPath === 'auth' || rawPath === 'login') {
+      window.history.replaceState(null, '', '/login');
+      return 'login';
+    }
 
     if (validPages.includes(rawPath)) {
       if (rawPath === 'home') {
@@ -55,7 +71,7 @@ export default function App() {
   useEffect(() => {
     const handlePopState = () => {
       const rawPath = window.location.pathname.replace(/^\/+|\/+$/g, '').toLowerCase();
-      const validPages = ['home', 'events', 'team', 'recruitment', 'contact', 'auth'];
+      const validPages = ['home', 'events', 'team', 'recruitment', 'contact', 'login', 'dashboard', 'profile'];
       const page = validPages.includes(rawPath) ? rawPath : 'home';
       setActivePage(page);
     };
@@ -120,10 +136,32 @@ export default function App() {
         {activePage === 'contact' && (
           <Contact />
         )}
-        {activePage === 'auth' && (
-          <Auth 
+        {activePage === 'login' && (
+          <Login 
             setActivePage={handlePageChange} 
           />
+        )}
+        {activePage === 'dashboard' && (
+          <Dashboard 
+            setActivePage={handlePageChange} 
+          />
+        )}
+        {activePage === 'profile' && (
+          <Profile 
+            setActivePage={handlePageChange} 
+          />
+        )}
+        {activePage === 'sso-callback' && isClerkKeyValid && (
+          <div className="flex flex-col items-center justify-center min-h-[60vh] font-mono text-xs text-zinc-400">
+            <AuthenticateWithRedirectCallback 
+              signInUrl="/login"
+              signUpUrl="/login"
+              continueSignUpUrl="/login"
+              signInForceRedirectUrl="/dashboard" 
+              signUpForceRedirectUrl="/dashboard" 
+            />
+            <span className="mt-4 text-[#FFCC00] animate-pulse">SYNCHRONIZING CIT CREDENTIALS...</span>
+          </div>
         )}
       </main>
 
@@ -134,6 +172,12 @@ export default function App() {
           onClose={() => setSelectedEvent(null)} 
         />
       )}
+
+      {/* 1st-Time Student Onboarding Modal */}
+      <OnboardingModal 
+        isOpen={isOnboardingOpen} 
+        onClose={() => setIsOnboardingOpen(false)} 
+      />
 
       {/* Celestius Gold Minimal Footer with Replay Intro trigger */}
       <Footer setActivePage={handlePageChange} onReplayIntro={handleReplayIntro} />

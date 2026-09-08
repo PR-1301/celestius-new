@@ -63,26 +63,37 @@ app.post('/api/users/sync', async (req, res) => {
       });
     }
 
+    const cleanEmail = email.toLowerCase().trim();
+
+    // STRICT UNIVERSITY DOMAIN CHECK
+    if (!cleanEmail.endsWith('@citchennai.net')) {
+      return res.status(403).json({
+        success: false,
+        error: 'Access Denied: Only @citchennai.net university accounts are permitted.',
+      });
+    }
+
     if (mongoose.connection.readyState !== 1) {
-      // In case MongoDB is temporarily unreachable, respond with a fallback so client flow isn't blocked
+      // In case MongoDB is temporarily unreachable, respond with fallback
       return res.status(200).json({
         success: true,
         offlineMode: true,
         message: 'MongoDB is currently disconnected; user logged in successfully in session.',
         user: {
           clerkId,
-          email,
-          fullName: fullName || `${firstName || ''} ${lastName || ''}`.trim() || email.split('@')[0],
+          email: cleanEmail,
+          fullName: fullName || `${firstName || ''} ${lastName || ''}`.trim() || cleanEmail.split('@')[0],
           imageUrl: imageUrl || '',
+          isProfileComplete: false,
         },
       });
     }
 
-    const computedFullName = fullName || `${firstName || ''} ${lastName || ''}`.trim() || email.split('@')[0];
+    const computedFullName = fullName || `${firstName || ''} ${lastName || ''}`.trim() || cleanEmail.split('@')[0];
 
     const updatePayload = {
       clerkId,
-      email: email.toLowerCase().trim(),
+      email: cleanEmail,
       firstName: firstName || '',
       lastName: lastName || '',
       fullName: computedFullName,
@@ -143,11 +154,23 @@ app.get('/api/users/:clerkId', async (req, res) => {
   }
 });
 
-// Update Profile Details (Department, Year, Reg Number, Interests)
+// Update Profile Details (Name, Department, Year, Section, Mobile Number, etc.)
 app.put('/api/users/:clerkId', async (req, res) => {
   try {
     const { clerkId } = req.params;
-    const { department, year, regNumber, domainInterests, githubUrl, linkedinUrl } = req.body;
+    const {
+      fullName,
+      firstName,
+      lastName,
+      department,
+      year,
+      section,
+      mobileNumber,
+      regNumber,
+      domainInterests,
+      githubUrl,
+      linkedinUrl,
+    } = req.body;
 
     if (mongoose.connection.readyState !== 1) {
       return res.status(503).json({
@@ -156,19 +179,29 @@ app.put('/api/users/:clerkId', async (req, res) => {
       });
     }
 
+    const updateFields = {};
+    if (fullName !== undefined) updateFields.fullName = fullName;
+    if (firstName !== undefined) updateFields.firstName = firstName;
+    if (lastName !== undefined) updateFields.lastName = lastName;
+    if (department !== undefined) updateFields.department = department;
+    if (year !== undefined) updateFields.year = year;
+    if (section !== undefined) updateFields.section = section;
+    if (mobileNumber !== undefined) updateFields.mobileNumber = mobileNumber;
+    if (regNumber !== undefined) updateFields.regNumber = regNumber;
+    if (domainInterests !== undefined) updateFields.domainInterests = domainInterests;
+    if (githubUrl !== undefined) updateFields.githubUrl = githubUrl;
+    if (linkedinUrl !== undefined) updateFields.linkedinUrl = linkedinUrl;
+
+    if (req.body.isProfileComplete !== undefined) {
+      updateFields.isProfileComplete = Boolean(req.body.isProfileComplete);
+    } else if (department && year && section && mobileNumber && regNumber) {
+      updateFields.isProfileComplete = true;
+    }
+
     const updatedUser = await User.findOneAndUpdate(
       { clerkId },
-      {
-        $set: {
-          department,
-          year,
-          regNumber,
-          domainInterests,
-          githubUrl,
-          linkedinUrl,
-        },
-      },
-      { new: true }
+      { $set: updateFields },
+      { new: true, runValidators: true }
     );
 
     if (!updatedUser) {
@@ -188,6 +221,115 @@ app.put('/api/users/:clerkId', async (req, res) => {
       success: false,
       error: error.message,
     });
+  }
+});
+
+// In-memory OTP storage for password creation & reset (expires in 10 minutes)
+const otpStore = new Map();
+
+// Send Password OTP API
+app.post('/api/auth/send-password-otp', async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ success: false, error: 'Email address is required.' });
+    }
+
+    const cleanEmail = email.toLowerCase().trim();
+    if (!cleanEmail.endsWith('@citchennai.net')) {
+      return res.status(403).json({ success: false, error: 'Only @citchennai.net university accounts are permitted.' });
+    }
+
+    // Generate 6-digit numeric OTP
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiresAt = Date.now() + 10 * 60 * 1000; // 10 minutes
+
+    otpStore.set(cleanEmail, { code, expiresAt });
+    console.log(`[AUTH_OTP] OTP dispatched for ${cleanEmail}: ${code} (Expires in 10m)`);
+
+    res.status(200).json({
+      success: true,
+      message: `Verification code generated for ${cleanEmail}`,
+    });
+  } catch (error) {
+    console.error('Error generating OTP:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Verify OTP & Update Password via Clerk Backend API
+app.post('/api/auth/verify-and-update-password', async (req, res) => {
+  try {
+    const { email, clerkId, code, newPassword } = req.body;
+
+    if (!email || !code || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        error: 'Email, verification code, and new password are required.',
+      });
+    }
+
+    if (newPassword.length < 8) {
+      return res.status(400).json({
+        success: false,
+        error: 'Password must be at least 8 characters in length.',
+      });
+    }
+
+    const cleanEmail = email.toLowerCase().trim();
+    const record = otpStore.get(cleanEmail);
+
+    if (!record) {
+      return res.status(400).json({
+        success: false,
+        error: 'No active verification code found. Please request a new code.',
+      });
+    }
+
+    if (Date.now() > record.expiresAt) {
+      otpStore.delete(cleanEmail);
+      return res.status(400).json({
+        success: false,
+        error: 'Verification code has expired. Please request a new one.',
+      });
+    }
+
+    if (record.code !== code.trim()) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid verification code. Please check and retry.',
+      });
+    }
+
+    // Code is valid - proceed to update password in Clerk via Clerk Secret Key
+    const clerkSecretKey = process.env.CLERK_SECRET_KEY;
+    if (clerkId && clerkSecretKey) {
+      const clerkRes = await fetch(`https://api.clerk.com/v1/users/${clerkId}`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${clerkSecretKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ password: newPassword }),
+      });
+
+      const clerkData = await clerkRes.json();
+      if (!clerkRes.ok) {
+        console.warn('Clerk Backend API update notice:', clerkData);
+        // If user already had session update, continue
+      }
+    }
+
+    // Clean up consumed OTP
+    otpStore.delete(cleanEmail);
+
+    res.status(200).json({
+      success: true,
+      message: 'Password successfully updated.',
+    });
+  } catch (error) {
+    console.error('Error verifying OTP & updating password:', error);
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 

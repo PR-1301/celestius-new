@@ -192,7 +192,7 @@ export default function Recruitment({ introCompleted = true }) {
               className="font-ndot text-3xl sm:text-5xl text-white tracking-wide uppercase"
               style={{ fontFamily: "'VT323', monospace" }}
             >
-              ROLES THAT YOU CAN BE CHOOSE
+              PICK A ROLE THAT SUITS YOU
             </h2>
             <p className="text-xs text-zinc-400 font-mono">
               [ CLICK ANY ROLE CARD TO VIEW BRIEF SPECIFICATIONS POPUP ]

@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import logoImg from '../assets/logo.png';
-import { Menu, X, User, LogOut, LogIn, ChevronDown } from 'lucide-react';
+import { Menu, X, User, LogOut, LogIn, ChevronDown, LayoutDashboard, Loader2 } from 'lucide-react';
 import { useAuthContext } from '../context/AuthContext';
 
 export default function Navbar({ activePage, setActivePage, introCompleted = true }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const [isSigningOut, setIsSigningOut] = useState(false);
   const dropdownRef = useRef(null);
   const isFirstMount = useRef(true);
-  const { isSignedIn, user, signOut } = useAuthContext();
+  const { isSignedIn, user, dbUser, signOut } = useAuthContext();
 
   useEffect(() => {
     if (introCompleted) {
@@ -51,13 +52,17 @@ export default function Navbar({ activePage, setActivePage, introCompleted = tru
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const navItems = [
+  const baseNavItems = [
     { id: 'home', label: 'HOME', code: '01' },
     { id: 'events', label: 'EVENTS', code: '02' },
     { id: 'team', label: 'TEAM', code: '03' },
     { id: 'recruitment', label: 'RECRUITMENT', code: '04' },
     { id: 'contact', label: 'CONTACT', code: '05' },
   ];
+
+  const navItems = isSignedIn && (user || dbUser)
+    ? [...baseNavItems, { id: 'dashboard', label: 'DASHBOARD', code: '06' }]
+    : baseNavItems;
 
   const handleNavClick = (id) => {
     setActivePage(id);
@@ -104,23 +109,23 @@ export default function Navbar({ activePage, setActivePage, introCompleted = tru
           >
             {/* Left Holder Bracket */}
             <div className="absolute -left-5 xl:-left-8 -top-3 sm:-top-4 w-5 xl:w-8 h-12 sm:h-14 pointer-events-none">
-              <div className="w-full h-full border-l-2 border-b-2 border-[#FFCC00]/80 rounded-bl-2xl shadow-[0_0_12px_rgba(255,204,0,0.3)] relative">
+              <div className="w-full h-full border-l-2 border-b-2 border-[#FFCC00] rounded-bl-2xl relative">
                 {/* Minimal top ceiling anchor point */}
-                <div className="absolute -top-1 -left-[3px] w-2 h-1 bg-[#FFCC00] rounded-t-sm shadow-[0_0_6px_#FFCC00]" />
+                <div className="absolute -top-1 -left-[3px] w-2 h-1 bg-[#FFCC00] rounded-t-sm" />
                 
-                {/* Minimal dock connector point */}
-                <div className="absolute -bottom-[3px] -right-1 w-1.5 h-1.5 rounded-full bg-[#FFCC00] shadow-[0_0_6px_#FFCC00]" />
+                {/* Enlarged dock connector node */}
+                <div className="absolute -bottom-[7px] -right-[7px] w-3.5 h-3.5 rounded-full bg-[#FFCC00] border-2 border-[#0e0e14] shadow-[0_0_10px_#FFCC00]" />
               </div>
             </div>
 
             {/* Right Holder Bracket */}
             <div className="absolute -right-5 xl:-right-8 -top-3 sm:-top-4 w-5 xl:w-8 h-12 sm:h-14 pointer-events-none">
-              <div className="w-full h-full border-r-2 border-b-2 border-[#FFCC00]/80 rounded-br-2xl shadow-[0_0_12px_rgba(255,204,0,0.3)] relative">
+              <div className="w-full h-full border-r-2 border-b-2 border-[#FFCC00] rounded-br-2xl relative">
                 {/* Minimal top ceiling anchor point */}
-                <div className="absolute -top-1 -right-[3px] w-2 h-1 bg-[#FFCC00] rounded-t-sm shadow-[0_0_6px_#FFCC00]" />
+                <div className="absolute -top-1 -right-[3px] w-2 h-1 bg-[#FFCC00] rounded-t-sm" />
                 
-                {/* Minimal dock connector point */}
-                <div className="absolute -bottom-[3px] -left-1 w-1.5 h-1.5 rounded-full bg-[#FFCC00] shadow-[0_0_6px_#FFCC00]" />
+                {/* Enlarged dock connector node */}
+                <div className="absolute -bottom-[7px] -left-[7px] w-3.5 h-3.5 rounded-full bg-[#FFCC00] border-2 border-[#0e0e14] shadow-[0_0_10px_#FFCC00]" />
               </div>
             </div>
           </div>
@@ -201,77 +206,123 @@ export default function Navbar({ activePage, setActivePage, introCompleted = tru
 
           {/* Action CTA & Mobile Toggle */}
           <div className="flex items-center gap-2.5">
-            {isSignedIn && user ? (
+            {isSignedIn && (user || dbUser) ? (
               // Authenticated User Profile Pill + Dropdown
               <div className="relative" ref={dropdownRef}>
                 <button
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                  className="flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-full bg-black/80 hover:bg-black border border-[#FFCC00]/40 hover:border-[#FFCC00] transition-all duration-200 focus:outline-none"
+                  className="flex items-center gap-2 pl-1.5 pr-3 py-1.5 rounded-full bg-black/80 hover:bg-black border border-[#FFCC00]/40 hover:border-[#FFCC00] transition-all duration-200 focus:outline-none cursor-pointer"
                 >
-                  {user.imageUrl ? (
+                  {user?.imageUrl ? (
                     <img 
                       src={user.imageUrl} 
-                      alt={user.fullName} 
+                      alt={dbUser?.fullName || user?.fullName || 'User'} 
                       className="w-6 h-6 rounded-full object-cover border border-[#FFCC00]"
                     />
                   ) : (
                     <div className="w-6 h-6 rounded-full bg-[#FFCC00] text-black font-mono font-bold text-[10px] flex items-center justify-center">
-                      {getInitials(user.fullName, user.email)}
+                      {getInitials(dbUser?.fullName || user?.fullName, user?.email)}
                     </div>
                   )}
-                  <span className="font-mono text-xs font-semibold text-white tracking-wide max-w-[100px] truncate">
-                    {user.firstName || user.fullName || 'Member'}
+                  <span className="font-mono text-xs font-semibold text-white tracking-wide max-w-[120px] truncate">
+                    {dbUser?.fullName ? dbUser.fullName.split(' ')[0] : (user?.firstName || user?.fullName || 'CITian')}
                   </span>
                   <ChevronDown className={`w-3.5 h-3.5 text-[#FFCC00] transition-transform duration-200 ${userDropdownOpen ? 'rotate-180' : ''}`} />
                 </button>
 
-                {/* Dropdown Menu */}
+                {/* Minimal SaaS Dropdown Menu */}
                 {userDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-64 bg-[#0a0a0e] border border-white/20 rounded-2xl shadow-2xl p-3 space-y-3 z-50 animate-fade-in">
-                    {/* User Summary */}
-                    <div className="p-2.5 rounded-xl bg-black/60 border border-white/10 space-y-1 font-mono">
-                      <div className="text-[10px] text-zinc-500 uppercase tracking-wider">MEMBER_SESSION</div>
-                      <div className="text-xs font-bold text-white truncate">{user.fullName || 'Celestius Member'}</div>
-                      <div className="text-[11px] text-[#FFCC00] truncate">{user.email}</div>
+                  <div className="absolute right-0 mt-2.5 w-64 bg-[#0c0d12]/95 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl p-1.5 z-50 animate-fade-in text-left">
+                    {/* User Identity Snippet */}
+                    <div className="px-3 py-2.5 mb-1 border-b border-white/10">
+                      <div className="flex items-center justify-between gap-2">
+                        <p className="text-xs font-semibold text-white truncate max-w-[160px]">
+                          {dbUser?.fullName || user?.fullName || 'CIT Member'}
+                        </p>
+                        <span className="text-[9px] font-medium px-1.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 shrink-0">
+                          Verified
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-zinc-400 truncate mt-0.5 font-mono">
+                        {dbUser?.email || user?.email}
+                      </p>
                     </div>
 
-                    <div className="px-2 py-1 font-mono text-[10px] text-zinc-400 flex items-center justify-between border-b border-white/10 pb-2">
-                      <span>STATUS</span>
-                      <span className="text-[#FFCC00] font-bold">AUTHENTICATED</span>
+                    {/* Navigation Items */}
+                    <div className="space-y-0.5">
+                      <button
+                        onClick={() => {
+                          setUserDropdownOpen(false);
+                          handleNavClick('dashboard');
+                        }}
+                        className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-zinc-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer group text-left"
+                      >
+                        <LayoutDashboard className="w-4 h-4 text-zinc-400 group-hover:text-[#FFCC00] transition-colors" />
+                        <span className="font-medium">Dashboard</span>
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          setUserDropdownOpen(false);
+                          handleNavClick('profile');
+                        }}
+                        className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-zinc-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer group text-left"
+                      >
+                        <User className="w-4 h-4 text-zinc-400 group-hover:text-[#FFCC00] transition-colors" />
+                        <span className="font-medium">My Profile</span>
+                      </button>
                     </div>
 
-                    {/* Sign Out CTA */}
+                    <div className="my-1 border-t border-white/10" />
+
+                    {/* Sign Out CTA with Loading State */}
                     <button
+                      disabled={isSigningOut}
                       onClick={async () => {
-                        setUserDropdownOpen(false);
-                        await signOut();
+                        setIsSigningOut(true);
+                        try {
+                          await signOut();
+                          setUserDropdownOpen(false);
+                          handleNavClick('home');
+                        } finally {
+                          setIsSigningOut(false);
+                        }
                       }}
-                      className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 font-mono text-xs font-semibold border border-red-500/30 transition-colors"
+                      className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-all cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed text-left font-medium"
                     >
-                      <LogOut className="w-3.5 h-3.5" />
-                      <span>SIGN_OUT</span>
+                      {isSigningOut ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin text-red-400 shrink-0" />
+                          <span>Signing out...</span>
+                        </>
+                      ) : (
+                        <>
+                          <LogOut className="w-4 h-4 text-red-400 shrink-0" />
+                          <span>Sign Out</span>
+                        </>
+                      )}
                     </button>
                   </div>
                 )}
               </div>
             ) : (
-              // Unauthenticated: Sign In Button (Navigates to dedicated Auth page)
+              // Unauthenticated: Login Button (Navigates to dedicated Login page)
               <button
-                onClick={() => handleNavClick('auth')}
-                className={`hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-full font-mono text-xs font-bold active:scale-95 transition-all shadow-md ${
-                  activePage === 'auth'
+                onClick={() => handleNavClick('login')}
+                className={`hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-full font-mono text-xs font-bold active:scale-95 transition-all shadow-md cursor-pointer ${
+                  activePage === 'login'
                     ? 'bg-white text-black shadow-white/20'
                     : 'bg-[#FFCC00] text-black hover:bg-[#FFE066] shadow-[#FFCC00]/10'
                 }`}
               >
                 <LogIn className="w-3.5 h-3.5 text-black" />
-                <span>SIGN_IN</span>
+                <span>LOGIN</span>
               </button>
             )}
 
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-full text-zinc-400 hover:text-white bg-black/60 border border-white/10 focus:outline-none"
+              className="md:hidden p-2 rounded-full text-zinc-400 hover:text-white bg-black/60 border border-white/10 focus:outline-none cursor-pointer"
               aria-label="Toggle navigation"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -289,7 +340,7 @@ export default function Navbar({ activePage, setActivePage, introCompleted = tru
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
-                  className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl font-mono text-xs transition-all ${
+                  className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl font-mono text-xs transition-all cursor-pointer ${
                     isActive
                       ? 'bg-[#FFCC00] text-black font-bold'
                       : 'text-zinc-400 hover:text-white hover:bg-white/5 border border-transparent'
@@ -317,32 +368,86 @@ export default function Navbar({ activePage, setActivePage, introCompleted = tru
 
             {/* Mobile Auth Button */}
             <div className="pt-2">
-              {isSignedIn && user ? (
-                <div className="p-3 bg-black/70 border border-[#FFCC00]/30 rounded-xl space-y-2 font-mono">
-                  <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 rounded-full bg-[#FFCC00] text-black font-bold text-[10px] flex items-center justify-center">
-                      {getInitials(user.fullName, user.email)}
+              {isSignedIn && (user || dbUser) ? (
+                <div className="p-3 bg-zinc-950/90 border border-white/10 rounded-xl space-y-2">
+                  <div className="flex items-center gap-2.5 pb-2 border-b border-white/10">
+                    {user?.imageUrl ? (
+                      <img 
+                        src={user.imageUrl} 
+                        alt={dbUser?.fullName || user?.fullName} 
+                        className="w-8 h-8 rounded-full object-cover border border-white/20"
+                      />
+                    ) : (
+                      <div className="w-8 h-8 rounded-full bg-zinc-800 text-white font-semibold text-xs flex items-center justify-center border border-white/10">
+                        {getInitials(dbUser?.fullName || user?.fullName, user?.email)}
+                      </div>
+                    )}
+                    <div className="min-w-0 flex-1">
+                      <div className="text-xs text-white truncate font-medium">
+                        {dbUser?.fullName || user?.fullName || 'CIT Member'}
+                      </div>
+                      <div className="text-[11px] text-zinc-400 truncate font-mono">
+                        {dbUser?.email || user?.email}
+                      </div>
                     </div>
-                    <div className="text-xs text-white truncate font-bold">{user.fullName}</div>
                   </div>
+
                   <button
-                    onClick={async () => {
+                    onClick={() => {
                       setMobileMenuOpen(false);
-                      await signOut();
+                      handleNavClick('dashboard');
                     }}
-                    className="w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-red-500/10 text-red-400 text-xs border border-red-500/30"
+                    className="w-full flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-zinc-200 text-xs font-medium transition-colors cursor-pointer"
                   >
-                    <LogOut className="w-3.5 h-3.5" />
-                    <span>SIGN_OUT</span>
+                    <LayoutDashboard className="w-3.5 h-3.5 text-[#FFCC00]" />
+                    <span>Dashboard</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      handleNavClick('profile');
+                    }}
+                    className="w-full flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-zinc-200 text-xs font-medium transition-colors cursor-pointer"
+                  >
+                    <User className="w-3.5 h-3.5 text-[#FFCC00]" />
+                    <span>My Profile</span>
+                  </button>
+
+                  <button
+                    disabled={isSigningOut}
+                    onClick={async () => {
+                      setIsSigningOut(true);
+                      try {
+                        setMobileMenuOpen(false);
+                        await signOut();
+                        handleNavClick('home');
+                      } finally {
+                        setIsSigningOut(false);
+                      }
+                    }}
+                    className="w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 text-xs font-medium transition-colors cursor-pointer disabled:opacity-60"
+                  >
+                    {isSigningOut ? (
+                      <>
+                        <Loader2 className="w-3.5 h-3.5 animate-spin text-red-400" />
+                        <span>Signing out...</span>
+                      </>
+                    ) : (
+                      <>
+                        <LogOut className="w-3.5 h-3.5 text-red-400" />
+                        <span>Sign Out</span>
+                      </>
+                    )}
                   </button>
                 </div>
               ) : (
                 <button
-                  onClick={() => handleNavClick('auth')}
-                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-[#FFCC00] text-black font-mono text-xs font-bold hover:bg-[#FFE066] active:scale-95 transition-all shadow-md shadow-[#FFCC00]/15"
+                  onClick={() => handleNavClick('login')}
+                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-[#FFCC00] text-black font-mono text-xs font-bold hover:bg-[#FFE066] active:scale-95 transition-all shadow-md shadow-[#FFCC00]/15 cursor-pointer"
                 >
                   <LogIn className="w-3.5 h-3.5 text-black" />
-                  <span>SIGN IN // ACCOUNT</span>
+                  <span>LOGIN // ACCOUNT</span>
                 </button>
               )}
             </div>

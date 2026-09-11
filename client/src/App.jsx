@@ -114,7 +114,7 @@ export default function App() {
         )}
         {activePage === 'events' && (
           <Events 
-            setSelectedEvent={setSelectedEvent} 
+            introCompleted={introCompleted}
           />
         )}
         {activePage === 'team' && (

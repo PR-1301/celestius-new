@@ -107,6 +107,72 @@
   will-change: transform, opacity;
 }
 
+/* 3D Spatial Canvas Gallery Animations */
+@keyframes spatialDriftUp {
+  0%, 100% { transform: translateY(0%); }
+  50% { transform: translateY(-7%); }
+}
+
+@keyframes spatialDriftDown {
+  0%, 100% { transform: translateY(0%); }
+  50% { transform: translateY(7%); }
+}
+
+.animate-spatial-drift-up {
+  animation: spatialDriftUp 28s ease-in-out infinite;
+}
+
+.animate-spatial-drift-down {
+  animation: spatialDriftDown 32s ease-in-out infinite;
+}
+
+.animate-spatial-drift-slow {
+  animation: spatialDriftUp 38s ease-in-out infinite;
+}
+
+.spatial-pause-on-hover:hover .animate-spatial-drift-up,
+.spatial-pause-on-hover:hover .animate-spatial-drift-down,
+.spatial-pause-on-hover:hover .animate-spatial-drift-slow {
+  animation-play-state: paused;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.perspective-1400 {
+  perspective: 1400px;
+}
+
+/* 3D Spatial Vault Entrance Cinematic Animations */
+@keyframes spatialVaultEntry {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-spatial-entry {
+  animation: spatialVaultEntry 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes columnRise {
+  0% {
+    opacity: 0;
+    transform: translateY(60px) scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px) scale(1);
+  }
+}
+
+.animate-column-rise {
+  animation: columnRise 0.75s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
 /* Unique Diverse Recruitment Section Animations */
 @keyframes recruitTitleReveal {
   0% {
@@ -376,6 +442,59 @@
     transform: translateY(1100%);
     opacity: 0;
   }
+}
+
+/* Scroll-triggered Smooth Reveal Animations */
+@keyframes scrollRevealUp {
+  0% {
+    opacity: 0;
+    transform: translateY(38px) scale(0.98);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes scrollRevealLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-36px);
+    filter: blur(3px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes scrollRevealRight {
+  0% {
+    opacity: 0;
+    transform: translateX(36px);
+    filter: blur(3px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
+  }
+}
+
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform, filter;
+}
+
+.scroll-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
 }
 
 /* Accessibility */

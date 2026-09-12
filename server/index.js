@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import User from './models/User.js';
+import {registerUser} from './controllers/UserController.js'
 
 dotenv.config();
 
@@ -27,7 +28,7 @@ const connectDB = async () => {
       serverSelectionTimeoutMS: 5000,
     });
     isDbConnected = true;
-    console.log('✓ [DATABASE] MongoDB connected successfully:', MONGODB_URI.replace(/\/\/[^:]+:[^@]+@/, '//***:***@'));
+    console.log('✓ [DATABASE] MongoDB connected successfully');
   } catch (err) {
     isDbConnected = false;
     console.warn('! [DATABASE] MongoDB connection failed:', err.message);
@@ -36,6 +37,9 @@ const connectDB = async () => {
 };
 
 connectDB();
+
+// Register a new student application
+app.post('/register', registerUser);
 
 // Health Check API
 app.get('/api/health', (req, res) => {

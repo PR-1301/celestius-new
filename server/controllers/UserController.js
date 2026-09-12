@@ -113,3 +113,60 @@ export const registerUser = async (req, res) => {
     });
   }
 };
+
+/**
+ * @desc    Check if a student is already registered by email, regNumber, or mobile
+ * @route   POST /api/students/check
+ * @access  Public
+ */
+export const checkStudentExists = async (req, res) => {
+  try {
+    const { email, regNumber, mobileNumber } = req.body;
+
+    const queries = [];
+    if (email) queries.push({ email: email.toLowerCase().trim() });
+    if (regNumber) queries.push({ regNumber: regNumber.toUpperCase().trim() });
+    if (mobileNumber) queries.push({ mobileNumber: mobileNumber.trim() });
+
+    if (queries.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "At least one identifier (email, regNumber, mobileNumber) must be provided.",
+      });
+    }
+
+    const existingStudent = await Student.findOne({ $or: queries });
+
+    if (existingStudent) {
+      let duplicateField = "Email";
+      if (email && existingStudent.email === email.toLowerCase().trim()) {
+        duplicateField = "Email address";
+      } else if (regNumber && existingStudent.regNumber === regNumber.toUpperCase().trim()) {
+        duplicateField = "Register number";
+      } else if (mobileNumber && existingStudent.mobileNumber === mobileNumber.trim()) {
+        duplicateField = "Mobile number";
+      }
+
+      return res.status(200).json({
+        success: true,
+        exists: true,
+        message: `A candidate with this ${duplicateField} has already registered.`,
+        field: duplicateField
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      exists: false,
+      message: "No existing registration found."
+    });
+  } catch (error) {
+    console.error("Error checking student existence:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to verify registration status.",
+      error: error.message
+    });
+  }
+};
+

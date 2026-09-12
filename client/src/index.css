@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700;800&display=swap');
 
 .font-ndot {
   font-family: 'VT323', monospace !important;
@@ -77,9 +78,42 @@
   }
 }
 
-@keyframes glyphBlink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.35; }
+/* Events Bespoke Smooth Intro Animations */
+@keyframes eventsHeroReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(22px) scale(0.985);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes eventsStackPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.92) rotate(-3deg);
+    filter: blur(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+    filter: blur(0);
+  }
+}
+
+@keyframes eventsDeckRise {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .animate-page-enter {
@@ -104,6 +138,39 @@
 
 .animate-modal-pop {
   animation: modalPop 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+/* Buttery-Smooth Mobile Menu Dropdown & Item Cascade */
+@keyframes mobileMenuSlideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes mobileMenuItemFade {
+  0% {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-mobile-menu {
+  animation: mobileMenuSlideDown 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+.animate-mobile-item {
+  animation: mobileMenuItemFade 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
   will-change: transform, opacity;
 }
 
@@ -497,6 +564,189 @@
   filter: blur(0);
 }
 
+/* Celestial Role Modal Ambient Keyframes & Looping Animations */
+@keyframes celestialFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes celestialAuraBreath {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.18;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.32;
+  }
+}
+
+@keyframes celestialPulseSlow {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(0.98);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.02);
+  }
+}
+
+.animate-celestial-float {
+  animation: celestialFloat 4.5s ease-in-out infinite;
+}
+
+.animate-celestial-aura {
+  animation: celestialAuraBreath 8s ease-in-out infinite;
+}
+
+.animate-celestial-pulse-slow {
+  animation: celestialPulseSlow 3s ease-in-out infinite;
+}
+
+/* Smooth Cosmic Bubbles & Floating Spheres Animations */
+@keyframes bubbleFloat1 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+  }
+  33% {
+    transform: translate3d(40px, -50px, 0) scale(1.08) rotate(4deg);
+  }
+  66% {
+    transform: translate3d(-30px, 25px, 0) scale(0.95) rotate(-3deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+  }
+}
+
+@keyframes bubbleFloat2 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+  }
+  33% {
+    transform: translate3d(-45px, 35px, 0) scale(0.92) rotate(-5deg);
+  }
+  66% {
+    transform: translate3d(35px, -40px, 0) scale(1.1) rotate(3deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+  }
+}
+
+@keyframes bubbleFloat3 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(50px, 40px, 0) scale(1.14);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes bubbleFloat4 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.92);
+  }
+  50% {
+    transform: translate3d(-40px, -45px, 0) scale(1.08);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(0.92);
+  }
+}
+
+.animate-bubble-1 {
+  animation: bubbleFloat1 16s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  will-change: transform;
+}
+
+.animate-bubble-2 {
+  animation: bubbleFloat2 20s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  will-change: transform;
+}
+
+.animate-bubble-3 {
+  animation: bubbleFloat3 14s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  will-change: transform;
+}
+
+.animate-bubble-4 {
+  animation: bubbleFloat4 18s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  will-change: transform;
+}
+
+/* Glassmorphism Infographic Flow Animations */
+@keyframes flowDashLoop {
+  0% {
+    stroke-dashoffset: 60;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes glassShimmerSweep {
+  0% {
+    transform: translateX(-150%) skewX(-20deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.6;
+  }
+  30% {
+    transform: translateX(250%) skewX(-20deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(250%) skewX(-20deg);
+    opacity: 0;
+  }
+}
+
+@keyframes infographicAuraBreath {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.25;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.55;
+  }
+}
+
+@keyframes iconLevitate {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-4px) rotate(2deg);
+  }
+}
+
+.animate-flow-dash {
+  animation: flowDashLoop 2.4s linear infinite;
+}
+
+.animate-glass-shimmer {
+  animation: glassShimmerSweep 5.5s ease-in-out infinite;
+}
+
+.animate-infographic-aura {
+  animation: infographicAuraBreath 6s ease-in-out infinite;
+}
+
+.animate-icon-levitate {
+  animation: iconLevitate 4s ease-in-out infinite;
+}
+
 /* Accessibility */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -508,3 +758,4 @@
     scroll-behavior: auto !important;
   }
 }
+

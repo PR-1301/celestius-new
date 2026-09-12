@@ -9,13 +9,19 @@ import Home from './pages/Home';
 import Events from './pages/Events';
 import Team from './pages/Team';
 import Recruitment from './pages/Recruitment';
+import RecruitmentApply from './pages/RecruitmentApply';
 import Contact from './pages/Contact';
 
 export default function App() {
   const getInitialPage = () => {
     const rawPath = window.location.pathname.replace(/^\/+|\/+$/g, '').toLowerCase();
     const rawHash = window.location.hash.replace('#', '').toLowerCase();
-    const validPages = ['home', 'events', 'team', 'recruitment', 'contact'];
+    
+    if (rawPath === 'recruitment/apply' || rawPath === 'apply') {
+      return 'recruitment/apply';
+    }
+
+    const validPages = ['home', 'events', 'team', 'recruitment', 'contact', 'recruitment/apply'];
 
     if (validPages.includes(rawPath)) {
       if (rawPath === 'home') {
@@ -76,7 +82,11 @@ export default function App() {
 
   const handlePageChange = (newPage) => {
     setActivePage(newPage);
-    const targetPath = newPage === 'home' ? '/' : `/${newPage}`;
+    let targetPath = '/';
+    if (newPage === 'home') targetPath = '/';
+    else if (newPage === 'recruitment/apply') targetPath = '/recruitment/apply';
+    else targetPath = `/${newPage}`;
+
     if (window.location.pathname !== targetPath) {
       window.history.pushState(null, '', targetPath);
     }
@@ -98,7 +108,7 @@ export default function App() {
 
       {/* Floating Nothing OS Navbar with Mechanical Holder */}
       <Navbar 
-        activePage={activePage} 
+        activePage={activePage === 'recruitment/apply' ? 'recruitment' : activePage} 
         setActivePage={handlePageChange} 
         introCompleted={introCompleted}
       />
@@ -118,10 +128,19 @@ export default function App() {
           />
         )}
         {activePage === 'team' && (
-          <Team />
+          <Team introCompleted={introCompleted} />
         )}
         {activePage === 'recruitment' && (
-          <Recruitment introCompleted={introCompleted} />
+          <Recruitment 
+            introCompleted={introCompleted} 
+            setActivePage={handlePageChange}
+          />
+        )}
+        {activePage === 'recruitment/apply' && (
+          <RecruitmentApply 
+            introCompleted={introCompleted} 
+            setActivePage={handlePageChange}
+          />
         )}
         {activePage === 'contact' && (
           <Contact introCompleted={introCompleted} />

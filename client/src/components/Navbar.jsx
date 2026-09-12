@@ -125,15 +125,16 @@ export default function Navbar({ activePage, setActivePage, introCompleted = tru
               className="h-7 sm:h-8 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
             />
 
-            <div className="flex flex-col">
+            {/* Brand text: hidden on mobile view, shown on md and larger screens */}
+            <div className="hidden md:flex flex-col">
               <span 
                 style={{ fontFamily: "'VT323', monospace" }} 
                 className="font-ndot text-xl sm:text-2xl tracking-widest text-white group-hover:text-[#FFCC00] transition-colors"
               >
                 CELESTIUS
               </span>
-              <span className="font-mono text-[10px] text-zinc-500 tracking-tight hidden md:block">
-                CHENNAI INSTITUTE OF TECHNOLOGY
+              <span className="font-mono text-[10px] text-zinc-400 tracking-wider">
+                Innovate. Build. Collaborate
               </span>
             </div>
           </button>
@@ -174,27 +175,34 @@ export default function Navbar({ activePage, setActivePage, introCompleted = tru
           <div className="flex items-center gap-2.5">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-full text-zinc-400 hover:text-white bg-black/60 border border-white/10 focus:outline-none cursor-pointer"
+              className="md:hidden p-2 rounded-full text-zinc-400 hover:text-white bg-black/60 border border-white/10 focus:outline-none cursor-pointer transition-transform duration-200 active:scale-90"
               aria-label="Toggle navigation"
             >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              <div className="w-5 h-5 flex items-center justify-center transition-transform duration-300">
+                {mobileMenuOpen ? (
+                  <X className="w-5 h-5 text-[#FFCC00] animate-modal-pop" />
+                ) : (
+                  <Menu className="w-5 h-5 text-zinc-200" />
+                )}
+              </div>
             </button>
           </div>
 
         </div>
 
-        {/* Mobile Dropdown Menu */}
+        {/* Mobile Dropdown Menu with Buttery-Smooth Animation */}
         {mobileMenuOpen && (
-          <div className="md:hidden mt-3 pt-3 border-t border-white/10 space-y-1.5 animate-fade-in">
-            {navItems.map((item) => {
+          <div className="md:hidden mt-3 pt-3 border-t border-white/10 space-y-1.5 animate-mobile-menu">
+            {navItems.map((item, idx) => {
               const isActive = activePage === item.id;
               return (
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
-                  className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl font-mono text-xs transition-all cursor-pointer ${
+                  style={{ animationDelay: `${(idx * 0.045).toFixed(3)}s` }}
+                  className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl font-mono text-xs transition-all duration-200 cursor-pointer animate-mobile-item ${
                     isActive
-                      ? 'bg-[#FFCC00] text-black font-bold'
+                      ? 'bg-[#FFCC00] text-black font-bold shadow-md shadow-[#FFCC00]/20'
                       : 'text-zinc-400 hover:text-white hover:bg-white/5 border border-transparent'
                   }`}
                 >

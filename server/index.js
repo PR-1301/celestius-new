@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import User from './models/User.js';
-import {registerUser} from './controllers/UserController.js'
+import { registerUser, checkStudentExists } from './controllers/UserController.js';
 
 dotenv.config();
 
@@ -40,6 +40,11 @@ connectDB();
 
 // Register a new student application
 app.post('/register', registerUser);
+app.post('/api/students/register', registerUser);
+
+// Check if student already registered (email, regNumber, mobile)
+app.post('/api/students/check', checkStudentExists);
+app.post('/check-student', checkStudentExists);
 
 // Health Check API
 app.get('/api/health', (req, res) => {

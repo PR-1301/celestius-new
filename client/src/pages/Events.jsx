@@ -208,11 +208,11 @@ export default function Events({ introCompleted = true }) {
   }, []);
 
   // Refined Intro Animations for buttery page transitions
-  const getAnimStyle = (animName, delaySec, duration = '0.7s') => {
+  const getAnimStyle = (animName, delaySec, duration = '0.55s') => {
     if (!introCompleted) {
       return { opacity: 0 };
     }
-    const base = wasIntroPlayingOnMount.current ? 0.45 : 0.02;
+    const base = wasIntroPlayingOnMount.current ? 0.35 : 0.0;
     return {
       animation: `${animName} ${duration} cubic-bezier(0.16, 1, 0.3, 1) ${(base + delaySec).toFixed(2)}s both`
     };
@@ -221,15 +221,15 @@ export default function Events({ introCompleted = true }) {
   // Dynamic Scroll Reveal Animation Style
   const getScrollStyle = (id, direction = 'up', delaySec = 0) => {
     const isRevealed = revealedElements[id];
-    let transformHidden = 'translateY(36px)';
-    if (direction === 'left') transformHidden = 'translateX(-36px)';
-    if (direction === 'right') transformHidden = 'translateX(36px)';
+    let transformHidden = 'translateY(28px)';
+    if (direction === 'left') transformHidden = 'translateX(-28px)';
+    if (direction === 'right') transformHidden = 'translateX(28px)';
 
     return {
       opacity: isRevealed ? 1 : 0,
       transform: isRevealed ? 'translate(0, 0)' : transformHidden,
-      filter: isRevealed ? 'blur(0px)' : 'blur(4px)',
-      transition: `opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1) ${delaySec}s, transform 0.75s cubic-bezier(0.16, 1, 0.3, 1) ${delaySec}s, filter 0.75s cubic-bezier(0.16, 1, 0.3, 1) ${delaySec}s`,
+      filter: isRevealed ? 'blur(0px)' : 'blur(3px)',
+      transition: `opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1) ${delaySec}s, transform 0.65s cubic-bezier(0.16, 1, 0.3, 1) ${delaySec}s, filter 0.65s cubic-bezier(0.16, 1, 0.3, 1) ${delaySec}s`,
       willChange: 'opacity, transform, filter',
     };
   };
@@ -290,41 +290,90 @@ export default function Events({ introCompleted = true }) {
         data-scroll-id="events-hero"
         className="relative flex flex-col lg:flex-row items-center justify-between gap-10 sm:gap-14 pt-2"
         style={{
-          ...getAnimStyle('recruitSlideLeft', 0.05, '0.75s'),
-          ...getScrollStyle('events-hero', 'left', 0.05)
+          ...getAnimStyle('eventsHeroReveal', 0.02, '0.65s'),
+          ...getScrollStyle('events-hero', 'up', 0.02)
         }}
       >
         {/* Left Text & Action CTAs */}
         <div className="space-y-6 max-w-xl text-left">
           <h2 
             className="text-3xl sm:text-5xl lg:text-6xl text-white uppercase font-bold tracking-tight leading-[1.1]"
-            style={{ fontFamily: "'VT323', monospace" }}
+            style={{ 
+              fontFamily: "'VT323', monospace",
+              ...getAnimStyle('recruitTitleReveal', 0.04, '0.65s')
+            }}
           >
             Relive the Memories in <span className="text-[#FFCC00]">Full-Screen 3D</span>
           </h2>
 
-          <p className="text-zinc-300 font-sans text-sm sm:text-base leading-relaxed">
+          <p 
+            className="text-zinc-300 font-sans text-sm sm:text-base leading-relaxed"
+            style={getAnimStyle('eventsDeckRise', 0.08, '0.6s')}
+          >
             Step inside our zero-gravity 3D spatial vault or explore our complete archive. Relive hackathons, workshops, and team milestones in an unrestricted perspective with smooth navigation.
           </p>
 
-          {/* Launch Action Buttons */}
-          <div className="pt-2 flex flex-wrap items-center gap-4">
-            <button
-              onClick={launchSpatialVault}
-              className="group/btn relative inline-flex items-center gap-3.5 px-7 py-4 rounded-2xl bg-[#FFCC00] hover:bg-[#ffe066] text-black font-mono font-bold text-sm sm:text-base tracking-wider uppercase transition-all duration-300 shadow-[0_12px_40px_rgba(255,204,0,0.35)] hover:shadow-[0_16px_55px_rgba(255,204,0,0.55)] hover:scale-105 active:scale-95 cursor-pointer"
-            >
-              <Maximize2 className="w-5 h-5 text-black transition-transform duration-300 group-hover/btn:scale-110" />
-              <span>EXPLORE 3D SPATIAL MEMORIES</span>
-              <ArrowUpRight className="w-5 h-5 text-black transition-transform duration-300 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1" />
-            </button>
+          {/* Cyber Dual-Segment Capsule Switcher / Control Console */}
+          <div 
+            className="pt-2 inline-flex items-center"
+            style={getAnimStyle('eventsDeckRise', 0.12, '0.6s')}
+          >
+            <div className="inline-flex items-stretch p-1.5 sm:p-2 rounded-2xl sm:rounded-[22px] bg-[#0c0d12]/90 border border-white/10 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.6)]">
+              {/* Primary Segment: 3D Spatial Vault (Glowing Amber Capsule) */}
+              <button
+                onClick={launchSpatialVault}
+                className="group/vault relative flex items-center gap-3 px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl sm:rounded-[18px] bg-[#FFCC00] hover:bg-[#FFE066] text-black font-mono transition-all duration-300 shadow-[0_2px_16px_rgba(255,204,0,0.3)] hover:shadow-[0_4px_24px_rgba(255,204,0,0.5)] active:scale-95 cursor-pointer text-left"
+              >
+                {/* Icon box */}
+                <div className="w-8 h-8 rounded-lg bg-black/10 flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover/vault:scale-105">
+                  <Maximize2 className="w-4 h-4 text-black" />
+                </div>
+                
+                {/* Text Block */}
+                <div className="flex flex-col">
+                  <span className="text-[9px] sm:text-[10px] tracking-wider text-black/70 font-semibold uppercase leading-none">
+                    VAULT_ACCESS // 3D
+                  </span>
+                  <span className="text-xs sm:text-sm font-bold tracking-tight text-black mt-1 leading-tight whitespace-nowrap">
+                    LAUNCH SPATIAL<br className="hidden sm:inline" /> VAULT
+                  </span>
+                </div>
 
-            <button
-              onClick={() => setIsGridOpen(true)}
-              className="group/grid relative inline-flex items-center gap-3 px-6 py-4 rounded-2xl bg-black/80 hover:bg-white/10 border border-white/20 hover:border-white/40 text-white font-mono font-bold text-sm sm:text-base tracking-wider uppercase transition-all duration-300 backdrop-blur-xl shadow-xl hover:scale-105 active:scale-95 cursor-pointer"
-            >
-              <Grid className="w-5 h-5 text-[#FFCC00] transition-transform duration-300 group-hover/grid:rotate-90" />
-              <span>VIEW NORMAL GRID</span>
-            </button>
+                {/* Arrow Action Badge */}
+                <div className="ml-1 sm:ml-2 w-7 h-7 rounded-md sm:rounded-lg bg-black flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover/vault:translate-x-0.5 group-hover/vault:-translate-y-0.5">
+                  <ArrowUpRight className="w-3.5 h-3.5 text-[#FFCC00]" />
+                </div>
+              </button>
+
+              {/* Vertical Subtle Separator */}
+              <div className="w-[1px] bg-white/10 mx-1.5 sm:mx-2 self-stretch" />
+
+              {/* Secondary Segment: Normal Grid Archive */}
+              <button
+                onClick={() => setIsGridOpen(true)}
+                className="group/grid relative flex items-center gap-3 px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl sm:rounded-[18px] hover:bg-white/[0.05] text-zinc-300 hover:text-white font-mono transition-all duration-300 active:scale-95 cursor-pointer text-left"
+              >
+                {/* Icon box */}
+                <div className="w-8 h-8 rounded-lg bg-white/[0.05] border border-white/10 flex items-center justify-center flex-shrink-0 group-hover/grid:border-[#FFCC00]/40 group-hover/grid:bg-[#FFCC00]/10 transition-colors duration-300">
+                  <Grid className="w-4 h-4 text-zinc-400 group-hover/grid:text-[#FFCC00] transition-colors" />
+                </div>
+
+                {/* Text Block */}
+                <div className="flex flex-col">
+                  <span className="text-[9px] sm:text-[10px] tracking-wider text-zinc-500 font-medium uppercase leading-none">
+                    ARCHIVE_MODE
+                  </span>
+                  <span className="text-xs sm:text-sm font-bold tracking-tight text-zinc-200 group-hover/grid:text-white mt-1 leading-tight whitespace-nowrap">
+                    NORMAL<br className="hidden sm:inline" /> GRID
+                  </span>
+                </div>
+
+                {/* ESC key indicator */}
+                <span className="hidden md:inline-block ml-2 text-[10px] text-zinc-500 font-mono">
+                  [ESC]
+                </span>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -332,6 +381,7 @@ export default function Events({ introCompleted = true }) {
         <div 
           onClick={launchSpatialVault}
           className="relative w-72 sm:w-96 h-72 sm:h-84 flex items-center justify-center cursor-pointer group/fan"
+          style={getAnimStyle('eventsStackPop', 0.1, '0.7s')}
           title="Click to launch 3D Memory Vault"
         >
           {/* Back Card Left */}
@@ -1102,19 +1152,13 @@ export default function Events({ introCompleted = true }) {
               <ChevronLeft className="w-5 h-5" />
             </button>
 
-            {/* Image Frame with Cyber Corner Brackets */}
+            {/* Image Frame */}
             <div className="relative group inline-block">
               <img 
                 src={currentPhoto.src} 
                 alt="Past Event"
                 className="max-h-[70vh] sm:max-h-[76vh] w-auto max-w-[85vw] sm:max-w-[76vw] object-contain block rounded-2xl sm:rounded-3xl border border-white/20 shadow-[0_25px_80px_rgba(0,0,0,0.95)] select-none"
               />
-
-              {/* Cyber Corner Accents */}
-              <div className="absolute -top-1.5 -left-1.5 w-4 h-4 border-t-2 border-l-2 border-[#FFCC00] rounded-tl pointer-events-none" />
-              <div className="absolute -top-1.5 -right-1.5 w-4 h-4 border-t-2 border-r-2 border-[#FFCC00] rounded-tr pointer-events-none" />
-              <div className="absolute -bottom-1.5 -left-1.5 w-4 h-4 border-b-2 border-l-2 border-[#FFCC00] rounded-bl pointer-events-none" />
-              <div className="absolute -bottom-1.5 -right-1.5 w-4 h-4 border-b-2 border-r-2 border-[#FFCC00] rounded-br pointer-events-none" />
             </div>
 
             {/* Next Photo Button */}

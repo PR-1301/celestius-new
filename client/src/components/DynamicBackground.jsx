@@ -14,12 +14,14 @@ export default function DynamicBackground({ mousePos = { x: 0, y: 0 } }) {
   const canvasRef = useRef(null);
   const mouseRef = useRef({ x: -1000, y: -1000, active: false });
 
-  // Sync mouse position from parent or local listener
+  // Sync mouse position from parent or global window listener so it continues animating over modals
   useEffect(() => {
-    if (mousePos && mousePos.x !== undefined && mousePos.y !== undefined) {
-      mouseRef.current = { x: mousePos.x, y: mousePos.y, active: true };
-    }
-  }, [mousePos]);
+    const handleGlobalMouseMove = (e) => {
+      mouseRef.current = { x: e.clientX, y: e.clientY, active: true };
+    };
+    window.addEventListener('mousemove', handleGlobalMouseMove, { passive: true });
+    return () => window.removeEventListener('mousemove', handleGlobalMouseMove);
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;

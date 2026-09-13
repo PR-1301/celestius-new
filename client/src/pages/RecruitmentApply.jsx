@@ -37,8 +37,10 @@ import {
   Radio,
   Package,
   Clock,
-  Shield
+  Shield,
+  Edit3
 } from 'lucide-react';
+import logoImg from '../assets/logo.png';
 
 const DEPARTMENTS = [
   'CSE', 'AI&DS', 'AI&ML', 'IT', 'CYBER', 'ECE', 'EEE', 'MECH', 'MCT', 'BME', 'CIVIL', 'ACT', 'VLSI', 'CSBS'
@@ -190,6 +192,18 @@ const ROLE_DETAILS = {
     icon: Code2,
     accent: '#FFCC00',
     description: 'Focuses on crafting pixel-perfect, accessible, and high-performance client applications, interactive web tools, and design-to-code fidelity.',
+    whatWeExpect: [
+      'Basic understanding of HTML & CSS',
+      'Familiarity with basic JavaScript concepts',
+      'Interest in building websites and interactive interfaces',
+      'Willingness to learn modern frontend technologies'
+    ],
+    whatYoullGet: [
+      'Hands-on experience building real club projects',
+      'Guidance in JavaScript, React & modern frontend tools',
+      'Exposure to UI development, responsiveness and web architecture',
+      'Opportunities to build projects for your portfolio'
+    ],
     responsibilities: [
       'Building modern, responsive web interfaces for club portals and hackathons',
       'Implementing smooth animations, micro-interactions, and accessible UI patterns',
@@ -205,6 +219,18 @@ const ROLE_DETAILS = {
     icon: Server,
     accent: '#FFCC00',
     description: 'Engineers reliable server-side services, database schemas, authentication systems, API endpoints, and cloud deployments.',
+    whatWeExpect: [
+      'Basic programming knowledge in any language',
+      'Understanding of basic programming concepts and logic',
+      'Interest in how servers, APIs and databases work',
+      'Willingness to learn backend technologies'
+    ],
+    whatYoullGet: [
+      'Hands-on experience building APIs and backend systems',
+      'Guidance in databases, authentication and server-side development',
+      'Exposure to real-world backend architecture',
+      'Opportunities to contribute to live club projects'
+    ],
     responsibilities: [
       'Designing resilient REST and GraphQL APIs for university and club platforms',
       'Architecting relational and NoSQL database schemas with high data integrity',
@@ -220,6 +246,18 @@ const ROLE_DETAILS = {
     icon: Mic2,
     accent: '#38bdf8',
     description: 'The voice of Celestius on stage, conducting opening ceremonies, introducing dignitaries, moderating panel talks, and representing the club.',
+    whatWeExpect: [
+      'Confidence or willingness to speak in front of others',
+      'Basic communication and presentation skills',
+      'Ability to express ideas clearly',
+      'Enthusiasm for hosting and representing the club'
+    ],
+    whatYoullGet: [
+      'Experience in hosting, anchoring and public speaking',
+      'Training to improve communication and stage presence',
+      'Opportunities to host club events and represent the community',
+      'A platform to build confidence and leadership skills'
+    ],
     responsibilities: [
       'Emceeing flagship hackathons, technical symposiums, and workshop openings',
       'Introducing guest speakers, conducting live Q&A sessions, and engaging audiences',
@@ -235,6 +273,18 @@ const ROLE_DETAILS = {
     icon: CalendarCheck,
     accent: '#a855f7',
     description: 'The operational engine behind flagship hackathons, technical symposiums, workshops, and guest speaker sessions.',
+    whatWeExpect: [
+      'Interest in planning and organizing events',
+      'Good communication and coordination skills',
+      'Ability to work effectively within a team',
+      'Willingness to take responsibility and execute tasks'
+    ],
+    whatYoullGet: [
+      'Hands-on experience organizing technical and non-technical events',
+      'Exposure to planning, logistics and event execution',
+      'Experience working with teams, speakers and participants',
+      'Opportunities to develop leadership and management skills'
+    ],
     responsibilities: [
       'Planning venue logistics, stage technical setups, and timeline execution',
       'Liaising with college administration, faculty advisors, and venue management',
@@ -250,6 +300,18 @@ const ROLE_DETAILS = {
     icon: Palette,
     accent: '#38bdf8',
     description: 'Shapes the aesthetic language of Celestius through event banners, brand assets, social media creatives, and UI prototypes.',
+    whatWeExpect: [
+      'Interest in visual design and creativity',
+      'Basic familiarity with any design tool (Figma, Canva, Photoshop, etc.)',
+      'Understanding of basic visual principles is a plus',
+      'Willingness to experiment and learn'
+    ],
+    whatYoullGet: [
+      'Hands-on experience designing posters, social media content and interfaces',
+      'Guidance in Figma, UI/UX and visual design principles',
+      'Opportunities to shape the club\'s visual identity',
+      'Real projects to strengthen your design portfolio'
+    ],
     responsibilities: [
       'Designing high-impact event posters, certificates, badges, and social media collaterals',
       'Prototyping website interfaces and digital experiences in Figma',
@@ -265,6 +327,18 @@ const ROLE_DETAILS = {
     icon: Film,
     accent: '#38bdf8',
     description: 'Brings Celestius stories to life through event aftermovies, cinematic teasers, social media reels, and high-energy video content.',
+    whatWeExpect: [
+      'Interest in video editing and visual storytelling',
+      'Basic familiarity with any editing tool (Premiere Pro, DaVinci Resolve, CapCut, etc.)',
+      'Good sense of timing, composition and creativity',
+      'Willingness to learn and experiment with different editing styles'
+    ],
+    whatYoullGet: [
+      'Hands-on experience creating event videos, reels and promotional content',
+      'Guidance in video editing, storytelling and motion techniques',
+      'Opportunities to work on real club content and projects',
+      'A portfolio of creative work and practical production experience'
+    ],
     responsibilities: [
       'Creating high-impact event teasers, recap videos, and promotional reels',
       'Editing footage with dynamic pacing, motion graphics, and audio mastering',
@@ -297,6 +371,494 @@ const getStorageItem = (primaryKey, legacyKey) => {
   } catch (e) {}
   return null;
 };
+
+// ==========================================
+// CELESTIAL PLANETARY JOURNEY (STARTING FROM THE SUN IN ASTRONOMICAL ORDER)
+// Step 1: The Sun (Sol - Radiant Star & Origin)
+// Step 2: Mercury (Scorched Cratered Terrestrial Planet)
+// Step 3: Venus (Golden Veiled Greenhouse Atmosphere)
+// Step 4: Earth (The Blue Marble & Moon Orbit)
+// Step 5: Mars (The Rust-Red Oxide Planet)
+// Step 6: Jupiter (The Banded Gas Giant Monarch & Great Red Spot)
+// ==========================================
+
+// 1. The Sun (Sol - Step 1)
+function CelestialSun({ className = "", style = {} }) {
+  const id = React.useId().replace(/:/g, '');
+  return (
+    <svg viewBox="0 0 180 180" className={className} style={style} fill="none">
+      <defs>
+        <radialGradient id={`sunCore_${id}`} cx="42%" cy="38%" r="58%">
+          <stop offset="0%" stopColor="#FFFFFF" stopOpacity="1" />
+          <stop offset="20%" stopColor="#FEF08A" stopOpacity="1" />
+          <stop offset="50%" stopColor="#F59E0B" stopOpacity="1" />
+          <stop offset="78%" stopColor="#D97706" stopOpacity="1" />
+          <stop offset="100%" stopColor="#9A3412" stopOpacity="1" />
+        </radialGradient>
+        <filter id={`sunCorona_${id}`} x="-40%" y="-40%" width="180%" height="180%">
+          <feGaussianBlur stdDeviation="16" result="blur" />
+          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+        <filter id={`flareGlow_${id}`} x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur stdDeviation="8" result="blur" />
+        </filter>
+      </defs>
+
+      {/* Massive Outer Solar Corona Bloom */}
+      <circle cx="90" cy="90" r="74" fill="#F59E0B" filter={`url(#sunCorona_${id})`} opacity="0.6" />
+      <circle cx="90" cy="90" r="62" fill="#EA580C" filter={`url(#sunCorona_${id})`} opacity="0.4" />
+
+      {/* Solar Prominence Flare Arcs */}
+      <circle cx="90" cy="90" r="56" stroke="rgba(254, 240, 138, 0.55)" strokeWidth="3" strokeDasharray="18 26 10 34" filter={`url(#flareGlow_${id})`} />
+      <circle cx="90" cy="90" r="53" stroke="rgba(251, 146, 60, 0.65)" strokeWidth="2" strokeDasharray="28 16 14 22" />
+
+      {/* Main Solar Sphere */}
+      <circle cx="90" cy="90" r="49" fill={`url(#sunCore_${id})`} />
+
+      {/* Solar Surface Granules & Waves */}
+      <path d="M 64 72 Q 88 62 116 76" stroke="#FFFFFF" strokeWidth="2.2" opacity="0.65" strokeLinecap="round" />
+      <path d="M 72 104 Q 96 114 112 96" stroke="#FEF08A" strokeWidth="1.6" opacity="0.55" strokeLinecap="round" />
+      <circle cx="76" cy="74" r="3.5" fill="#78350F" opacity="0.45" />
+      <circle cx="104" cy="86" r="2.5" fill="#78350F" opacity="0.4" />
+    </svg>
+  );
+}
+
+// 2. Mercury (Step 2)
+function CelestialMercury({ className = "", style = {} }) {
+  const id = React.useId().replace(/:/g, '');
+  return (
+    <svg viewBox="0 0 160 160" className={className} style={style} fill="none">
+      <defs>
+        <radialGradient id={`mercGrad_${id}`} cx="38%" cy="32%" r="62%">
+          <stop offset="0%" stopColor="#F5F5F4" stopOpacity="0.95" />
+          <stop offset="22%" stopColor="#D6D3D1" stopOpacity="0.95" />
+          <stop offset="55%" stopColor="#78716C" stopOpacity="0.95" />
+          <stop offset="85%" stopColor="#292524" stopOpacity="1" />
+          <stop offset="100%" stopColor="#0C0A09" stopOpacity="1" />
+        </radialGradient>
+        <filter id={`mercGlow_${id}`} x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur stdDeviation="14" result="blur" />
+          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+      </defs>
+
+      {/* Ambient Metallic Glow */}
+      <circle cx="80" cy="80" r="54" fill="#A8A29E" filter={`url(#mercGlow_${id})`} opacity="0.45" />
+
+      {/* Sphere Body */}
+      <circle cx="80" cy="80" r="48" fill={`url(#mercGrad_${id})`} stroke="rgba(255,255,255,0.25)" strokeWidth="0.8" />
+
+      {/* Craters & Caloris Basin features */}
+      <ellipse cx="68" cy="62" rx="9" ry="7" stroke="rgba(255,255,255,0.45)" strokeWidth="1" fill="#44403C" opacity="0.75" />
+      <ellipse cx="69" cy="63" rx="6" ry="4" fill="#1C1917" opacity="0.85" />
+      <ellipse cx="94" cy="74" rx="7" ry="5" stroke="rgba(255,255,255,0.3)" strokeWidth="0.8" fill="#292524" opacity="0.85" />
+      <ellipse cx="64" cy="92" rx="12" ry="8" stroke="rgba(255,255,255,0.25)" strokeWidth="0.8" fill="#1C1917" opacity="0.7" />
+      <circle cx="82" cy="104" r="4" stroke="rgba(255,255,255,0.2)" strokeWidth="0.6" fill="#0C0A09" opacity="0.8" />
+
+      {/* Specular Limb Glint */}
+      <path d="M 44 65 A 48 48 0 0 1 75 34" stroke="#FFFFFF" strokeWidth="1.6" strokeLinecap="round" opacity="0.7" />
+    </svg>
+  );
+}
+
+// 3. Venus (Step 3)
+function CelestialVenus({ className = "", style = {} }) {
+  const id = React.useId().replace(/:/g, '');
+  return (
+    <svg viewBox="0 0 160 160" className={className} style={style} fill="none">
+      <defs>
+        <radialGradient id={`venusGrad_${id}`} cx="35%" cy="30%" r="65%">
+          <stop offset="0%" stopColor="#FFFBEB" stopOpacity="0.95" />
+          <stop offset="25%" stopColor="#FDE68A" stopOpacity="0.95" />
+          <stop offset="55%" stopColor="#D97706" stopOpacity="0.92" />
+          <stop offset="82%" stopColor="#78350F" stopOpacity="0.98" />
+          <stop offset="100%" stopColor="#1E0B02" stopOpacity="1" />
+        </radialGradient>
+        <filter id={`venusGlow_${id}`} x="-35%" y="-35%" width="170%" height="170%">
+          <feGaussianBlur stdDeviation="15" result="blur" />
+          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+      </defs>
+
+      {/* Thick Greenhouse Atmospheric Haze Bloom */}
+      <circle cx="80" cy="80" r="56" fill="#F59E0B" filter={`url(#venusGlow_${id})`} opacity="0.6" />
+
+      {/* Venus Sphere */}
+      <circle cx="80" cy="80" r="50" fill={`url(#venusGrad_${id})`} stroke="rgba(254,240,138,0.35)" strokeWidth="1" />
+
+      {/* Swirling Sulfuric Atmosphere Cloud Belts */}
+      <path d="M 40 68 Q 78 52 118 64" stroke="rgba(255,255,255,0.4)" strokeWidth="4" strokeLinecap="round" opacity="0.75" />
+      <path d="M 44 86 Q 84 74 124 84" stroke="rgba(254,243,199,0.35)" strokeWidth="5" strokeLinecap="round" opacity="0.7" />
+      <path d="M 52 102 Q 86 92 118 100" stroke="rgba(217,119,6,0.55)" strokeWidth="3.5" strokeLinecap="round" opacity="0.8" />
+      <path d="M 48 54 Q 72 44 100 50" stroke="rgba(255,255,255,0.3)" strokeWidth="2.5" strokeLinecap="round" opacity="0.6" />
+
+      {/* Specular Glint */}
+      <ellipse cx="60" cy="52" rx="10" ry="6" fill="#FFFFFF" opacity="0.65" transform="rotate(-25 60 52)" />
+    </svg>
+  );
+}
+
+// 4. Earth & Moon (Step 4)
+function CelestialEarth({ className = "", style = {} }) {
+  const id = React.useId().replace(/:/g, '');
+  return (
+    <svg viewBox="0 0 170 170" className={className} style={style} fill="none">
+      <defs>
+        <radialGradient id={`earthOcean_${id}`} cx="35%" cy="30%" r="65%">
+          <stop offset="0%" stopColor="#67E8F9" stopOpacity="0.95" />
+          <stop offset="25%" stopColor="#0284C7" stopOpacity="0.95" />
+          <stop offset="60%" stopColor="#1E3A8A" stopOpacity="0.95" />
+          <stop offset="85%" stopColor="#0F172A" stopOpacity="0.98" />
+          <stop offset="100%" stopColor="#020617" stopOpacity="1" />
+        </radialGradient>
+        <filter id={`earthAtmo_${id}`} x="-35%" y="-35%" width="170%" height="170%">
+          <feGaussianBlur stdDeviation="15" result="blur" />
+          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+        <radialGradient id={`moonGrad_${id}`} cx="40%" cy="35%" r="60%">
+          <stop offset="0%" stopColor="#F5F5F4" />
+          <stop offset="60%" stopColor="#78716C" />
+          <stop offset="100%" stopColor="#1C1917" />
+        </radialGradient>
+      </defs>
+
+      {/* Radiant Cyan Atmospheric Limb Haze */}
+      <circle cx="85" cy="85" r="58" fill="#38BDF8" filter={`url(#earthAtmo_${id})`} opacity="0.65" />
+
+      {/* Ocean Sphere */}
+      <circle cx="85" cy="85" r="52" fill={`url(#earthOcean_${id})`} stroke="rgba(125,211,252,0.4)" strokeWidth="1.2" />
+
+      {/* Continents (Emerald / Amber landmasses) */}
+      <path 
+        d="M 68 56 Q 78 50 88 58 Q 98 68 85 78 Q 72 74 65 65 Z" 
+        fill="#10B981" 
+        opacity="0.85" 
+      />
+      <path 
+        d="M 94 65 Q 112 60 120 74 Q 115 88 100 84 Q 92 78 94 65 Z" 
+        fill="#059669" 
+        opacity="0.8" 
+      />
+      <path 
+        d="M 62 82 Q 74 78 78 92 Q 80 108 68 116 Q 58 104 62 82 Z" 
+        fill="#047857" 
+        opacity="0.85" 
+      />
+      <path 
+        d="M 92 90 Q 106 88 112 98 Q 108 112 96 108 Z" 
+        fill="#D97706" 
+        opacity="0.75" 
+      />
+
+      {/* White Swirling Cloud Bands & Cyclones */}
+      <path d="M 52 70 Q 82 56 122 72" stroke="#FFFFFF" strokeWidth="3" strokeLinecap="round" opacity="0.75" />
+      <path d="M 60 92 Q 95 82 126 94" stroke="#FFFFFF" strokeWidth="3.5" strokeLinecap="round" opacity="0.7" />
+      <path d="M 58 50 Q 80 44 105 52" stroke="#FFFFFF" strokeWidth="2.5" strokeLinecap="round" opacity="0.6" />
+      <circle cx="108" cy="74" r="5" stroke="#FFFFFF" strokeWidth="1.5" strokeDasharray="6 4" opacity="0.75" />
+
+      {/* Atmospheric Rim Highlight */}
+      <path d="M 48 70 A 52 52 0 0 1 85 33" stroke="#BAE6FD" strokeWidth="2" strokeLinecap="round" opacity="0.8" />
+
+      {/* Orbiting Moon in distance */}
+      <circle cx="145" cy="42" r="8" fill={`url(#moonGrad_${id})`} stroke="rgba(255,255,255,0.3)" strokeWidth="0.5" />
+      <circle cx="145" cy="42" r="11" fill="#E0F2FE" filter={`url(#earthAtmo_${id})`} opacity="0.45" />
+    </svg>
+  );
+}
+
+// 5. Mars (Step 5)
+function CelestialMars({ className = "", style = {} }) {
+  const id = React.useId().replace(/:/g, '');
+  return (
+    <svg viewBox="0 0 160 160" className={className} style={style} fill="none">
+      <defs>
+        <radialGradient id={`marsGrad_${id}`} cx="35%" cy="30%" r="65%">
+          <stop offset="0%" stopColor="#FED7AA" stopOpacity="0.95" />
+          <stop offset="25%" stopColor="#FB923C" stopOpacity="0.95" />
+          <stop offset="60%" stopColor="#EA580C" stopOpacity="0.92" />
+          <stop offset="85%" stopColor="#9A3412" stopOpacity="0.98" />
+          <stop offset="100%" stopColor="#3C0A04" stopOpacity="1" />
+        </radialGradient>
+        <filter id={`marsGlow_${id}`} x="-35%" y="-35%" width="170%" height="170%">
+          <feGaussianBlur stdDeviation="14" result="blur" />
+          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+      </defs>
+
+      {/* Dusty Crimson Atmospheric Glow */}
+      <circle cx="80" cy="80" r="54" fill="#EA580C" filter={`url(#marsGlow_${id})`} opacity="0.55" />
+
+      {/* Mars Body */}
+      <circle cx="80" cy="80" r="48" fill={`url(#marsGrad_${id})`} stroke="rgba(251,146,60,0.4)" strokeWidth="1" />
+
+      {/* North Polar Ice Cap (Bright Frost) */}
+      <ellipse cx="80" cy="36" rx="14" ry="5" fill="#FFFFFF" opacity="0.9" />
+      <ellipse cx="80" cy="37" rx="10" ry="3" fill="#E0F2FE" opacity="0.8" />
+
+      {/* Dark Basaltic Highland Features */}
+      <path 
+        d="M 64 68 Q 80 62 92 72 Q 88 88 74 94 Q 60 84 64 68 Z" 
+        fill="#7C2D12" 
+        opacity="0.8" 
+      />
+      {/* Valles Marineris Canyon System */}
+      <path 
+        d="M 52 82 Q 78 86 112 80" 
+        stroke="#451A03" 
+        strokeWidth="2.5" 
+        strokeLinecap="round" 
+        opacity="0.85" 
+      />
+      <path 
+        d="M 56 84 Q 82 88 108 82" 
+        stroke="#7C2D12" 
+        strokeWidth="1.5" 
+        strokeLinecap="round" 
+        opacity="0.75" 
+      />
+      <path 
+        d="M 68 105 Q 88 102 102 112 Q 85 118 68 105 Z" 
+        fill="#431407" 
+        opacity="0.85" 
+      />
+
+      {/* Specular Limb Highlight */}
+      <path d="M 44 65 A 48 48 0 0 1 76 34" stroke="#FED7AA" strokeWidth="1.8" strokeLinecap="round" opacity="0.75" />
+    </svg>
+  );
+}
+
+// 6. Jupiter (Step 6)
+function CelestialJupiter({ className = "", style = {} }) {
+  const id = React.useId().replace(/:/g, '');
+  return (
+    <svg viewBox="0 0 180 180" className={className} style={style} fill="none">
+      <defs>
+        <radialGradient id={`jupGrad_${id}`} cx="35%" cy="30%" r="65%">
+          <stop offset="0%" stopColor="#FEF3C7" stopOpacity="0.95" />
+          <stop offset="25%" stopColor="#FDE68A" stopOpacity="0.95" />
+          <stop offset="60%" stopColor="#D97706" stopOpacity="0.92" />
+          <stop offset="85%" stopColor="#78350F" stopOpacity="0.98" />
+          <stop offset="100%" stopColor="#1E0B02" stopOpacity="1" />
+        </radialGradient>
+        <radialGradient id={`redSpot_${id}`} cx="40%" cy="40%" r="55%">
+          <stop offset="0%" stopColor="#FCA5A5" />
+          <stop offset="50%" stopColor="#EF4444" />
+          <stop offset="100%" stopColor="#7F1D1D" />
+        </radialGradient>
+        <filter id={`jupGlow_${id}`} x="-35%" y="-35%" width="170%" height="170%">
+          <feGaussianBlur stdDeviation="15" result="blur" />
+          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+        <clipPath id={`jupClip_${id}`}>
+          <circle cx="90" cy="90" r="56" />
+        </clipPath>
+      </defs>
+
+      {/* Ambient Gas Giant Halo */}
+      <circle cx="90" cy="90" r="64" fill="#F59E0B" filter={`url(#jupGlow_${id})`} opacity="0.55" />
+
+      {/* Main Jupiter Body with Clipped Atmospheric Belts */}
+      <g clipPath={`url(#jupClip_${id})`}>
+        <circle cx="90" cy="90" r="56" fill={`url(#jupGrad_${id})`} stroke="rgba(254,243,199,0.3)" strokeWidth="1" />
+
+        {/* Horizontal Storm Belts & Zones */}
+        <rect x="25" y="34" width="130" height="12" fill="#92400E" opacity="0.75" />
+        <path d="M 25 54 Q 90 48 155 54" stroke="#78350F" strokeWidth="6" opacity="0.85" />
+        <path d="M 25 68 Q 90 62 155 68" stroke="#B45309" strokeWidth="8" opacity="0.9" />
+        <path d="M 25 82 Q 90 78 155 82" stroke="#FEF9C3" strokeWidth="7" opacity="0.75" />
+        <path d="M 25 96 Q 90 92 155 96" stroke="#9A3412" strokeWidth="9" opacity="0.9" />
+        <path d="M 25 112 Q 90 108 155 112" stroke="#7C2D12" strokeWidth="7" opacity="0.8" />
+        <rect x="25" y="124" width="130" height="18" fill="#451A03" opacity="0.85" />
+
+        {/* Swirling Storm Waves */}
+        <path d="M 40 76 Q 60 70 80 76 T 120 76" stroke="#FFFFFF" strokeWidth="1.5" opacity="0.6" strokeLinecap="round" />
+        <path d="M 45 104 Q 70 100 95 104 T 135 104" stroke="#FED7AA" strokeWidth="1.8" opacity="0.7" strokeLinecap="round" />
+
+        {/* THE GREAT RED SPOT */}
+        <ellipse cx="112" cy="98" rx="14" ry="9" fill={`url(#redSpot_${id})`} stroke="#450A0A" strokeWidth="1" />
+        <ellipse cx="112" cy="98" rx="8" ry="4" stroke="#FFFFFF" strokeWidth="0.8" opacity="0.75" fill="none" />
+
+        {/* Spherical Shadow Terminator Overlay for 3D depth */}
+        <path d="M 90 34 A 56 56 0 0 1 146 90 A 56 56 0 0 1 90 146 Q 130 90 90 34 Z" fill="#050302" opacity="0.45" />
+      </g>
+
+      {/* Specular Limb Arc */}
+      <path d="M 46 72 A 56 56 0 0 1 90 34" stroke="#FFFBEB" strokeWidth="2" strokeLinecap="round" opacity="0.75" />
+    </svg>
+  );
+}
+
+// Planetary metadata for astronomical tracking through the form
+const PLANET_METADATA = {
+  1: {
+    name: 'SOL',
+    title: 'THE SUN',
+    distance: '0.0 AU',
+    tag: '// SOL · 0.0 AU',
+    aura1: '#F59E0B',
+    aura2: '#EA580C',
+    glow: 'rgba(245, 158, 11, 0.6)'
+  },
+  2: {
+    name: 'MERCURY',
+    title: 'MERCURY',
+    distance: '0.39 AU',
+    tag: '// MERCURY · 0.39 AU',
+    aura1: '#A8A29E',
+    aura2: '#78716C',
+    glow: 'rgba(168, 162, 158, 0.5)'
+  },
+  3: {
+    name: 'VENUS',
+    title: 'VENUS',
+    distance: '0.72 AU',
+    tag: '// VENUS · 0.72 AU',
+    aura1: '#F59E0B',
+    aura2: '#D97706',
+    glow: 'rgba(245, 158, 11, 0.55)'
+  },
+  4: {
+    name: 'EARTH',
+    title: 'EARTH & MOON',
+    distance: '1.00 AU',
+    tag: '// EARTH · 1.00 AU',
+    aura1: '#38BDF8',
+    aura2: '#0284C7',
+    glow: 'rgba(56, 189, 248, 0.6)'
+  },
+  5: {
+    name: 'MARS',
+    title: 'MARS',
+    distance: '1.52 AU',
+    tag: '// MARS · 1.52 AU',
+    aura1: '#EA580C',
+    aura2: '#C2410C',
+    glow: 'rgba(234, 88, 12, 0.55)'
+  },
+  6: {
+    name: 'JUPITER',
+    title: 'JUPITER',
+    distance: '5.20 AU',
+    tag: '// JUPITER · 5.20 AU',
+    aura1: '#D97706',
+    aura2: '#92400E',
+    glow: 'rgba(217, 119, 6, 0.6)'
+  }
+};
+
+// Master Celestial Planet Dispatcher
+function StepCelestialPlanet({ step, className = "" }) {
+  switch (step) {
+    case 1:
+      return <CelestialSun className={className} />;
+    case 2:
+      return <CelestialMercury className={className} />;
+    case 3:
+      return <CelestialVenus className={className} />;
+    case 4:
+      return <CelestialEarth className={className} />;
+    case 5:
+      return <CelestialMars className={className} />;
+    case 6:
+      return <CelestialJupiter className={className} />;
+    default:
+      return <CelestialSun className={className} />;
+  }
+}
+
+// Metallic Smartcard Microchip SVG for Employee/Candidate ID Badge
+function SmartCardChip({ className = "" }) {
+  return (
+    <svg viewBox="0 0 48 36" className={className} fill="none">
+      <rect width="48" height="36" rx="5" fill="#D97706" fillOpacity="0.2" stroke="#F59E0B" strokeWidth="1.2" />
+      {/* Smart Card Contact Segments */}
+      <rect x="4" y="4" width="11" height="12" rx="1.5" fill="#F59E0B" fillOpacity="0.5" stroke="#FBBF24" strokeWidth="0.75" />
+      <rect x="18.5" y="4" width="11" height="12" rx="1.5" fill="#F59E0B" fillOpacity="0.5" stroke="#FBBF24" strokeWidth="0.75" />
+      <rect x="33" y="4" width="11" height="12" rx="1.5" fill="#F59E0B" fillOpacity="0.5" stroke="#FBBF24" strokeWidth="0.75" />
+      
+      <rect x="4" y="20" width="11" height="12" rx="1.5" fill="#F59E0B" fillOpacity="0.5" stroke="#FBBF24" strokeWidth="0.75" />
+      <rect x="18.5" y="20" width="11" height="12" rx="1.5" fill="#F59E0B" fillOpacity="0.5" stroke="#FBBF24" strokeWidth="0.75" />
+      <rect x="33" y="20" width="11" height="12" rx="1.5" fill="#F59E0B" fillOpacity="0.5" stroke="#FBBF24" strokeWidth="0.75" />
+      
+      {/* Center Circuit trace */}
+      <circle cx="24" cy="18" r="2" fill="#FEF3C7" />
+      <line x1="15" y1="10" x2="33" y2="10" stroke="#FEF3C7" strokeWidth="0.7" />
+      <line x1="15" y1="26" x2="33" y2="26" stroke="#FEF3C7" strokeWidth="0.7" />
+    </svg>
+  );
+}
+
+// Realistic Stylized Barcode SVG for ID Badge
+function IdBadgeBarcode({ className = "" }) {
+  const barPattern = [
+    2, 1, 3, 1, 1, 2, 4, 1, 2, 3, 1, 1, 2, 1, 4, 2, 1, 3, 2, 1, 
+    1, 4, 2, 1, 3, 1, 2, 4, 1, 1, 3, 2, 1, 4, 1, 2, 3, 1, 2, 4,
+    1, 3, 2, 1, 2, 3, 1, 4, 2, 1
+  ];
+  return (
+    <div className={`flex items-stretch gap-[1.5px] h-7 opacity-80 select-none ${className}`}>
+      {barPattern.map((w, i) => (
+        <span
+          key={i}
+          className="bg-white/70 h-full rounded-[0.5px]"
+          style={{ width: `${w}px` }}
+        />
+      ))}
+    </div>
+  );
+}
+
+// Realistic Lanyard Strap and Chrome Carabiner Lobster Clasp
+function LanyardHook({ className = "" }) {
+  const id = React.useId().replace(/:/g, '');
+  return (
+    <div className={`flex flex-col items-center select-none pointer-events-none -mb-3 z-30 relative ${className}`}>
+      {/* Fabric Lanyard Ribbon */}
+      <div className="w-9 h-11 bg-gradient-to-b from-zinc-400 via-zinc-100 to-zinc-300 rounded-t-sm shadow-md relative overflow-hidden border-x border-zinc-400/90">
+        <div className="absolute inset-y-0 left-1.5 w-[1px] bg-zinc-400/50" />
+        <div className="absolute inset-y-0 right-1.5 w-[1px] bg-zinc-400/50" />
+        <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[1.5px] bg-zinc-300" />
+      </div>
+
+      {/* Metal Crimp Clamp */}
+      <div className="w-10 h-3 bg-gradient-to-r from-zinc-500 via-zinc-200 to-zinc-600 rounded-[2px] shadow-sm -mt-0.5 border border-zinc-400 flex items-center justify-center">
+        <div className="w-6 h-[1px] bg-zinc-700/60" />
+      </div>
+
+      {/* Steel Swivel Ring */}
+      <div className="w-6 h-6 rounded-full border-[3px] border-zinc-300 bg-transparent -mt-1 shadow-inner flex items-center justify-center">
+        <div className="w-3.5 h-3.5 rounded-full border border-zinc-500/40" />
+      </div>
+
+      {/* Chrome Lobster Carabiner Clasp Hook entering badge hole */}
+      <svg viewBox="0 0 32 46" className="w-7 h-10 -mt-1 drop-shadow-[0_4px_6px_rgba(0,0,0,0.6)]" fill="none">
+        <defs>
+          <linearGradient id={`claspMetal_${id}`} x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#F4F4F5" />
+            <stop offset="30%" stopColor="#E4E4E7" />
+            <stop offset="70%" stopColor="#A1A1AA" />
+            <stop offset="100%" stopColor="#52525B" />
+          </linearGradient>
+          <linearGradient id={`hookMetal_${id}`} x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#FFFFFF" />
+            <stop offset="50%" stopColor="#A1A1AA" />
+            <stop offset="100%" stopColor="#3F3F46" />
+          </linearGradient>
+        </defs>
+        {/* Clasp Body */}
+        <path d="M 16 2 C 10 2 9 8 9 13 L 9 24 C 9 30 13 35 16 38 C 19 35 23 30 23 24 L 23 13 C 23 8 22 2 16 2 Z" fill={`url(#claspMetal_${id})`} stroke="#3F3F46" strokeWidth="1" />
+        {/* Interior Cutout */}
+        <ellipse cx="16" cy="18" rx="4" ry="7" fill="#0b0f19" />
+        {/* Retractable Lever Thumb Tab */}
+        <rect x="21" y="15" width="3.5" height="9" rx="1.5" fill="#E4E4E7" stroke="#3F3F46" strokeWidth="0.8" />
+        {/* Hook loop looping through badge hole */}
+        <path d="M 16 34 C 11 34 11 44 16 44 C 21 44 21 34 16 34 Z" stroke={`url(#hookMetal_${id})`} strokeWidth="3" fill="none" />
+      </svg>
+    </div>
+  );
+}
 
 export default function RecruitmentApply({ introCompleted = true, setActivePage }) {
   // Step State (1 to 6) strictly persisted in localStorage so refresh/revisit restores exact active step
@@ -379,6 +941,9 @@ export default function RecruitmentApply({ introCompleted = true, setActivePage 
   const [checkingEmail, setCheckingEmail] = useState(false);
   const [emailStatus, setEmailStatus] = useState('idle'); // 'idle' | 'checking' | 'valid' | 'conflict' | 'error'
   const [emailConflictMsg, setEmailConflictMsg] = useState('');
+  const [checkingMobile, setCheckingMobile] = useState(false);
+  const [mobileStatus, setMobileStatus] = useState('idle'); // 'idle' | 'checking' | 'valid' | 'conflict' | 'error'
+  const [mobileConflictMsg, setMobileConflictMsg] = useState('');
 
   // GitHub Live Verification State
   const [githubData, setGithubData] = useState(null);
@@ -515,12 +1080,17 @@ export default function RecruitmentApply({ introCompleted = true, setActivePage 
     }
   }, []);
 
-  // Live validation on Email input (Smooth debounced real-time check)
+  // Live validation on Email input (Optional: if given, check domain and DB uniqueness)
   useEffect(() => {
     const cleanEmail = formData.email.trim().toLowerCase();
     if (!cleanEmail) {
       setEmailStatus('idle');
       setEmailConflictMsg('');
+      setStepErrors((prev) => {
+        const next = { ...prev };
+        delete next.email;
+        return next;
+      });
       return;
     }
 
@@ -531,28 +1101,81 @@ export default function RecruitmentApply({ introCompleted = true, setActivePage 
       return;
     }
 
-    // Email domain is valid, query DB with 400ms debounce
+    // Email domain is valid, query DB with 450ms debounce
     setEmailStatus('checking');
     setEmailConflictMsg('');
     const timer = setTimeout(async () => {
       setCheckingEmail(true);
-      const result = await checkUniquenessApi(cleanEmail, formData.regNumber);
+      const result = await checkUniquenessApi(cleanEmail, null, null);
       setCheckingEmail(false);
 
-      if (result.exists) {
+      if (result.exists && (result.field === 'Email address' || !result.field)) {
         setEmailStatus('conflict');
-        const msg = result.message || 'This email or reg number is already registered.';
+        const msg = result.message || 'This email is already registered.';
         setEmailConflictMsg(msg);
         setStepErrors((prev) => ({ ...prev, email: msg }));
       } else {
         setEmailStatus('valid');
         setEmailConflictMsg('');
-        setStepErrors((prev) => ({ ...prev, email: '' }));
+        setStepErrors((prev) => {
+          const next = { ...prev };
+          delete next.email;
+          return next;
+        });
       }
     }, 450);
 
     return () => clearTimeout(timer);
-  }, [formData.email, formData.regNumber, checkUniquenessApi]);
+  }, [formData.email, checkUniquenessApi]);
+
+  // Live validation on Mobile Number input (Compulsory + unique check)
+  useEffect(() => {
+    const cleanMobile = formData.mobileNumber.replace(/\D/g, '');
+    if (!cleanMobile) {
+      setMobileStatus('idle');
+      setMobileConflictMsg('');
+      return;
+    }
+
+    if (cleanMobile.length < 10) {
+      setMobileStatus('idle');
+      setMobileConflictMsg('');
+      return;
+    }
+
+    if (cleanMobile.length > 10) {
+      setMobileStatus('error');
+      setMobileConflictMsg('Please enter a valid 10-digit mobile number.');
+      setStepErrors((prev) => ({ ...prev, mobileNumber: 'Please enter a valid 10-digit mobile number.' }));
+      return;
+    }
+
+    // 10 digits provided, check DB uniqueness with 450ms debounce
+    setMobileStatus('checking');
+    setMobileConflictMsg('');
+    const timer = setTimeout(async () => {
+      setCheckingMobile(true);
+      const result = await checkUniquenessApi(null, null, cleanMobile);
+      setCheckingMobile(false);
+
+      if (result.exists && (result.field === 'Mobile number' || !result.field)) {
+        setMobileStatus('conflict');
+        const msg = result.message || 'This mobile number is already registered.';
+        setMobileConflictMsg(msg);
+        setStepErrors((prev) => ({ ...prev, mobileNumber: msg }));
+      } else {
+        setMobileStatus('valid');
+        setMobileConflictMsg('');
+        setStepErrors((prev) => {
+          const next = { ...prev };
+          delete next.mobileNumber;
+          return next;
+        });
+      }
+    }, 450);
+
+    return () => clearTimeout(timer);
+  }, [formData.mobileNumber, checkUniquenessApi]);
 
   // Input Change Handler
   const handleInputChange = (e) => {
@@ -590,34 +1213,21 @@ export default function RecruitmentApply({ introCompleted = true, setActivePage 
     }
   };
 
-  // Step Validation & Navigation (Prevents bypassing duplicated email or regNumber)
-  const validateAndProceed = async () => {
+  // Validate specific step and set errors if invalid
+  const validateStep = async (step) => {
     const errors = {};
 
-    // STEP 1: Personal Info (Name, Register Number)
-    if (currentStep === 1) {
+    // STEP 1: Personal Info (Name compulsory, Register Number optional)
+    if (step === 1) {
       if (!formData.Name.trim()) {
         errors.Name = 'Please enter your full name.';
       }
-      if (!formData.regNumber.trim()) {
-        errors.regNumber = 'Please enter your register number.';
-      } else if (formData.regNumber.trim().length < 6) {
-        errors.regNumber = 'Please enter a valid register number.';
-      } else {
-        // Verify register number is not already registered
-        const check = await checkUniquenessApi(null, formData.regNumber);
-        if (check.exists && check.field === 'Register number') {
-          errors.regNumber = check.message;
-        }
-      }
     }
 
-    // STEP 2: Communication (University Email, Mobile)
-    if (currentStep === 2) {
+    // STEP 2: Communication (Mobile compulsory + unique, Email optional + unique if given)
+    if (step === 2) {
       const cleanEmail = formData.email.trim().toLowerCase();
-      if (!cleanEmail) {
-        errors.email = 'University email is required.';
-      } else if (!cleanEmail.endsWith('@citchennai.net')) {
+      if (cleanEmail && !cleanEmail.endsWith('@citchennai.net')) {
         errors.email = 'Only official @citchennai.net accounts are permitted.';
       }
 
@@ -628,26 +1238,42 @@ export default function RecruitmentApply({ introCompleted = true, setActivePage 
         errors.mobileNumber = 'Please enter a valid 10-digit mobile number.';
       }
 
-      // Strict real-time check against duplicate email or mobile
+      if (mobileStatus === 'conflict' && !errors.mobileNumber) {
+        errors.mobileNumber = mobileConflictMsg || 'This mobile number is already registered.';
+      }
+      if (cleanEmail && emailStatus === 'conflict' && !errors.email) {
+        errors.email = emailConflictMsg || 'This email is already registered.';
+      }
+
+      // Check uniqueness against database
       if (!errors.email && !errors.mobileNumber) {
-        setCheckingEmail(true);
-        const check = await checkUniquenessApi(cleanEmail, formData.regNumber, cleanMobile);
+        setCheckingMobile(true);
+        if (cleanEmail) setCheckingEmail(true);
+        const check = await checkUniquenessApi(cleanEmail || null, null, cleanMobile);
+        setCheckingMobile(false);
         setCheckingEmail(false);
 
         if (check.exists) {
-          errors.email = check.message;
-          setEmailStatus('conflict');
-          setEmailConflictMsg(check.message);
+          if (cleanEmail && check.field === 'Email address') {
+            errors.email = check.message;
+            setEmailStatus('conflict');
+            setEmailConflictMsg(check.message);
+          } else {
+            errors.mobileNumber = check.message;
+            setMobileStatus('conflict');
+            setMobileConflictMsg(check.message);
+          }
           setStepErrors(errors);
-          return;
+          return false;
         } else {
-          setEmailStatus('valid');
+          if (cleanEmail) setEmailStatus('valid');
+          setMobileStatus('valid');
         }
       }
     }
 
-    // STEP 3: Academic Details (Department, Year, Section)
-    if (currentStep === 3) {
+    // STEP 3: Academic Details (Department and Section are compulsory)
+    if (step === 3) {
       if (!formData.department) {
         errors.department = 'Please choose your department.';
       }
@@ -656,73 +1282,96 @@ export default function RecruitmentApply({ introCompleted = true, setActivePage 
       }
     }
 
-    // STEP 4: Role Selection (Category, Specific Role)
-    if (currentStep === 4) {
+    // STEP 4: Role Selection (Track category and specific role are compulsory)
+    if (step === 4) {
       if (!formData.role) {
-        errors.role = 'Please select a role category.';
+        errors.role = 'Please select a track category.';
       }
       if (!formData.subRole) {
         errors.subRole = 'Please select a specific role.';
       }
     }
 
-    // STEP 5: Developer Deck (GitHub & LinkedIn usernames)
-    if (currentStep === 5) {
-      if (!formData.githubUsername.trim()) {
-        errors.githubUsername = 'Please provide your GitHub username.';
-      }
-      if (!formData.linkedinUsername.trim()) {
-        errors.linkedinUsername = 'Please provide your LinkedIn username/handle.';
-      }
+    // STEP 5: Developer Deck (GitHub and LinkedIn are optional)
+    if (step === 5) {
+      // Both GitHub and LinkedIn profiles are optional
     }
 
     if (Object.keys(errors).length > 0) {
       setStepErrors(errors);
-      return;
+      return false;
     }
+
+    setStepErrors({});
+    return true;
+  };
+
+  // Step Validation & Navigation (Enforces exact required / optional rules)
+  const validateAndProceed = async () => {
+    const isValid = await validateStep(currentStep);
+    if (!isValid) return;
 
     setStepErrors({});
     const nextStep = currentStep + 1;
     setCurrentStep(nextStep);
     setMaxReachedStep((prev) => Math.max(prev, nextStep));
-    window.scrollTo({ top: 120, behavior: 'smooth' });
   };
 
-  const handleGoBack = () => {
-    if (currentStep > 1) {
-      const prevStep = currentStep - 1;
-      setCurrentStep(prevStep);
-      window.scrollTo({ top: 120, behavior: 'smooth' });
+  const handleGoBack = async () => {
+    if (currentStep <= 1) return;
+
+    // If the user has already reached subsequent steps and comes back to this step to change info,
+    // they must meet validation before switching to any step
+    if (maxReachedStep > currentStep) {
+      const isValid = await validateStep(currentStep);
+      if (!isValid) return;
     }
+
+    setStepErrors({});
+    setCurrentStep(currentStep - 1);
   };
 
-  const handleJumpToStep = (stepNumber) => {
-    // Only allow switching between already completed or reached sections
-    if (stepNumber <= maxReachedStep) {
-      setCurrentStep(stepNumber);
-      window.scrollTo({ top: 120, behavior: 'smooth' });
-    }
+  const handleJumpToStep = async (stepNumber) => {
+    if (stepNumber === currentStep) return;
+    if (stepNumber > maxReachedStep) return;
+
+    // Validate the current step before allowing switch to ANY step
+    const isValid = await validateStep(currentStep);
+    if (!isValid) return;
+
+    setStepErrors({});
+    setCurrentStep(stepNumber);
   };
 
   // Final Submission Handler (Double-checks against duplicate before final commit)
   const handleFinalSubmit = async () => {
+    // Validate all required steps prior to final submission
+    for (let s = 1; s <= 4; s++) {
+      const isStepValid = await validateStep(s);
+      if (!isStepValid) {
+        setCurrentStep(s);
+        return;
+      }
+    }
+
     setIsSubmitting(true);
     setSubmitResult(null);
 
-    const cleanEmail = formData.email.trim().toLowerCase();
+    const cleanEmail = formData.email.trim().toLowerCase() || null;
     const cleanMobile = formData.mobileNumber.replace(/\D/g, '');
     const cleanSection = formData.section.trim().toUpperCase() || 'NIL';
-    const cleanGithubUrl = `https://github.com/${formData.githubUsername.trim()}`;
-    const cleanLinkedinUrl = `https://linkedin.com/in/${formData.linkedinUsername.trim()}`;
+    const cleanRegNumber = formData.regNumber.trim().toUpperCase() || '';
+    const cleanGithubUrl = formData.githubUsername.trim() ? `https://github.com/${formData.githubUsername.trim()}` : '';
+    const cleanLinkedinUrl = formData.linkedinUsername.trim() ? `https://linkedin.com/in/${formData.linkedinUsername.trim()}` : '';
 
     // Final pre-flight uniqueness re-check to prevent race conditions or bypassed edits
-    const preCheck = await checkUniquenessApi(cleanEmail, formData.regNumber, cleanMobile);
+    const preCheck = await checkUniquenessApi(cleanEmail, null, cleanMobile);
     if (preCheck.exists) {
       setIsSubmitting(false);
       setSubmitResult({
         status: 'conflict',
         message: 'Already Registered',
-        details: preCheck.message || 'A student with this Email or Register Number has already registered.'
+        details: preCheck.message || 'A student with this Mobile Number or Email has already registered.'
       });
       return;
     }
@@ -734,7 +1383,7 @@ export default function RecruitmentApply({ introCompleted = true, setActivePage 
       year: '1st Year',
       section: cleanSection,
       mobileNumber: cleanMobile,
-      regNumber: formData.regNumber.trim().toUpperCase(),
+      regNumber: cleanRegNumber,
       role: formData.role,
       subRole: formData.subRole,
       githubUrl: cleanGithubUrl,
@@ -799,27 +1448,65 @@ export default function RecruitmentApply({ introCompleted = true, setActivePage 
     }
   };
 
+  const isTech = formData.role === 'Tech';
+  const accentColor = isTech ? '#FFCC00' : '#38bdf8';
+  const shapeTheme = isTech
+    ? {
+        light: '#FFFBEB',
+        mid: '#FDE047',
+        dark: '#EAB308',
+        deep: '#78350F',
+        glow: 'rgba(234, 179, 8, 0.5)'
+      }
+    : {
+        light: '#E0F2FE',
+        mid: '#38BDF8',
+        dark: '#0284C7',
+        deep: '#1E3A8A',
+        glow: 'rgba(56, 189, 248, 0.5)'
+      };
+
+  const bubbleTheme = isTech
+    ? {
+        primary: 'radial-gradient(circle at 35% 28%, #FFFBEB 0%, #FDE047 25%, #EAB308 55%, #78350F 85%, #180902 100%)',
+        secondary: 'radial-gradient(circle at 35% 28%, #FFFFFF 0%, #FEF08A 30%, #F59E0B 60%, #92400E 90%, #200D02 100%)',
+        tertiary: 'radial-gradient(circle at 30% 25%, #FEF9C3 0%, #EAB308 40%, #854D0E 80%, #150700 100%)',
+        aura1: '#EAB308',
+        aura2: '#F59E0B',
+        glow: 'rgba(234, 179, 8, 0.35)'
+      }
+    : {
+        primary: 'radial-gradient(circle at 35% 28%, #E0F2FE 0%, #38BDF8 30%, #6366F1 65%, #312E81 90%, #0B0E1B 100%)',
+        secondary: 'radial-gradient(circle at 35% 28%, #F5D0FE 0%, #C084FC 35%, #7C3AED 70%, #4C1D95 90%, #120A2A 100%)',
+        tertiary: 'radial-gradient(circle at 30% 25%, #BAE6FD 0%, #0284C7 45%, #1E3A8A 85%, #050B14 100%)',
+        aura1: '#38BDF8',
+        aura2: '#818CF8',
+        glow: 'rgba(56, 189, 248, 0.35)'
+      };
+
   const selectedRoleMeta = ROLE_DETAILS[formData.subRole] || ROLE_DETAILS['Frontend Developer'];
-  const SelectedRoleIcon = selectedRoleMeta.icon;
+  const SelectedRoleIcon = selectedRoleMeta.icon || Layers;
+  const activePlanet = PLANET_METADATA[currentStep] || PLANET_METADATA[1];
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-24 sm:pt-32 pb-24 text-left space-y-8 select-none">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-28 sm:pt-32 pb-16 text-left space-y-4 sm:space-y-5 select-none">
       
       {/* 1. Header & Minimalist Step Progress */}
-      <section className="space-y-5">
+      <section className="space-y-3">
         <div className="flex items-center justify-between pb-2">
           <button
             onClick={() => setActivePage('recruitment')}
-            className="inline-flex items-center gap-2 text-xs font-mono text-zinc-400 hover:text-white transition-colors cursor-pointer group"
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.05] hover:bg-white/10 border border-white/15 hover:border-[#FFCC00]/50 text-xs font-mono text-zinc-200 hover:text-white transition-all cursor-pointer group shadow-sm"
           >
-            <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-0.5" />
-            <span>Back to Roles</span>
+            <ArrowLeft className="w-3.5 h-3.5 text-[#FFCC00] transition-transform group-hover:-translate-x-1" />
+            <span className="font-semibold tracking-wide uppercase text-[11px]">Back to Roles</span>
           </button>
           
-          <div className="flex items-center gap-2 font-mono text-xs text-zinc-500">
-            <span className="text-[#FFCC00] font-bold">Step 0{currentStep}</span>
-            <span>/</span>
-            <span>06</span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.05] border border-white/15 font-mono text-xs shadow-sm">
+            <span className="w-2 h-2 rounded-full bg-[#FFCC00] shadow-[0_0_8px_rgba(255,204,0,0.8)] animate-pulse" />
+            <span className="text-[#FFCC00] font-bold tracking-wider">Step 0{currentStep}</span>
+            <span className="text-zinc-500">/</span>
+            <span className="text-zinc-300 font-semibold">06</span>
           </div>
         </div>
 
@@ -891,14 +1578,56 @@ export default function RecruitmentApply({ introCompleted = true, setActivePage 
         )}
       </section>
 
-      {/* 2. Main Multi-Step Form Container */}
-      <section className="relative rounded-3xl p-6 sm:p-10 border border-white/10 bg-[#07070a]/90 backdrop-blur-2xl shadow-2xl overflow-hidden">
-        {/* Subtle Ambient Glow */}
+      {/* 2. Main Multi-Step Form Container with 3D Celestial Planets & Multi-Layer Blur Depth */}
+      <section 
+        className="relative rounded-[28px] p-5 sm:p-7 lg:p-8 border border-white/15 bg-[#07070a]/85 backdrop-blur-3xl shadow-2xl overflow-hidden transition-all duration-700"
+        style={{
+          boxShadow: `0 0 75px ${activePlanet.aura1}25, 0 35px 90px rgba(0,0,0,0.95)`
+        }}
+      >
+        {/* Layer 1: Massive Ambient Liquid Mesh Aurora with Deep Diffuse Blur */}
         <div 
-          className="absolute -top-32 -right-32 w-80 h-80 rounded-full blur-[110px] opacity-15 pointer-events-none transition-colors duration-700"
-          style={{ backgroundColor: formData.role === 'Tech' ? '#FFCC00' : '#38bdf8' }}
+          className="absolute -top-32 -left-32 w-[460px] h-[460px] rounded-full blur-[140px] pointer-events-none animate-bubble-1 opacity-50 transition-colors duration-700"
+          style={{ backgroundColor: activePlanet.aura1 }}
         />
-        <div className="absolute inset-0 nothing-dot-grid opacity-10 pointer-events-none" />
+        <div 
+          className="absolute -bottom-36 -right-36 w-[480px] h-[480px] rounded-full blur-[150px] pointer-events-none animate-bubble-2 opacity-40 transition-colors duration-700"
+          style={{ backgroundColor: activePlanet.aura2 }}
+        />
+        <div 
+          className="absolute top-1/2 left-1/3 w-[360px] h-[360px] rounded-full blur-[120px] pointer-events-none animate-bubble-3 opacity-25 transition-colors duration-700"
+          style={{ backgroundColor: isTech ? '#D97706' : '#38BDF8' }}
+        />
+
+        {/* Single Signature Celestial Planet for Current Step (Top-Right) with Deep Blur Depth */}
+        <div 
+          key={`primary-planet-${currentStep}`}
+          className="absolute -top-6 right-8 sm:right-16 w-48 h-48 sm:w-60 sm:h-60 pointer-events-none animate-bubble-1 opacity-90 transition-all duration-700 z-0"
+        >
+          {/* Intense Ambient Radial Blur Bloom behind the active planet */}
+          <div 
+            className="absolute inset-0 rounded-full blur-[60px] sm:blur-[85px] pointer-events-none opacity-80 -z-10"
+            style={{ backgroundColor: activePlanet.glow }}
+          />
+          <StepCelestialPlanet 
+            step={currentStep} 
+            className="w-full h-full drop-shadow-[0_25px_50px_rgba(0,0,0,0.9)] transition-transform duration-700" 
+          />
+        </div>
+
+        {/* Soft Ambient Corner Light Blur */}
+        <div 
+          className="absolute -bottom-16 -left-16 w-52 h-52 rounded-full pointer-events-none animate-bubble-2 opacity-25 blur-[60px]"
+          style={{
+            backgroundColor: activePlanet.aura1
+          }}
+        />
+
+        {/* Subtle Dot Matrix Pattern Overlay */}
+        <div className="absolute inset-0 nothing-dot-grid opacity-15 pointer-events-none" />
+
+        {/* Frosted Glass Vignette Overlay ensuring pristine text readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#07070a]/55 via-[#07070a]/70 to-[#07070a]/85 pointer-events-none backdrop-blur-[1.5px]" />
 
         {/* SUBMISSION RESULT VIEWS */}
         {submitResult ? (
@@ -961,18 +1690,20 @@ export default function RecruitmentApply({ introCompleted = true, setActivePage 
           </div>
         ) : (
           /* ACTIVE STEP CONTENT */
-          <div className="relative z-10 space-y-8">
+          <div key={`step-stage-${currentStep}`} className="relative z-10 space-y-5 animate-step-enter">
             
             {/* STEP 1: PERSONAL DETAILS */}
             {currentStep === 1 && (
-              <div className="space-y-6 animate-fade-in">
-                <div className="space-y-1 pb-4 border-b border-white/10">
-                  <h2 className="text-xl sm:text-2xl text-white font-mono uppercase tracking-wide">
-                    Personal Details
-                  </h2>
-                  <p className="text-xs sm:text-sm text-zinc-400 font-sans">
-                    Enter your legal full name and CIT roll number.
-                  </p>
+              <div className="space-y-6 animate-step-enter">
+                <div className="flex items-baseline justify-between pb-3 border-b border-white/10">
+                  <div className="space-y-0.5">
+                    <h2 className="text-xl sm:text-2xl text-white font-mono uppercase tracking-wide leading-tight">
+                      Personal Details
+                    </h2>
+                    <p className="text-xs text-zinc-400 font-sans">
+                      Enter your legal full name.
+                    </p>
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -987,7 +1718,6 @@ export default function RecruitmentApply({ introCompleted = true, setActivePage 
                       onChange={handleInputChange}
                       onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); validateAndProceed(); } }}
                       placeholder="e.g. Alex Henderson"
-                      autoFocus
                       className={`w-full px-4 py-3 bg-white/[0.03] border rounded-xl text-white font-sans text-sm placeholder-zinc-600 focus:outline-none transition-colors ${
                         stepErrors.Name 
                           ? 'border-red-500' 
@@ -1001,7 +1731,7 @@ export default function RecruitmentApply({ introCompleted = true, setActivePage 
 
                   <div className="space-y-2">
                     <label className="block font-mono text-xs text-zinc-300">
-                      Register Number *
+                      Register Number <span className="text-zinc-500 font-normal">(Optional)</span>
                     </label>
                     <input
                       type="text"
@@ -1026,21 +1756,23 @@ export default function RecruitmentApply({ introCompleted = true, setActivePage 
 
             {/* STEP 2: CONTACT DETAILS */}
             {currentStep === 2 && (
-              <div className="space-y-6 animate-fade-in">
-                <div className="space-y-1 pb-4 border-b border-white/10">
-                  <h2 className="text-xl sm:text-2xl text-white font-mono uppercase tracking-wide">
-                    Contact Information
-                  </h2>
-                  <p className="text-xs sm:text-sm text-zinc-400 font-sans">
-                    Email must end with @citchennai.net. Used for interview alerts.
-                  </p>
+              <div className="space-y-6 animate-step-enter">
+                <div className="flex items-baseline justify-between pb-3 border-b border-white/10">
+                  <div className="space-y-0.5">
+                    <h2 className="text-xl sm:text-2xl text-white font-mono uppercase tracking-wide leading-tight">
+                      Contact Information
+                    </h2>
+                    <p className="text-xs text-zinc-400 font-sans">
+                      Mobile number is required for verification. College email is optional.
+                    </p>
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <label className="font-mono text-xs text-zinc-300">
-                        College Email *
+                        College Email <span className="text-zinc-500 font-normal">(Optional)</span>
                       </label>
                       {emailStatus === 'checking' && (
                         <span className="text-[10px] text-zinc-500 font-mono flex items-center gap-1">
@@ -1060,7 +1792,6 @@ export default function RecruitmentApply({ introCompleted = true, setActivePage 
                       onChange={handleInputChange}
                       onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); validateAndProceed(); } }}
                       placeholder="username@citchennai.net"
-                      autoFocus
                       className={`w-full px-4 py-3 bg-white/[0.03] border rounded-xl text-white font-sans text-sm placeholder-zinc-600 focus:outline-none transition-colors ${
                         stepErrors.email || emailStatus === 'conflict'
                           ? 'border-red-500' 
@@ -1077,9 +1808,21 @@ export default function RecruitmentApply({ introCompleted = true, setActivePage 
                   </div>
 
                   <div className="space-y-2">
-                    <label className="block font-mono text-xs text-zinc-300">
-                      Mobile Number *
-                    </label>
+                    <div className="flex items-center justify-between">
+                      <label className="font-mono text-xs text-zinc-300">
+                        Mobile Number *
+                      </label>
+                      {mobileStatus === 'checking' && (
+                        <span className="text-[10px] text-zinc-500 font-mono flex items-center gap-1">
+                          <Loader2 className="w-2.5 h-2.5 animate-spin" /> Checking...
+                        </span>
+                      )}
+                      {mobileStatus === 'valid' && (
+                        <span className="text-[10px] text-emerald-400 font-mono flex items-center gap-1">
+                          <Check className="w-2.5 h-2.5" /> Available
+                        </span>
+                      )}
+                    </div>
                     <div className="relative flex items-center">
                       <span className="absolute left-3.5 text-zinc-500 font-mono text-xs border-r border-white/10 pr-2">
                         +91
@@ -1093,15 +1836,19 @@ export default function RecruitmentApply({ introCompleted = true, setActivePage 
                         placeholder="9876543210"
                         maxLength={10}
                         className={`w-full pl-14 pr-4 py-3 bg-white/[0.03] border rounded-xl text-white font-mono text-sm placeholder-zinc-600 focus:outline-none transition-colors ${
-                          stepErrors.mobileNumber 
+                          stepErrors.mobileNumber || mobileStatus === 'conflict'
                             ? 'border-red-500' 
-                            : 'border-white/10 focus:border-[#FFCC00]'
+                            : mobileStatus === 'valid'
+                              ? 'border-emerald-500/60'
+                              : 'border-white/10 focus:border-[#FFCC00]'
                         }`}
                       />
                     </div>
-                    {stepErrors.mobileNumber && (
+                    {stepErrors.mobileNumber ? (
                       <p className="text-[11px] text-red-400 font-mono">{stepErrors.mobileNumber}</p>
-                    )}
+                    ) : mobileConflictMsg ? (
+                      <p className="text-[11px] text-amber-400 font-mono">{mobileConflictMsg}</p>
+                    ) : null}
                   </div>
                 </div>
               </div>
@@ -1109,14 +1856,16 @@ export default function RecruitmentApply({ introCompleted = true, setActivePage 
 
             {/* STEP 3: ACADEMIC DETAILS */}
             {currentStep === 3 && (
-              <div className="space-y-6 animate-fade-in">
-                <div className="space-y-1 pb-4 border-b border-white/10">
-                  <h2 className="text-xl sm:text-2xl text-white font-mono uppercase tracking-wide">
-                    Academic Details
-                  </h2>
-                  <p className="text-xs sm:text-sm text-zinc-400 font-sans">
-                    Recruitment is strictly open to 1st Year cohort students.
-                  </p>
+              <div className="space-y-6 animate-step-enter">
+                <div className="flex items-baseline justify-between pb-3 border-b border-white/10">
+                  <div className="space-y-0.5">
+                    <h2 className="text-xl sm:text-2xl text-white font-mono uppercase tracking-wide leading-tight">
+                      Academic Details
+                    </h2>
+                    <p className="text-xs text-zinc-400 font-sans">
+                      Recruitment is strictly open to 1st Year cohort students.
+                    </p>
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
@@ -1158,33 +1907,14 @@ export default function RecruitmentApply({ introCompleted = true, setActivePage 
                       value={formData.section}
                       onChange={handleInputChange}
                       onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); validateAndProceed(); } }}
-                      placeholder="e.g. A, B or NIL"
+                      placeholder="e.g. A, B, O, P, or NIL"
                       maxLength={5}
-                      className={`w-full px-4 py-2.5 bg-white/[0.03] border rounded-xl text-white font-mono text-sm uppercase placeholder-zinc-600 focus:outline-none transition-colors ${
+                      className={`w-full px-4 py-3 bg-white/[0.03] border rounded-xl text-white font-mono text-sm uppercase placeholder-zinc-600 focus:outline-none transition-colors ${
                         stepErrors.section 
                           ? 'border-red-500' 
                           : 'border-white/10 focus:border-[#FFCC00]'
                       }`}
                     />
-                    <div className="flex items-center gap-1.5 pt-1">
-                      {['A', 'B', 'C', 'NIL'].map((pill) => (
-                        <button
-                          key={pill}
-                          type="button"
-                          onClick={() => {
-                            setFormData((prev) => ({ ...prev, section: pill }));
-                            setStepErrors((prev) => ({ ...prev, section: '' }));
-                          }}
-                          className={`px-2 py-0.5 rounded text-[11px] font-mono border transition-all cursor-pointer ${
-                            formData.section === pill
-                              ? 'bg-white/20 text-white border-white/40'
-                              : 'bg-white/[0.02] text-zinc-500 border-white/5 hover:text-zinc-300'
-                          }`}
-                        >
-                          {pill}
-                        </button>
-                      ))}
-                    </div>
                     {stepErrors.section && (
                       <p className="text-[11px] text-red-400 font-mono">{stepErrors.section}</p>
                     )}
@@ -1193,278 +1923,259 @@ export default function RecruitmentApply({ introCompleted = true, setActivePage 
               </div>
             )}
 
-            {/* STEP 4: ROLE SELECTION (Inspired by Recruitment.jsx) */}
+            {/* STEP 4: ROLE SELECTION */}
             {currentStep === 4 && (() => {
               const selectedRoleMeta = ROLE_DETAILS[formData.subRole] || {
                 code: 'SPEC',
                 tagline: 'Team Member',
                 description: 'Contribute to team projects and initiatives.',
+                whatWeExpect: [],
+                whatYoullGet: [],
                 responsibilities: [],
                 skills: []
               };
               const accentColor = formData.role === 'Tech' ? '#FFCC00' : '#38bdf8';
-              const SelectedRoleIcon = selectedRoleMeta.icon || Sparkles;
+              const SelectedRoleIcon = selectedRoleMeta.icon || Layers;
 
               return (
-                <div className="space-y-6 animate-fade-in">
-                  <div className="space-y-1 pb-4 border-b border-white/10">
-                    <h2 className="text-xl sm:text-2xl text-white font-mono uppercase tracking-wide">
-                      Choose Role
-                    </h2>
-                    <p className="text-xs sm:text-sm text-zinc-400 font-sans">
-                      Select your division and preferred role.
-                    </p>
-                  </div>
+                <div className="animate-step-enter">
+                  {/* Two columns using full horizontal width: Left = Division & Role Selector, Right = Role Details Preview */}
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
+                    
+                    {/* LEFT PANEL: Division & Role Picker */}
+                    <div className="lg:col-span-4 flex flex-col justify-between p-4 sm:p-5 rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-md relative overflow-hidden">
+                      {/* Subtle ambient glow */}
+                      <div 
+                        className="absolute -top-10 -left-10 w-32 h-32 rounded-full blur-[40px] pointer-events-none opacity-30"
+                        style={{ backgroundColor: accentColor }}
+                      />
 
-                  {/* Division Pill Switcher */}
-                  <div className="inline-flex p-1 rounded-full bg-white/[0.03] border border-white/10">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setFormData((prev) => ({
-                          ...prev,
-                          role: 'Tech',
-                          subRole: ROLE_OPTIONS['Tech'][0]
-                        }));
-                      }}
-                      className={`px-4 py-1.5 rounded-full font-mono text-xs transition-all cursor-pointer ${
-                        formData.role === 'Tech'
-                          ? 'bg-[#FFCC00] text-black font-bold shadow-sm'
-                          : 'text-zinc-400 hover:text-white'
-                      }`}
-                    >
-                      Technical [{ROLE_OPTIONS['Tech']?.length || 2}]
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setFormData((prev) => ({
-                          ...prev,
-                          role: 'Non-Tech',
-                          subRole: ROLE_OPTIONS['Non-Tech'][0]
-                        }));
-                      }}
-                      className={`px-4 py-1.5 rounded-full font-mono text-xs transition-all cursor-pointer ${
-                        formData.role === 'Non-Tech'
-                          ? 'bg-sky-400 text-black font-bold shadow-sm'
-                          : 'text-zinc-400 hover:text-white'
-                      }`}
-                    >
-                      Non-Technical [{ROLE_OPTIONS['Non-Tech']?.length || 4}]
-                    </button>
-                  </div>
-
-                  {/* Role Cards Grid */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5">
-                    {ROLE_OPTIONS[formData.role]?.map((roleName) => {
-                      const meta = ROLE_DETAILS[roleName];
-                      const IconComp = meta?.icon || Sparkles;
-                      const isSelected = formData.subRole === roleName;
-                      const accent = formData.role === 'Tech' ? '#FFCC00' : '#38bdf8';
-
-                      return (
-                        <button
-                          key={roleName}
-                          type="button"
-                          onClick={() => setFormData((prev) => ({ ...prev, subRole: roleName }))}
-                          className={`p-4 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between gap-3 ${
-                            isSelected
-                              ? formData.role === 'Tech'
-                                ? 'border-[#FFCC00] bg-[#FFCC00]/[0.06] shadow-[0_0_20px_rgba(255,204,0,0.15)]'
-                                : 'border-sky-400 bg-sky-400/[0.06] shadow-[0_0_20px_rgba(56,189,248,0.15)]'
-                              : 'border-white/10 bg-white/[0.02] hover:border-white/20 hover:bg-white/[0.04]'
-                          }`}
-                        >
-                          <div className="flex items-center justify-between w-full">
+                      <div className="relative z-10 space-y-3">
+                        <div className="flex items-center justify-between pb-2 border-b border-white/10">
+                          {/* Glass Capsule: Track */}
+                          <div 
+                            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.04] backdrop-blur-xl border border-white/15 shadow-[0_4px_20px_rgba(0,0,0,0.4)]"
+                          >
                             <div 
-                              className="w-10 h-10 rounded-xl flex items-center justify-center border"
+                              className="w-5 h-5 rounded-full flex items-center justify-center shrink-0"
+                              style={{ backgroundColor: `${accentColor}25`, color: accentColor }}
+                            >
+                              <SelectedRoleIcon className="w-3 h-3" />
+                            </div>
+                            <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-white">
+                              {formData.role === 'Tech' ? 'TECH TRACK' : 'NON-TECH TRACK'}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Division Switcher */}
+                        <div className="grid grid-cols-2 p-1 rounded-xl bg-white/[0.03] border border-white/10 gap-1">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setFormData((prev) => ({
+                                ...prev,
+                                role: 'Tech',
+                                subRole: ROLE_OPTIONS['Tech'][0]
+                              }));
+                            }}
+                            className={`py-1.5 rounded-lg font-mono text-xs transition-all cursor-pointer text-center ${
+                              formData.role === 'Tech'
+                                ? 'bg-[#FFCC00] text-black font-bold shadow-sm'
+                                : 'text-zinc-400 hover:text-white'
+                            }`}
+                          >
+                            Tech [{ROLE_OPTIONS['Tech']?.length || 2}]
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setFormData((prev) => ({
+                                ...prev,
+                                role: 'Non-Tech',
+                                subRole: ROLE_OPTIONS['Non-Tech'][0]
+                              }));
+                            }}
+                            className={`py-1.5 rounded-lg font-mono text-xs transition-all cursor-pointer text-center ${
+                              formData.role === 'Non-Tech'
+                                ? 'bg-sky-400 text-black font-bold shadow-sm'
+                                : 'text-zinc-400 hover:text-white'
+                            }`}
+                          >
+                            Non-Tech [{ROLE_OPTIONS['Non-Tech']?.length || 4}]
+                          </button>
+                        </div>
+
+                        {/* Role Buttons List */}
+                        <div className="space-y-1.5 pt-1">
+                          {ROLE_OPTIONS[formData.role]?.map((roleName) => {
+                            const meta = ROLE_DETAILS[roleName];
+                            const IconComp = meta?.icon || Layers;
+                            const isSelected = formData.subRole === roleName;
+                            const accent = formData.role === 'Tech' ? '#FFCC00' : '#38bdf8';
+
+                            return (
+                              <button
+                                key={roleName}
+                                type="button"
+                                onClick={() => setFormData((prev) => ({ ...prev, subRole: roleName }))}
+                                className={`w-full p-2.5 rounded-xl border text-left transition-all cursor-pointer flex items-center justify-between gap-2.5 ${
+                                  isSelected
+                                    ? formData.role === 'Tech'
+                                      ? 'border-[#FFCC00] bg-[#FFCC00]/10 text-white shadow-[0_0_12px_rgba(255,204,0,0.12)]'
+                                      : 'border-sky-400 bg-sky-400/10 text-white shadow-[0_0_12px_rgba(56,189,248,0.12)]'
+                                    : 'border-white/10 bg-white/[0.02] text-zinc-400 hover:border-white/20 hover:text-white'
+                                }`}
+                              >
+                                <div className="flex items-center gap-2.5 min-w-0">
+                                  <div 
+                                    className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 border"
+                                    style={{
+                                      backgroundColor: isSelected ? `${accent}25` : 'rgba(255,255,255,0.03)',
+                                      borderColor: isSelected ? accent : 'rgba(255,255,255,0.1)',
+                                      color: isSelected ? accent : '#a1a1aa'
+                                    }}
+                                  >
+                                    <IconComp className="w-3.5 h-3.5" />
+                                  </div>
+                                  <span className="font-mono text-xs font-semibold uppercase truncate">
+                                    {roleName}
+                                  </span>
+                                </div>
+
+                                <div 
+                                  className={`w-2 h-2 rounded-full shrink-0 ${
+                                    isSelected 
+                                      ? formData.role === 'Tech' ? 'bg-[#FFCC00]' : 'bg-sky-400' 
+                                      : 'bg-white/10'
+                                  }`}
+                                />
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* RIGHT PANEL: Role Preview Details Card (Matching Inspiration Modal) */}
+                    <div className="lg:col-span-8">
+                      <div 
+                        className="relative h-full rounded-2xl p-5 sm:p-6 border bg-white/[0.02] backdrop-blur-xl transition-all duration-300 flex flex-col justify-between overflow-hidden"
+                        style={{
+                          borderColor: `${accentColor}35`,
+                          boxShadow: `0 10px 35px rgba(0,0,0,0.5), 0 0 30px ${accentColor}12`
+                        }}
+                      >
+                        {/* Ambient subtle glow */}
+                        <div 
+                          className="absolute -bottom-10 -right-10 w-44 h-44 rounded-full blur-[50px] pointer-events-none opacity-20"
+                          style={{ backgroundColor: accentColor }}
+                        />
+
+                        <div className="relative z-10 space-y-4">
+                          {/* Header: Role identity */}
+                          <div className="flex items-center justify-between gap-3 pb-3 border-b border-white/10">
+                            <div className="flex items-center gap-3">
+                              <div 
+                                className="w-10 h-10 rounded-xl border flex items-center justify-center shrink-0"
+                                style={{
+                                  backgroundColor: `${accentColor}20`,
+                                  borderColor: `${accentColor}50`,
+                                  color: accentColor
+                                }}
+                              >
+                                <SelectedRoleIcon className="w-5 h-5" />
+                              </div>
+                              <div>
+                                <h3 
+                                  className="text-2xl sm:text-3xl font-bold uppercase tracking-wider text-white font-mono leading-none"
+                                  style={{ fontFamily: "'VT323', monospace" }}
+                                >
+                                  {formData.subRole}
+                                </h3>
+                                <p className="text-xs text-zinc-300 font-sans mt-0.5">
+                                  {selectedRoleMeta.tagline}
+                                </p>
+                              </div>
+                            </div>
+
+                            <span 
+                              className="px-2.5 py-0.5 rounded-full font-mono text-[10px] font-semibold border hidden sm:inline-block"
                               style={{
-                                backgroundColor: isSelected ? `${accent}20` : 'rgba(255,255,255,0.03)',
-                                borderColor: isSelected ? accent : 'rgba(255,255,255,0.1)',
-                                color: isSelected ? accent : '#a1a1aa'
+                                borderColor: `${accentColor}50`,
+                                backgroundColor: `${accentColor}10`,
+                                color: accentColor
                               }}
                             >
-                              <IconComp className="w-5 h-5" />
-                            </div>
-                            <span className={`w-2 h-2 rounded-full ${
-                              isSelected ? 'bg-white' : 'bg-transparent border border-white/20'
-                            }`} />
-                          </div>
-                          <div>
-                            <h4 className="font-mono text-sm font-bold text-white uppercase">
-                              {roleName}
-                            </h4>
-                            <p className="text-xs text-zinc-400 font-sans mt-0.5 line-clamp-2">
-                              {meta?.tagline}
-                            </p>
-                          </div>
-                        </button>
-                      );
-                    })}
-                  </div>
-
-                  {/* ID CARD PREVIEW */}
-                  <div className="relative mt-8 pt-2">
-                    {/* Lanyard punch hole */}
-                    <div className="w-16 h-3 rounded-full bg-black/90 border border-white/20 mx-auto -mb-1.5 shadow-inner relative z-20 flex items-center justify-center">
-                      <div className="w-8 h-1 rounded-full bg-white/10" />
-                    </div>
-
-                    {/* Card body */}
-                    <div 
-                      className="relative rounded-3xl p-6 sm:p-8 border bg-gradient-to-b from-[#14151f] via-[#090a10] to-[#040407] backdrop-blur-2xl shadow-2xl overflow-hidden transition-all duration-500"
-                      style={{
-                        borderColor: `${accentColor}40`,
-                        boxShadow: `0 20px 60px rgba(0,0,0,0.8), 0 0 40px ${accentColor}15`
-                      }}
-                    >
-                      {/* Subtle holographic gradient shine */}
-                      <div 
-                        className="absolute -right-24 -top-24 w-80 h-80 rounded-full blur-3xl pointer-events-none opacity-20"
-                        style={{ background: accentColor }}
-                      />
-                      <div className="absolute inset-0 nothing-dot-grid opacity-10 pointer-events-none" />
-
-                      {/* Top Header Row: Metallic SIM Chip & Badge ID */}
-                      <div className="relative z-10 flex items-center justify-between gap-4 pb-6 border-b border-white/10">
-                        <div className="flex items-center gap-3">
-                          {/* Metallic Chip */}
-                          <div className="w-10 h-7 rounded bg-gradient-to-br from-amber-400 via-yellow-200 to-amber-600 border border-amber-300/60 shadow-inner flex flex-col justify-around p-1 shrink-0">
-                            <div className="w-full h-px bg-amber-800/40" />
-                            <div className="w-full h-px bg-amber-800/40" />
-                            <div className="w-full h-px bg-amber-800/40" />
-                          </div>
-                          <div>
-                            <span className="font-mono text-[10px] uppercase tracking-widest text-zinc-400 block">
-                              ID: CLS-2024-{selectedRoleMeta.code || 'SPEC'}
-                            </span>
-                            <span className="font-mono text-xs font-bold text-white tracking-wider">
-                              CELESTIUS // INDUCTION PASS
+                              {selectedRoleMeta.division || formData.role} TRACK
                             </span>
                           </div>
-                        </div>
 
-                        <div 
-                          className="px-3 py-1 rounded-full font-mono text-[11px] font-semibold border flex items-center gap-1.5"
-                          style={{
-                            borderColor: `${accentColor}60`,
-                            backgroundColor: `${accentColor}15`,
-                            color: accentColor
-                          }}
-                        >
-                          <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: accentColor }} />
-                          {selectedRoleMeta.division || formData.role} DIVISION
-                        </div>
-                      </div>
-
-                      {/* Role Identity Block */}
-                      <div className="relative z-10 py-6 flex flex-col sm:flex-row items-start sm:items-center gap-5 border-b border-white/10">
-                        <div 
-                          className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl border flex items-center justify-center shrink-0 shadow-lg"
-                          style={{
-                            backgroundColor: `${accentColor}15`,
-                            borderColor: `${accentColor}50`,
-                            color: accentColor
-                          }}
-                        >
-                          <SelectedRoleIcon className="w-8 h-8 sm:w-10 sm:h-10" />
-                        </div>
-                        <div className="space-y-1">
-                          <span className="font-mono text-[10px] tracking-widest uppercase text-zinc-500">
-                            DESIGNATED SPECIALIZATION
-                          </span>
-                          <h3 
-                            className="text-2xl sm:text-3xl font-bold uppercase tracking-wider text-white font-mono"
-                            style={{ fontFamily: "'VT323', monospace" }}
-                          >
-                            {formData.subRole}
-                          </h3>
-                          <p className="text-xs sm:text-sm text-zinc-400 font-sans">
-                            {selectedRoleMeta.tagline}
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Role Overview */}
-                      <div className="relative z-10 py-5 border-b border-white/10 space-y-2">
-                        <span className="font-mono text-[10px] text-zinc-500 tracking-wider uppercase block">
-                          // ROLE OVERVIEW
-                        </span>
-                        <p className="text-xs sm:text-sm text-zinc-300 font-sans leading-relaxed">
-                          {selectedRoleMeta.description}
-                        </p>
-                      </div>
-
-                      {/* Key Responsibilities */}
-                      {selectedRoleMeta.responsibilities && selectedRoleMeta.responsibilities.length > 0 && (
-                        <div className="relative z-10 py-5 border-b border-white/10 space-y-3">
-                          <span className="font-mono text-[10px] text-zinc-500 tracking-wider uppercase block">
-                            // KEY RESPONSIBILITIES
-                          </span>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
-                            {selectedRoleMeta.responsibilities.map((resp, idx) => (
-                              <div 
-                                key={idx} 
-                                className="flex items-start gap-2.5 p-2.5 rounded-xl bg-white/[0.02] border border-white/5 text-xs text-zinc-300 font-sans leading-relaxed"
-                              >
-                                <CheckCircle2 
-                                  className="w-3.5 h-3.5 mt-0.5 shrink-0" 
-                                  style={{ color: accentColor }} 
-                                />
-                                <span>{resp}</span>
+                          {/* 2-Column Side-by-Side: What We Expect & What You'll Get */}
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-7 pt-1 text-left">
+                            {/* Column 1: WHAT WE EXPECT */}
+                            <div className="space-y-3">
+                              <div className="flex items-baseline justify-between pb-1.5 border-b border-white/10">
+                                <h4 
+                                  className="text-2xl sm:text-3xl uppercase tracking-wider leading-none select-none"
+                                  style={{ 
+                                    fontFamily: "'VT323', monospace",
+                                    color: accentColor 
+                                  }}
+                                >
+                                  WHAT WE EXPECT
+                                </h4>
                               </div>
-                            ))}
+
+                              <div className="space-y-2">
+                                {(selectedRoleMeta.whatWeExpect || selectedRoleMeta.responsibilities)?.map((item, idx) => (
+                                  <div key={idx} className="flex items-start gap-2.5 group">
+                                    <span 
+                                      className="font-mono text-base font-bold shrink-0 leading-none mt-0.5 select-none transition-transform duration-200 group-hover:translate-x-0.5"
+                                      style={{ color: accentColor }}
+                                    >
+                                      ›
+                                    </span>
+                                    <p className="font-sans text-xs text-zinc-300 group-hover:text-white leading-snug transition-colors">
+                                      {item}
+                                    </p>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+
+                            {/* Column 2: WHAT YOU’LL GET */}
+                            <div className="space-y-3">
+                              <div className="flex items-baseline justify-between pb-1.5 border-b border-white/10">
+                                <h4 
+                                  className="text-2xl sm:text-3xl uppercase tracking-wider leading-none text-white select-none"
+                                  style={{ fontFamily: "'VT323', monospace" }}
+                                >
+                                  WHAT YOU’LL GET
+                                </h4>
+                              </div>
+
+                              <div className="space-y-2">
+                                {(selectedRoleMeta.whatYoullGet || selectedRoleMeta.skills)?.map((item, idx) => (
+                                  <div key={idx} className="flex items-start gap-2.5 group">
+                                    <span 
+                                      className="font-mono text-xs font-bold shrink-0 leading-none mt-1 select-none transition-transform duration-200 group-hover:translate-x-0.5"
+                                      style={{ color: accentColor }}
+                                    >
+                                      →
+                                    </span>
+                                    <p className="font-sans text-xs text-zinc-300 group-hover:text-white leading-snug transition-colors">
+                                      {item}
+                                    </p>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      )}
-
-                      {/* Expected Skills & Tooling */}
-                      {selectedRoleMeta.skills && selectedRoleMeta.skills.length > 0 && (
-                        <div className="relative z-10 py-5 border-b border-white/10 space-y-3">
-                          <span className="font-mono text-[10px] text-zinc-500 tracking-wider uppercase block">
-                            // EXPECTED SKILLS & TOOLING
-                          </span>
-                          <div className="flex flex-wrap items-center gap-2">
-                            {selectedRoleMeta.skills.map((skill, idx) => (
-                              <span 
-                                key={idx} 
-                                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/[0.03] border border-white/10 hover:border-white/20 text-xs font-mono text-zinc-300 transition-colors"
-                              >
-                                {renderSkillLogo(skill)}
-                                <span>{skill}</span>
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Card Footer / Digital Barcode Strip */}
-                      <div className="relative z-10 pt-5 flex flex-col sm:flex-row items-center justify-between gap-4">
-                        <div className="flex items-center gap-3">
-                          <div className="flex items-center gap-[2px] h-6 px-2 py-1 bg-white/5 rounded border border-white/10">
-                            <div className="w-[3px] h-full bg-white/70" />
-                            <div className="w-[1px] h-full bg-white/40" />
-                            <div className="w-[2px] h-full bg-white/70" />
-                            <div className="w-[4px] h-full bg-white/80" />
-                            <div className="w-[1px] h-full bg-white/40" />
-                            <div className="w-[3px] h-full bg-white/70" />
-                            <div className="w-[2px] h-full bg-white/50" />
-                            <div className="w-[1px] h-full bg-white/30" />
-                            <div className="w-[3px] h-full bg-white/70" />
-                            <div className="w-[2px] h-full bg-white/60" />
-                            <div className="w-[4px] h-full bg-white/80" />
-                            <div className="w-[1px] h-full bg-white/40" />
-                          </div>
-                          <span className="font-mono text-[10px] text-zinc-500 tracking-wider">
-                            AUTH: CIT-CLS-2024
-                          </span>
-                        </div>
-
-                        <span className="font-mono text-[10px] text-zinc-500 tracking-wider uppercase">
-                          ACTIVE ROLE SPECIFICATION
-                        </span>
                       </div>
                     </div>
+
                   </div>
                 </div>
               );
@@ -1472,20 +2183,22 @@ export default function RecruitmentApply({ introCompleted = true, setActivePage 
 
             {/* STEP 5: PROFILES */}
             {currentStep === 5 && (
-              <div className="space-y-6 animate-fade-in">
-                <div className="space-y-1 pb-4 border-b border-white/10">
-                  <h2 className="text-xl sm:text-2xl text-white font-mono uppercase tracking-wide">
-                    Online Profiles
-                  </h2>
-                  <p className="text-xs sm:text-sm text-zinc-400 font-sans">
-                    Enter your GitHub and LinkedIn handles.
-                  </p>
+              <div className="space-y-6 animate-step-enter">
+                <div className="flex items-baseline justify-between pb-3 border-b border-white/10">
+                  <div className="space-y-0.5">
+                    <h2 className="text-xl sm:text-2xl text-white font-mono uppercase tracking-wide leading-tight">
+                      Online Profiles
+                    </h2>
+                    <p className="text-xs text-zinc-400 font-sans">
+                      Connect your developer and professional profiles (optional).
+                    </p>
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div className="space-y-2">
                     <label className="block font-mono text-xs text-zinc-300">
-                      GitHub Username *
+                      GitHub Username <span className="text-zinc-500 font-normal">(Optional)</span>
                     </label>
                     <div className="relative">
                       <span className="absolute left-3.5 top-1/2 -translate-y-1/2 font-mono text-zinc-500 text-sm">
@@ -1498,7 +2211,6 @@ export default function RecruitmentApply({ introCompleted = true, setActivePage 
                         onChange={handleInputChange}
                         onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); validateAndProceed(); } }}
                         placeholder="e.g. torvalds"
-                        autoFocus
                         className={`w-full pl-8 pr-4 py-3 bg-white/[0.03] border rounded-xl text-white font-mono text-sm placeholder-zinc-600 focus:outline-none transition-colors ${
                           stepErrors.githubUsername 
                             ? 'border-red-500' 
@@ -1513,7 +2225,7 @@ export default function RecruitmentApply({ introCompleted = true, setActivePage 
 
                   <div className="space-y-2">
                     <label className="block font-mono text-xs text-zinc-300">
-                      LinkedIn Profile Handle *
+                      LinkedIn Profile Handle <span className="text-zinc-500 font-normal">(Optional)</span>
                     </label>
                     <div className="relative">
                       <span className="absolute left-3.5 top-1/2 -translate-y-1/2 font-mono text-zinc-500 text-xs">
@@ -1566,85 +2278,406 @@ export default function RecruitmentApply({ introCompleted = true, setActivePage 
               </div>
             )}
 
-            {/* STEP 6: REVIEW & SUBMIT */}
-            {currentStep === 6 && (
-              <div className="space-y-6 animate-fade-in">
-                <div className="space-y-1 pb-4 border-b border-white/10">
-                  <h2 className="text-xl sm:text-2xl text-white font-mono uppercase tracking-wide">
-                    Review Application
-                  </h2>
-                  <p className="text-xs sm:text-sm text-zinc-400 font-sans">
-                    Please review your information before final dispatch.
+            {/* STEP 6: REVIEW & SUBMIT (DUAL-SIDED LANYARD ID BADGE) */}
+            {currentStep === 6 && (() => {
+              const cardTheme = isTech
+                ? {
+                    gradient: 'from-[#FFE043] via-[#FFCC00] to-[#E5A800]',
+                    accent: '#FFCC00',
+                    tag: 'TECH DIVISION',
+                    pillBg: 'bg-[#FFCC00]',
+                    glow: 'rgba(255, 204, 0, 0.4)'
+                  }
+                : {
+                    gradient: 'from-[#06B6D4] via-[#0284C7] to-[#1E3A8A]',
+                    accent: '#38BDF8',
+                    tag: 'NON-TECH DIVISION',
+                    pillBg: 'bg-sky-400',
+                    glow: 'rgba(56, 189, 248, 0.4)'
+                  };
+
+              return (
+                <div className="space-y-4 sm:space-y-6 animate-step-enter">
+                  {/* Top Step Header */}
+                  <div className="flex items-baseline justify-between pb-2 border-b border-white/10">
+                    <div className="space-y-0.5">
+                      <h2 className="text-xl sm:text-2xl text-white font-mono uppercase tracking-wide leading-tight">
+                        Review Application
+                      </h2>
+                      <p className="text-xs text-zinc-400 font-sans">
+                        Verify your official candidate credential pass before final dispatch.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* GLASSY HANGING FRONT ID BADGE + STRUCTURED QUICK SUMMARY */}
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start pt-2">
+                    
+                    {/* ======================================================== */}
+                    {/* 1. LEFT: SINGLE GLASSY HANGING FRONT ID BADGE (lg:col-span-5) */}
+                    {/* ======================================================== */}
+                    <div className="lg:col-span-5 flex flex-col items-center w-full max-w-[340px] sm:max-w-[360px] mx-auto animate-id-card-drop">
+                      <div className="w-full flex flex-col items-center animate-badge-sway origin-top transition-transform">
+                        {/* Realistic Chrome Swivel Lanyard Clasp */}
+                        <LanyardHook />
+
+                      {/* Front Card Body - Glassmorphic / Glassy UI */}
+                      <div className="w-full rounded-[32px] overflow-hidden border border-white/25 bg-white/[0.04] backdrop-blur-2xl shadow-[0_25px_60px_rgba(0,0,0,0.85),inset_0_1px_1px_rgba(255,255,255,0.25)] relative flex flex-col justify-between text-left select-none group transition-all duration-500 hover:shadow-[0_30px_70px_rgba(255,204,0,0.18),inset_0_1px_2px_rgba(255,255,255,0.4)]">
+                        
+                        {/* Diagonal Glass Specular Sheen Overlay */}
+                        <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-white/[0.08] via-transparent to-white/[0.02] z-30" />
+
+                        {/* Upper Fluid Color Wave & Diagonal Pill Accent */}
+                        <div className={`relative h-56 w-full bg-gradient-to-br ${cardTheme.gradient} overflow-hidden`}>
+                          {/* Smooth curved boundary at bottom of fluid section */}
+                          <svg viewBox="0 0 360 220" className="absolute -bottom-1 inset-x-0 w-full h-28 pointer-events-none" preserveAspectRatio="none">
+                            <path d="M 0 50 Q 180 130 360 30 L 360 220 L 0 220 Z" fill="#0b0f19" fillOpacity="0.85" />
+                          </svg>
+
+                          {/* Diagonal Passing Rounded Pill Stripe (Signature Reference Element) */}
+                          <div className="absolute -top-6 right-2 w-52 h-14 rounded-full bg-white/90 backdrop-blur-md rotate-[32deg] shadow-lg pointer-events-none" />
+                          <div className={`absolute top-20 right-8 w-8 h-8 rounded-full shadow-md pointer-events-none ${isTech ? 'bg-amber-100/90' : 'bg-emerald-400/90'}`} />
+
+                          {/* Circular Lanyard Punch Hole */}
+                          <div className="absolute top-3.5 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-[#050508]/80 backdrop-blur-sm border-2 border-white/40 shadow-[inset_0_2px_4px_rgba(0,0,0,0.95)] z-20 flex items-center justify-center">
+                            <div className="w-3.5 h-3.5 rounded-full bg-black/90" />
+                          </div>
+
+                          {/* Left-edge stacked triangles (Signature Reference Element) */}
+                          <div className={`absolute top-20 left-4 flex flex-col gap-1 text-[8px] font-mono select-none ${isTech ? 'text-zinc-950/70' : 'text-white/80'}`}>
+                            <span>▲</span>
+                            <span>▲</span>
+                            <span>▲</span>
+                            <span>▲</span>
+                          </div>
+
+                          {/* Top URL / Subtitle */}
+                          <div className={`absolute top-3.5 left-6 text-[10px] font-mono tracking-widest uppercase font-bold ${isTech ? 'text-zinc-950' : 'text-white/90'}`}>
+                            CELESTIUS
+                          </div>
+                          <div className={`absolute top-3.5 right-6 text-[10px] font-mono tracking-widest uppercase font-bold ${isTech ? 'text-zinc-950' : 'text-white/90'}`}>
+                            {cardTheme.tag}
+                          </div>
+                        </div>
+
+                        {/* Circular Avatar Photo (Overlapping the fluid boundary) */}
+                        <div className="relative -mt-24 mx-auto z-20 flex flex-col items-center">
+                          <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full p-2 bg-white/20 backdrop-blur-md border border-white/40 shadow-[0_14px_35px_rgba(0,0,0,0.7)] relative group/avatar">
+                            {githubData?.avatar_url ? (
+                              <img src={githubData.avatar_url} alt={formData.Name} className="w-full h-full rounded-full object-cover shadow-inner" />
+                            ) : (
+                              <div className="w-full h-full rounded-full bg-gradient-to-b from-zinc-800 to-zinc-950 flex items-center justify-center shadow-inner">
+                                <span className="font-ndot text-4xl sm:text-5xl text-white select-none leading-none" style={{ fontFamily: "'VT323', monospace" }}>
+                                  {formData.Name ? formData.Name.trim().charAt(0).toUpperCase() : 'C'}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Candidate Name & Role Section */}
+                        <div className="px-6 text-center space-y-1.5 pt-2 z-10 relative">
+                          <div className="leading-tight">
+                            <span className="text-xl sm:text-2xl font-light text-zinc-300 block tracking-wide truncate px-2" title={formData.Name?.trim() || 'Candidate'}>
+                              {formData.Name?.trim() || 'Candidate'}
+                            </span>
+                            <span className="text-2xl sm:text-3xl font-extrabold text-white uppercase tracking-tight block">
+                              APPLICANT
+                            </span>
+                          </div>
+
+                          {/* Role Title */}
+                          <div className="flex items-center justify-center pt-1">
+                            <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white/[0.08] backdrop-blur-md border border-white/20 shadow-sm">
+                              <SelectedRoleIcon className="w-3.5 h-3.5" style={{ color: cardTheme.accent }} />
+                              <span className="text-xs font-mono font-semibold text-white uppercase tracking-wider">
+                                {formData.subRole}
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Right edge small triangles on dark body */}
+                          <div className="absolute top-12 right-4 flex flex-col gap-1 text-[8px] text-white/30 font-mono select-none">
+                            <span>▲</span>
+                            <span>▲</span>
+                            <span>▲</span>
+                            <span>▲</span>
+                          </div>
+                        </div>
+
+                        {/* Bottom Divided Info Columns */}
+                        <div className="mx-5 mt-5 pt-3.5 border-t border-white/10 grid grid-cols-2 gap-3 text-left text-xs font-mono z-10">
+                          <div>
+                            <span className="text-[10px] text-zinc-400 uppercase font-semibold block">ACADEMICS</span>
+                            <p className="text-white font-bold text-xs truncate mt-0.5">{formData.regNumber || 'PENDING'}</p>
+                            <p className="text-zinc-300 text-[11px] truncate">{formData.department} · Sec {formData.section || 'NIL'}</p>
+                          </div>
+
+                          <div>
+                            <span className="text-[10px] text-zinc-400 uppercase font-semibold block">CONTACT</span>
+                            <p className="text-white font-bold text-xs truncate mt-0.5">+91 {formData.mobileNumber || '—'}</p>
+                            <p className="text-zinc-300 text-[11px] truncate" title={formData.email}>{formData.email || '—'}</p>
+                          </div>
+                        </div>
+
+                        {/* Integrated Bottom Barcode & Registration ID Strip */}
+                        <div className="mx-5 my-4 pt-3 border-t border-white/10 flex flex-col items-center justify-center gap-1 z-10">
+                          <IdBadgeBarcode />
+                          <span className="text-[9px] font-mono text-zinc-400 block tracking-widest uppercase mt-0.5">
+                            Reg-{formData.regNumber || '2026-0000'}
+                          </span>
+                        </div>
+
+                        {/* Subtle Bottom Card Ambient Glow */}
+                        <div 
+                          className="absolute -bottom-10 -left-10 w-36 h-36 rounded-full blur-[40px] pointer-events-none opacity-25"
+                          style={{ backgroundColor: cardTheme.accent }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                    {/* ======================================================== */}
+                    {/* 2. RIGHT: STRUCTURED QUICK SUMMARY LIST (lg:col-span-7)  */}
+                    {/* ======================================================== */}
+                    <div className="lg:col-span-7 space-y-3 w-full">
+                      {/* Section Title */}
+                      <div 
+                        className="flex items-center justify-between pb-1 px-1 animate-detail-card"
+                        style={{ animationDelay: '600ms' }}
+                      >
+                        <div>
+                          <h3 className="text-sm sm:text-base font-mono uppercase tracking-wider text-white font-bold flex items-center gap-2">
+                            <Layers className="w-4 h-4 text-[#FFCC00]" />
+                            <span>Quick Application Summary</span>
+                          </h3>
+                          <p className="text-xs text-zinc-400 font-sans mt-0.5">
+                            Verify your details. Click any section's edit button to quickly adjust entries.
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* 1. Personal Details (Step 01) */}
+                      <div 
+                        className="p-3.5 rounded-2xl bg-white/[0.03] hover:bg-white/[0.05] backdrop-blur-md border border-white/10 hover:border-white/20 transition-all duration-200 animate-detail-card"
+                        style={{ animationDelay: '780ms' }}
+                      >
+                        <div className="flex items-center justify-between pb-2 mb-2 border-b border-white/5">
+                          <div className="flex items-center gap-2">
+                            <div className="w-6 h-6 rounded-lg bg-amber-400/10 border border-amber-400/20 flex items-center justify-center text-amber-400">
+                              <User className="w-3.5 h-3.5" />
+                            </div>
+                            <span className="font-mono text-xs text-zinc-300 uppercase font-semibold tracking-wider">
+                              01 · Personal Information
+                            </span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleJumpToStep(1)}
+                            className="inline-flex items-center gap-1 text-xs font-mono text-[#FFCC00] hover:text-[#FFE066] hover:underline cursor-pointer transition-colors"
+                          >
+                            <Edit3 className="w-3 h-3" />
+                            <span>Edit</span>
+                          </button>
+                        </div>
+                        <div className="text-xs font-mono">
+                          <span className="text-[10px] text-zinc-400 block uppercase tracking-wider">Candidate Full Name</span>
+                          <span className="text-white font-medium text-sm block mt-0.5 truncate">
+                            {formData.Name || '—'}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* 2. Contact Details (Step 02) */}
+                      <div 
+                        className="p-3.5 rounded-2xl bg-white/[0.03] hover:bg-white/[0.05] backdrop-blur-md border border-white/10 hover:border-white/20 transition-all duration-200 animate-detail-card"
+                        style={{ animationDelay: '960ms' }}
+                      >
+                        <div className="flex items-center justify-between pb-2 mb-2 border-b border-white/5">
+                          <div className="flex items-center gap-2">
+                            <div className="w-6 h-6 rounded-lg bg-sky-400/10 border border-sky-400/20 flex items-center justify-center text-sky-400">
+                              <Mail className="w-3.5 h-3.5" />
+                            </div>
+                            <span className="font-mono text-xs text-zinc-300 uppercase font-semibold tracking-wider">
+                              02 · Contact Details
+                            </span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleJumpToStep(2)}
+                            className="inline-flex items-center gap-1 text-xs font-mono text-[#FFCC00] hover:text-[#FFE066] hover:underline cursor-pointer transition-colors"
+                          >
+                            <Edit3 className="w-3 h-3" />
+                            <span>Edit</span>
+                          </button>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs font-mono">
+                          <div>
+                            <span className="text-[10px] text-zinc-400 block uppercase tracking-wider">Email Address</span>
+                            <span className="text-white font-medium text-xs block mt-0.5 truncate" title={formData.email}>
+                              {formData.email || '—'}
+                            </span>
+                          </div>
+                          <div>
+                            <span className="text-[10px] text-zinc-400 block uppercase tracking-wider">Mobile Number</span>
+                            <span className="text-white font-medium text-xs block mt-0.5">
+                              {formData.mobileNumber ? `+91 ${formData.mobileNumber}` : '—'}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* 3. Academic Credentials (Step 03) */}
+                      <div 
+                        className="p-3.5 rounded-2xl bg-white/[0.03] hover:bg-white/[0.05] backdrop-blur-md border border-white/10 hover:border-white/20 transition-all duration-200 animate-detail-card"
+                        style={{ animationDelay: '1140ms' }}
+                      >
+                        <div className="flex items-center justify-between pb-2 mb-2 border-b border-white/5">
+                          <div className="flex items-center gap-2">
+                            <div className="w-6 h-6 rounded-lg bg-emerald-400/10 border border-emerald-400/20 flex items-center justify-center text-emerald-400">
+                              <GraduationCap className="w-3.5 h-3.5" />
+                            </div>
+                            <span className="font-mono text-xs text-zinc-300 uppercase font-semibold tracking-wider">
+                              03 · Academic Credentials
+                            </span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleJumpToStep(3)}
+                            className="inline-flex items-center gap-1 text-xs font-mono text-[#FFCC00] hover:text-[#FFE066] hover:underline cursor-pointer transition-colors"
+                          >
+                            <Edit3 className="w-3 h-3" />
+                            <span>Edit</span>
+                          </button>
+                        </div>
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-xs font-mono">
+                          <div>
+                            <span className="text-[10px] text-zinc-400 block uppercase tracking-wider">Register No.</span>
+                            <span className="text-white font-bold text-xs block mt-0.5 truncate">
+                              {formData.regNumber || '—'}
+                            </span>
+                          </div>
+                          <div>
+                            <span className="text-[10px] text-zinc-400 block uppercase tracking-wider">Department</span>
+                            <span className="text-white font-medium text-xs block mt-0.5 truncate">
+                              {formData.department || 'CSE'}
+                            </span>
+                          </div>
+                          <div>
+                            <span className="text-[10px] text-zinc-400 block uppercase tracking-wider">Section</span>
+                            <span className="text-white font-medium text-xs block mt-0.5">
+                              {formData.section ? `Sec ${formData.section}` : 'NIL'}
+                            </span>
+                          </div>
+                          <div>
+                            <span className="text-[10px] text-zinc-400 block uppercase tracking-wider">Year of Study</span>
+                            <span className="text-white font-medium text-xs block mt-0.5">
+                              {formData.year || '1st Year'}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* 4. Track & Role (Step 04) */}
+                      <div 
+                        className="p-3.5 rounded-2xl bg-white/[0.03] hover:bg-white/[0.05] backdrop-blur-md border border-white/10 hover:border-white/20 transition-all duration-200 animate-detail-card"
+                        style={{ animationDelay: '1320ms' }}
+                      >
+                        <div className="flex items-center justify-between pb-2 mb-2 border-b border-white/5">
+                          <div className="flex items-center gap-2">
+                            <div className="w-6 h-6 rounded-lg bg-purple-400/10 border border-purple-400/20 flex items-center justify-center text-purple-400">
+                              <Sparkles className="w-3.5 h-3.5" />
+                            </div>
+                            <span className="font-mono text-xs text-zinc-300 uppercase font-semibold tracking-wider">
+                              04 · Track & Role Selection
+                            </span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleJumpToStep(4)}
+                            className="inline-flex items-center gap-1 text-xs font-mono text-[#FFCC00] hover:text-[#FFE066] hover:underline cursor-pointer transition-colors"
+                          >
+                            <Edit3 className="w-3 h-3" />
+                            <span>Edit</span>
+                          </button>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs font-mono">
+                          <div>
+                            <span className="text-[10px] text-zinc-400 block uppercase tracking-wider">Track Division</span>
+                            <span className="text-white font-semibold text-xs inline-flex items-center gap-1.5 mt-0.5">
+                              <span className={`w-2 h-2 rounded-full ${isTech ? 'bg-amber-400' : 'bg-sky-400'}`} />
+                              {formData.role} Division
+                            </span>
+                          </div>
+                          <div>
+                            <span className="text-[10px] text-zinc-400 block uppercase tracking-wider">Applied Role</span>
+                            <span className="text-white font-bold text-xs flex items-center gap-1.5 mt-0.5">
+                              <SelectedRoleIcon className="w-3.5 h-3.5" style={{ color: cardTheme.accent }} />
+                              {formData.subRole}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* 5. Online Presence & Portfolios (Step 05) */}
+                      <div 
+                        className="p-3.5 rounded-2xl bg-white/[0.03] hover:bg-white/[0.05] backdrop-blur-md border border-white/10 hover:border-white/20 transition-all duration-200 animate-detail-card"
+                        style={{ animationDelay: '1500ms' }}
+                      >
+                        <div className="flex items-center justify-between pb-2 mb-2 border-b border-white/5">
+                          <div className="flex items-center gap-2">
+                            <div className="w-6 h-6 rounded-lg bg-zinc-400/10 border border-zinc-400/20 flex items-center justify-center text-zinc-300">
+                              <Globe className="w-3.5 h-3.5" />
+                            </div>
+                            <span className="font-mono text-xs text-zinc-300 uppercase font-semibold tracking-wider">
+                              05 · Digital Profiles & Portfolio
+                            </span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleJumpToStep(5)}
+                            className="inline-flex items-center gap-1 text-xs font-mono text-[#FFCC00] hover:text-[#FFE066] hover:underline cursor-pointer transition-colors"
+                          >
+                            <Edit3 className="w-3 h-3" />
+                            <span>Edit</span>
+                          </button>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs font-mono">
+                          <div>
+                            <span className="text-[10px] text-zinc-400 block uppercase tracking-wider">GitHub Handle</span>
+                            <span className="text-white font-medium text-xs flex items-center gap-1.5 mt-0.5 truncate">
+                              <Github className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
+                              {formData.githubUsername ? `@${formData.githubUsername.replace(/^@/, '')}` : '—'}
+                            </span>
+                          </div>
+                          <div>
+                            <span className="text-[10px] text-zinc-400 block uppercase tracking-wider">LinkedIn Profile</span>
+                            <span className="text-white font-medium text-xs flex items-center gap-1.5 mt-0.5 truncate">
+                              <Linkedin className="w-3.5 h-3.5 text-[#0A66C2] shrink-0" />
+                              {formData.linkedinUsername || '—'}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+
+                  <p 
+                    className="text-[11px] text-zinc-500 font-mono text-center pt-2 animate-detail-card"
+                    style={{ animationDelay: '1680ms' }}
+                  >
+                    By submitting, you confirm that you are a 1st-year student at CIT Chennai and the submitted details are accurate.
                   </p>
                 </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-                  {/* Personal */}
-                  <div className="p-4 rounded-xl bg-white/[0.02] border border-white/10 space-y-2">
-                    <div className="flex items-center justify-between pb-1.5 border-b border-white/5">
-                      <span className="text-zinc-400 font-bold uppercase">Personal</span>
-                      <button onClick={() => setCurrentStep(1)} className="text-[#FFCC00] hover:underline cursor-pointer">
-                        Edit
-                      </button>
-                    </div>
-                    <div className="space-y-1 text-zinc-300">
-                      <div className="flex justify-between"><span className="text-zinc-500">Name:</span> <span className="text-white">{formData.Name}</span></div>
-                      <div className="flex justify-between"><span className="text-zinc-500">Reg No:</span> <span className="text-white">{formData.regNumber}</span></div>
-                      <div className="flex justify-between"><span className="text-zinc-500">Dept:</span> <span className="text-white">{formData.department} (Sec {formData.section})</span></div>
-                    </div>
-                  </div>
-
-                  {/* Contact */}
-                  <div className="p-4 rounded-xl bg-white/[0.02] border border-white/10 space-y-2">
-                    <div className="flex items-center justify-between pb-1.5 border-b border-white/5">
-                      <span className="text-zinc-400 font-bold uppercase">Contact</span>
-                      <button onClick={() => setCurrentStep(2)} className="text-[#FFCC00] hover:underline cursor-pointer">
-                        Edit
-                      </button>
-                    </div>
-                    <div className="space-y-1 text-zinc-300">
-                      <div className="flex justify-between"><span className="text-zinc-500">Email:</span> <span className="text-white truncate max-w-[170px]">{formData.email}</span></div>
-                      <div className="flex justify-between"><span className="text-zinc-500">Mobile:</span> <span className="text-white">+91 {formData.mobileNumber}</span></div>
-                    </div>
-                  </div>
-
-                  {/* Role */}
-                  <div className="p-4 rounded-xl bg-white/[0.02] border border-white/10 space-y-2">
-                    <div className="flex items-center justify-between pb-1.5 border-b border-white/5">
-                      <span className="text-zinc-400 font-bold uppercase">Selected Role</span>
-                      <button onClick={() => setCurrentStep(4)} className="text-[#FFCC00] hover:underline cursor-pointer">
-                        Edit
-                      </button>
-                    </div>
-                    <div className="space-y-1 text-zinc-300">
-                      <div className="flex justify-between"><span className="text-zinc-500">Division:</span> <span className="text-white">{formData.role}</span></div>
-                      <div className="flex justify-between"><span className="text-zinc-500">Role:</span> <span className="text-[#FFCC00] font-bold">{formData.subRole}</span></div>
-                    </div>
-                  </div>
-
-                  {/* Profiles */}
-                  <div className="p-4 rounded-xl bg-white/[0.02] border border-white/10 space-y-2">
-                    <div className="flex items-center justify-between pb-1.5 border-b border-white/5">
-                      <span className="text-zinc-400 font-bold uppercase">Profiles</span>
-                      <button onClick={() => setCurrentStep(5)} className="text-[#FFCC00] hover:underline cursor-pointer">
-                        Edit
-                      </button>
-                    </div>
-                    <div className="space-y-1 text-zinc-300">
-                      <div className="flex justify-between"><span className="text-zinc-500">GitHub:</span> <span className="text-white">github.com/{formData.githubUsername}</span></div>
-                      <div className="flex justify-between"><span className="text-zinc-500">LinkedIn:</span> <span className="text-white">linkedin.com/in/{formData.linkedinUsername}</span></div>
-                    </div>
-                  </div>
-                </div>
-
-                <p className="text-[11px] text-zinc-500 font-mono">
-                  By submitting, you confirm that you are a 1st-year student at CIT Chennai and the submitted details are accurate.
-                </p>
-              </div>
-            )}
+              );
+            })()}
 
             {/* Action Bar Navigation */}
-            <div className="pt-6 border-t border-white/10 flex items-center justify-between gap-4">
+            <div 
+              className={`pt-4 border-t border-white/10 flex items-center justify-between gap-4 ${currentStep === 6 ? 'animate-detail-card' : ''}`}
+              style={currentStep === 6 ? { animationDelay: '1850ms' } : {}}
+            >
               {currentStep > 1 ? (
                 <button
                   type="button"

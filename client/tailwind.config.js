@@ -8,8 +8,19 @@ export default {
     extend: {
       fontFamily: {
         sans: ['Outfit', 'sans-serif'],
+        ndot: ['"VT323"', '"Pixelify Sans"', 'monospace'],
+        mono: ['"Space Mono"', 'monospace'],
       },
       colors: {
+        nothing: {
+          black: '#050507',
+          dark: '#0a0a0d',
+          card: '#111115',
+          border: '#222228',
+          subtle: '#2d2d35',
+          red: '#d92638',
+          accent: '#e2e8f0',
+        },
         celestius: {
           black: '#000000',
           dark: '#08080a',

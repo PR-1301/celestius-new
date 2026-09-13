@@ -1,167 +1,761 @@
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700;800&display=swap');
+
+.font-ndot {
+  font-family: 'VT323', monospace !important;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   html, body {
-    font-family: 'Outfit', sans-serif;
-    background-color: #000000;
-    color: #ffffff;
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #060608;
+    color: #e4e4e7;
     margin: 0;
     padding: 0;
     overflow-x: hidden;
   }
 
-  /* Custom styled scrollbars for telemetry console */
+  /* Custom Celestius Gold tactile scrollbar */
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
   }
   ::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.02);
-    border-radius: 4px;
+    background: #060608;
   }
   ::-webkit-scrollbar-thumb {
-    background: rgba(255, 204, 0, 0.2);
-    border-radius: 4px;
+    background: #27272a;
+    border-radius: 2px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 204, 0, 0.4);
+    background: #FFCC00;
   }
 }
 
-/* 3D Orbiting Engine Utilities */
-.perspective-1000 {
-  perspective: 1200px;
+/* Nothing OS Pixel Dot Matrix Grid Canvas with Gold Accents */
+.nothing-dot-grid {
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.nothing-dot-grid-gold {
+  background-image: radial-gradient(circle, rgba(255, 204, 0, 0.15) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Nothing OS Bento Card with subtle gold hover */
+.nothing-card {
+  position: relative;
+  background: rgba(12, 12, 16, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1.5rem;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nothing-card:hover {
+  border-color: rgba(255, 204, 0, 0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.7), 0 0 15px -3px rgba(255, 204, 0, 0.08);
+}
+
+/* Smooth Section Transition */
+@keyframes pageEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(14px);
+    filter: blur(3px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+/* Events Bespoke Smooth Intro Animations */
+@keyframes eventsHeroReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(22px) scale(0.985);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes eventsStackPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.92) rotate(-3deg);
+    filter: blur(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+    filter: blur(0);
+  }
+}
+
+@keyframes eventsDeckRise {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-page-enter {
+  animation: pageEnter 0.42s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity, filter;
+}
+
+.animate-glyph-blink {
+  animation: glyphBlink 1.8s ease-in-out infinite;
+}
+
+@keyframes modalPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.93) translateY(16px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-modal-pop {
+  animation: modalPop 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+/* Buttery-Smooth Mobile Menu Dropdown & Item Cascade */
+@keyframes mobileMenuSlideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes mobileMenuItemFade {
+  0% {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-mobile-menu {
+  animation: mobileMenuSlideDown 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+.animate-mobile-item {
+  animation: mobileMenuItemFade 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: transform, opacity;
+}
+
+/* 3D Spatial Canvas Gallery Animations */
+@keyframes spatialDriftUp {
+  0%, 100% { transform: translateY(0%); }
+  50% { transform: translateY(-7%); }
+}
+
+@keyframes spatialDriftDown {
+  0%, 100% { transform: translateY(0%); }
+  50% { transform: translateY(7%); }
+}
+
+.animate-spatial-drift-up {
+  animation: spatialDriftUp 28s ease-in-out infinite;
+}
+
+.animate-spatial-drift-down {
+  animation: spatialDriftDown 32s ease-in-out infinite;
+}
+
+.animate-spatial-drift-slow {
+  animation: spatialDriftUp 38s ease-in-out infinite;
+}
+
+.spatial-pause-on-hover:hover .animate-spatial-drift-up,
+.spatial-pause-on-hover:hover .animate-spatial-drift-down,
+.spatial-pause-on-hover:hover .animate-spatial-drift-slow {
+  animation-play-state: paused;
 }
 
 .preserve-3d {
   transform-style: preserve-3d;
 }
 
-.orbit-3d-1 {
-  transform: rotateX(68deg) rotateY(-12deg);
+.perspective-1400 {
+  perspective: 1400px;
 }
 
-.orbit-3d-2 {
-  transform: rotateX(60deg) rotateY(20deg);
-}
-
-.orbit-3d-3 {
-  transform: rotateX(72deg) rotateY(-30deg);
-}
-
-/* Neon & Glassmorphism helpers */
-.text-glow-gold {
-  text-shadow: 0 0 10px rgba(255, 204, 0, 0.4), 0 0 20px rgba(255, 204, 0, 0.2);
-}
-
-.border-glow-gold {
-  box-shadow: 0 0 15px rgba(255, 204, 0, 0.08);
-}
-
-.border-glow-gold-hover:hover {
-  box-shadow: 0 0 25px rgba(255, 204, 0, 0.25);
-  border-color: rgba(255, 204, 0, 0.4) !important;
-}
-
-/* Starfield canvas overlay styling */
-.neon-nebula {
-  background: radial-gradient(circle at 50% 50%, rgba(255, 204, 0, 0.05) 0%, transparent 60%);
-  filter: blur(80px);
-}
-
-/* Metallic Glossy Shine reflection animation */
-@keyframes shineSweep {
+/* 3D Spatial Vault Entrance Cinematic Animations */
+@keyframes spatialVaultEntry {
   0% {
-    left: -150%;
-  }
-  50% {
-    left: 200%;
+    opacity: 0;
   }
   100% {
-    left: 200%;
+    opacity: 1;
   }
 }
 
-.animate-shine-reflection {
-  position: relative;
-  overflow: hidden;
+.animate-spatial-entry {
+  animation: spatialVaultEntry 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.animate-shine-reflection::after {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -150%;
-  width: 60%;
-  height: 200%;
-  background: linear-gradient(
-    to right,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.22) 50%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  transform: rotate(25deg);
-  animation: shineSweep 4.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-}
-
-/* Text Gradient Shimmer Animation */
-@keyframes textShimmer {
+@keyframes columnRise {
   0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
+    opacity: 0;
+    transform: translateY(60px) scale(0.92);
   }
   100% {
-    background-position: 0% 50%;
+    opacity: 1;
+    transform: translateY(0px) scale(1);
   }
 }
 
-.animate-text-shimmer {
-  background: linear-gradient(
-    to right,
-    #ffffff 0%,
-    #ffcc00 25%,
-    #ffe066 50%,
-    #ffcc00 75%,
-    #ffffff 100%
-  );
-  background-size: 200% auto;
-  background-clip: text;
-  -webkit-background-clip: text;
-  text-fill-color: transparent;
-  -webkit-text-fill-color: transparent;
-  animation: textShimmer 5s linear infinite;
-  display: inline-block;
+.animate-column-rise {
+  animation: columnRise 0.75s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/* Letter-by-letter wave bounce and glow animation */
-@keyframes letterWave {
-  0%, 100% {
+/* Unique Diverse Recruitment Section Animations */
+@keyframes recruitTitleReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(-26px);
+    letter-spacing: 0.04em;
+    filter: blur(5px);
+  }
+  100% {
+    opacity: 1;
     transform: translateY(0);
-    text-shadow: none;
-    color: #ffcc00;
+    letter-spacing: normal;
+    filter: blur(0);
+  }
+}
+
+@keyframes recruitSlideLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-36px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes recruitSlideRight {
+  0% {
+    opacity: 0;
+    transform: translateX(36px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes heroReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes statueReveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.92) translateY(24px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes recruitHeaderZoom {
+  0% {
+    opacity: 0;
+    transform: scale(0.92) translateY(18px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Individual Role Card Diverse Entrance Animations */
+@keyframes cardDiagonalLeft {
+  0% {
+    opacity: 0;
+    transform: translate(-30px, 30px) scale(0.94);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+@keyframes cardVerticalRise {
+  0% {
+    opacity: 0;
+    transform: translateY(42px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes cardDiagonalRight {
+  0% {
+    opacity: 0;
+    transform: translate(30px, 30px) scale(0.94);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+@keyframes cardFlipUp {
+  0% {
+    opacity: 0;
+    transform: perspective(600px) rotateX(16deg) translateY(32px);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(600px) rotateX(0deg) translateY(0);
+  }
+}
+
+@keyframes cardPopScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.86);
+  }
+  68% {
+    transform: scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes cardFocusBlur {
+  0% {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translateY(24px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+@keyframes cardGlideRight {
+  0% {
+    opacity: 0;
+    transform: translateX(28px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes recruitBentoExpand {
+  0% {
+    opacity: 0;
+    transform: perspective(900px) rotateX(7deg) translateY(36px);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(900px) rotateX(0deg) translateY(0);
+  }
+}
+
+@keyframes checklistStepFade {
+  0% {
+    opacity: 0;
+    transform: translateY(18px) scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Intro-to-Home Sequential Entrance Animations */
+@keyframes holderDrop {
+  0% {
+    opacity: 0;
+    transform: translateY(-36px);
+  }
+  65% {
+    opacity: 1;
+    transform: translateY(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes navbarDock {
+  0% {
+    opacity: 0;
+    transform: translateY(-24px) scale(0.985);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(2px) scale(1.004);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes heroReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes statueReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(48px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Dynamic Ambient Background Keyframes */
+@keyframes nebulaDriftA {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  33% {
+    transform: translate3d(50px, -35px, 0) scale(1.08);
+  }
+  66% {
+    transform: translate3d(-35px, 45px, 0) scale(0.94);
+  }
+}
+
+@keyframes nebulaDriftB {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  33% {
+    transform: translate3d(-45px, 50px, 0) scale(0.96);
+  }
+  66% {
+    transform: translate3d(45px, -25px, 0) scale(1.1);
+  }
+}
+
+@keyframes scanbeamSweep {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.04;
+  }
+  85% {
+    opacity: 0.04;
+  }
+  100% {
+    transform: translateY(1100%);
+    opacity: 0;
+  }
+}
+
+/* Scroll-triggered Smooth Reveal Animations */
+@keyframes scrollRevealUp {
+  0% {
+    opacity: 0;
+    transform: translateY(38px) scale(0.98);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes scrollRevealLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-36px);
+    filter: blur(3px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes scrollRevealRight {
+  0% {
+    opacity: 0;
+    transform: translateX(36px);
+    filter: blur(3px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
+  }
+}
+
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform, filter;
+}
+
+.scroll-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+/* Celestial Role Modal Ambient Keyframes & Looping Animations */
+@keyframes celestialFloat {
+  0%, 100% {
+    transform: translateY(0px);
   }
   50% {
-    transform: translateY(-4px);
-    color: #ffe066;
-    text-shadow: 0 0 12px rgba(255, 204, 0, 0.8), 0 0 4px rgba(255, 255, 255, 0.3);
+    transform: translateY(-6px);
   }
 }
 
-.animate-letter-wave {
-  display: inline-block;
-  animation: letterWave 2.5s ease-in-out infinite;
+@keyframes celestialAuraBreath {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.18;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.32;
+  }
 }
 
-/* Reduced motion accessibility support */
+@keyframes celestialPulseSlow {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(0.98);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.02);
+  }
+}
+
+.animate-celestial-float {
+  animation: celestialFloat 4.5s ease-in-out infinite;
+}
+
+.animate-celestial-aura {
+  animation: celestialAuraBreath 8s ease-in-out infinite;
+}
+
+.animate-celestial-pulse-slow {
+  animation: celestialPulseSlow 3s ease-in-out infinite;
+}
+
+/* Smooth Cosmic Bubbles & Floating Spheres Animations */
+@keyframes bubbleFloat1 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+  }
+  33% {
+    transform: translate3d(40px, -50px, 0) scale(1.08) rotate(4deg);
+  }
+  66% {
+    transform: translate3d(-30px, 25px, 0) scale(0.95) rotate(-3deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+  }
+}
+
+@keyframes bubbleFloat2 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+  }
+  33% {
+    transform: translate3d(-45px, 35px, 0) scale(0.92) rotate(-5deg);
+  }
+  66% {
+    transform: translate3d(35px, -40px, 0) scale(1.1) rotate(3deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+  }
+}
+
+@keyframes bubbleFloat3 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(50px, 40px, 0) scale(1.14);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes bubbleFloat4 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.92);
+  }
+  50% {
+    transform: translate3d(-40px, -45px, 0) scale(1.08);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(0.92);
+  }
+}
+
+.animate-bubble-1 {
+  animation: bubbleFloat1 16s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  will-change: transform;
+}
+
+.animate-bubble-2 {
+  animation: bubbleFloat2 20s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  will-change: transform;
+}
+
+.animate-bubble-3 {
+  animation: bubbleFloat3 14s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  will-change: transform;
+}
+
+.animate-bubble-4 {
+  animation: bubbleFloat4 18s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  will-change: transform;
+}
+
+/* Glassmorphism Infographic Flow Animations */
+@keyframes flowDashLoop {
+  0% {
+    stroke-dashoffset: 60;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes glassShimmerSweep {
+  0% {
+    transform: translateX(-150%) skewX(-20deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.6;
+  }
+  30% {
+    transform: translateX(250%) skewX(-20deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(250%) skewX(-20deg);
+    opacity: 0;
+  }
+}
+
+@keyframes infographicAuraBreath {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.25;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.55;
+  }
+}
+
+@keyframes iconLevitate {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-4px) rotate(2deg);
+  }
+}
+
+.animate-flow-dash {
+  animation: flowDashLoop 2.4s linear infinite;
+}
+
+.animate-glass-shimmer {
+  animation: glassShimmerSweep 5.5s ease-in-out infinite;
+}
+
+.animate-infographic-aura {
+  animation: infographicAuraBreath 6s ease-in-out infinite;
+}
+
+.animate-icon-levitate {
+  animation: iconLevitate 4s ease-in-out infinite;
+}
+
+/* Accessibility */
 @media (prefers-reduced-motion: reduce) {
   *,
   ::before,
   ::after {
-    animation: none !important;
-    transition: none !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
+

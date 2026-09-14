@@ -1,0 +1,33 @@
+﻿# Robots.txt for Celestius CIT - Technical Club of Chennai Institute of Technology
+# Allow search engines and AI agents (including Google Gemini, Googlebot, Bingbot, etc.)
+
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /dashboard
+Disallow: /admin
+
+# Explicitly permit AI Crawlers & LLM Scrapers for information extraction & search Grounding
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: GoogleOther
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+# Canonical Sitemap
+Sitemap: https://celestius.in/sitemap.xml

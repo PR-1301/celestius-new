@@ -2,14 +2,27 @@ import mongoose from "mongoose";
 
 const StudentSchema = new mongoose.Schema(
   {
-    email: {
+    personalEmail: {
       type: String,
-      required: [true, "Email is required"],
-      index: true,
+      required: [true, "Personal email is required"],
       trim: true,
       lowercase: true,
       validate: {
         validator: function (v) {
+          if (!v) return false;
+          return typeof v === "string" && v.endsWith("@gmail.com");
+        },
+        message: "Personal email must be a valid @gmail.com address.",
+      },
+    },
+    email: {
+      type: String,
+      required: false,
+      trim: true,
+      lowercase: true,
+      validate: {
+        validator: function (v) {
+          if (!v) return true; // Optional field
           return typeof v === "string" && v.endsWith("@citchennai.net");
         },
         message: "Only @citchennai.net university accounts are permitted.",
@@ -41,11 +54,14 @@ const StudentSchema = new mongoose.Schema(
       type: String,
       trim: true,
       required: [true, "Mobile number is required"],
+      unique: true,
+      index: true,
     },
     regNumber: {
       type: String,
       trim: true,
-      required: [true, "Register number is required"],
+      required: false,
+      default: "",
     },
     role: {
       type: String,
@@ -64,7 +80,7 @@ const StudentSchema = new mongoose.Schema(
             return ["Backend Developer", "Frontend Developer"].includes(value);
           }
           if (this.role === "Non-Tech") {
-            return ["Public speaking", "Events", "Design"].includes(value);
+            return ["Public speaking", "Events", "Design", "Editor"].includes(value);
           }
           return false;
         },
@@ -73,7 +89,7 @@ const StudentSchema = new mongoose.Schema(
             return `"${props.value}" is not valid for Tech role. Allowed: Backend Developer, Frontend Developer.`;
           }
           if (this.role === "Non-Tech") {
-            return `"${props.value}" is not valid for Non-Tech role. Allowed: Public speaking, Events, Design.`;
+            return `"${props.value}" is not valid for Non-Tech role. Allowed: Public speaking, Events, Design, Editor.`;
           }
           return `Invalid role category or sub-role combination.`;
         },
@@ -82,18 +98,24 @@ const StudentSchema = new mongoose.Schema(
     githubUrl: {
       type: String,
       trim: true,
-      required: [true, "GitHub URL is required"],
+      required: false,
+      default: "",
     },
     linkedinUrl: {
       type: String,
       trim: true,
-      required: [true, "LinkedIn URL is required"],
+      required: false,
+      default: "",
     },
   },
   {
     timestamps: true,
   }
 );
+
+// Ensure sparse unique index for optional email and personal email
+StudentSchema.index({ email: 1 }, { unique: true, sparse: true });
+StudentSchema.index({ personalEmail: 1 }, { unique: true, sparse: true });
 
 export default mongoose.models.Student || mongoose.model("Student", StudentSchema);
 

@@ -21,7 +21,7 @@ export default function Footer({ setActivePage }) {
   const navLinks = [
     { id: 'home', code: '01', label: 'Home' },
     { id: 'events', code: '02', label: 'Events' },
-    { id: 'team', code: '03', label: 'Team' },
+    { id: 'team', code: '03', label: 'WE' },
     { id: 'recruitment', code: '04', label: 'Recruitment' },
     { id: 'contact', code: '05', label: 'Contact' }
   ];
@@ -46,7 +46,7 @@ export default function Footer({ setActivePage }) {
             <div className="flex items-center gap-3.5">
               <img 
                 src={logoImg} 
-                alt="Celestius" 
+                alt="Celestius - Technical Club of Chennai Institute of Technology (CIT Chennai)" 
                 className="h-8 sm:h-9 w-auto object-contain shrink-0 drop-shadow-[0_0_12px_rgba(255,204,0,0.3)]"
               />
               <div className="flex flex-col">
@@ -57,7 +57,7 @@ export default function Footer({ setActivePage }) {
                   CELEST<span className="text-[#FFCC00]">IUS</span>
                 </span>
                 <span className="font-mono text-[10px] text-zinc-500 uppercase tracking-widest block mt-1">
-                  CHENNAI INSTITUTE OF TECHNOLOGY
+                  CHENNAI INSTITUTE OF TECHNOLOGY (CIT CHENNAI)
                 </span>
               </div>
             </div>
@@ -71,7 +71,7 @@ export default function Footer({ setActivePage }) {
             {/* Minimal Social Links */}
             <div className="flex items-center gap-2.5 pt-1">
               <a 
-                href="https://github.com" 
+                href="https://github.com/Club-Celestius" 
                 target="_blank" 
                 rel="noreferrer"
                 className="w-9 h-9 rounded-xl bg-white/[0.03] border border-white/10 hover:border-[#FFCC00]/50 text-zinc-400 hover:text-[#FFCC00] hover:bg-[#FFCC00]/10 transition-all flex items-center justify-center cursor-pointer shadow-sm group"
@@ -80,7 +80,7 @@ export default function Footer({ setActivePage }) {
                 <Github className="w-4 h-4 transition-transform group-hover:scale-110" />
               </a>
               <a 
-                href="https://linkedin.com" 
+                href="https://www.linkedin.com/company/club-celestius-cit/" 
                 target="_blank" 
                 rel="noreferrer"
                 className="w-9 h-9 rounded-xl bg-white/[0.03] border border-white/10 hover:border-sky-400/50 text-zinc-400 hover:text-sky-400 hover:bg-sky-400/10 transition-all flex items-center justify-center cursor-pointer shadow-sm group"
@@ -89,7 +89,7 @@ export default function Footer({ setActivePage }) {
                 <Linkedin className="w-4 h-4 transition-transform group-hover:scale-110" />
               </a>
               <a 
-                href="https://instagram.com" 
+                href="https://www.instagram.com/celestius_cit/" 
                 target="_blank" 
                 rel="noreferrer"
                 className="w-9 h-9 rounded-xl bg-white/[0.03] border border-white/10 hover:border-[#FFCC00]/50 text-zinc-400 hover:text-[#FFCC00] hover:bg-[#FFCC00]/10 transition-all flex items-center justify-center cursor-pointer shadow-sm group"
@@ -98,7 +98,7 @@ export default function Footer({ setActivePage }) {
                 <Instagram className="w-4 h-4 transition-transform group-hover:scale-110" />
               </a>
               <a 
-                href="mailto:celestius@citchennai.net" 
+                href="mailto:celestius.club@gmail.com" 
                 className="w-9 h-9 rounded-xl bg-white/[0.03] border border-white/10 hover:border-sky-400/50 text-zinc-400 hover:text-sky-400 hover:bg-sky-400/10 transition-all flex items-center justify-center cursor-pointer shadow-sm group"
                 aria-label="Email"
               >
@@ -158,10 +158,10 @@ export default function Footer({ setActivePage }) {
               <div className="flex items-center gap-2.5 pt-1">
                 <Mail className="w-4 h-4 text-sky-400 shrink-0" />
                 <a 
-                  href="mailto:celestius@citchennai.net" 
+                  href="mailto:celestius.club@gmail.com" 
                   className="text-zinc-400 hover:text-white transition-colors text-xs"
                 >
-                  celestius@citchennai.net
+                  celestius.club@gmail.com
                 </a>
               </div>
             </div>

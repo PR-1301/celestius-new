@@ -6,6 +6,7 @@ import {
   Palette, 
   CalendarCheck, 
   Mic2, 
+  Film,
   Sparkles,
   ArrowRight,
   Send,
@@ -108,14 +109,18 @@ const RECRUITMENT_TEAMS = [
     subRole: 'Frontend Developer',
     tagline: 'User Interfaces & Interactive Experiences',
     icon: Code2,
-    description: 'Focuses on crafting pixel-perfect, accessible, and high-performance client applications, interactive web tools, and design-to-code fidelity.',
-    responsibilities: [
-      'Building modern, responsive web interfaces for club portals and hackathons',
-      'Implementing smooth animations, micro-interactions, and accessible UI patterns',
-      'Collaborating with designers to translate Figma prototypes into performant code',
-      'Optimizing client-side rendering speed and cross-browser responsiveness'
+    whatWeExpect: [
+      'Basic understanding of HTML & CSS',
+      'Familiarity with basic JavaScript concepts',
+      'Interest in building websites and interactive interfaces',
+      'Willingness to learn modern frontend technologies'
     ],
-    skills: ['HTML/CSS/JS', 'React / Next.js', 'Tailwind CSS', 'UI Animation', 'Git']
+    whatYoullGet: [
+      'Hands-on experience building real club projects',
+      'Guidance in JavaScript, React & modern frontend tools',
+      'Exposure to UI development, responsiveness and web architecture',
+      'Opportunities to build projects for your portfolio'
+    ]
   },
   {
     id: 'backend',
@@ -124,14 +129,18 @@ const RECRUITMENT_TEAMS = [
     subRole: 'Backend Developer',
     tagline: 'Server Architecture & Systems Infrastructure',
     icon: Server,
-    description: 'Engineers reliable server-side services, database schemas, authentication systems, API endpoints, and cloud deployments.',
-    responsibilities: [
-      'Designing resilient REST and GraphQL APIs for university and club platforms',
-      'Architecting relational and NoSQL database schemas with high data integrity',
-      'Handling secure authentication, role-based authorization, and rate limiting',
-      'Deploying and maintaining server infrastructure, webhooks, and container workflows'
+    whatWeExpect: [
+      'Basic programming knowledge in any language',
+      'Understanding of basic programming concepts and logic',
+      'Interest in how servers, APIs and databases work',
+      'Willingness to learn backend technologies'
     ],
-    skills: ['Node.js / Express', 'MongoDB / Mongoose', 'REST APIs', 'Auth & Security', 'Docker / Cloud']
+    whatYoullGet: [
+      'Hands-on experience building APIs and backend systems',
+      'Guidance in databases, authentication and server-side development',
+      'Exposure to real-world backend architecture',
+      'Opportunities to contribute to live club projects'
+    ]
   },
   {
     id: 'public-speaking',
@@ -140,14 +149,18 @@ const RECRUITMENT_TEAMS = [
     subRole: 'Public speaking',
     tagline: 'Emceeing, Anchoring & Club Representation',
     icon: Mic2,
-    description: 'The voice of Celestius on stage, conducting opening ceremonies, introducing dignitaries, moderating panel talks, and representing the club.',
-    responsibilities: [
-      'Emceeing flagship hackathons, technical symposiums, and workshop openings',
-      'Introducing guest speakers, conducting live Q&A sessions, and engaging audiences',
-      'Delivering project pitches, club presentations, and induction briefings',
-      'Maintaining high audience energy, stage poise, and articulate delivery'
+    whatWeExpect: [
+      'Confidence or willingness to speak in front of others',
+      'Basic communication and presentation skills',
+      'Ability to express ideas clearly',
+      'Enthusiasm for hosting and representing the club'
     ],
-    skills: ['Stage Presence', 'Articulate Diction', 'Improvisation', 'Audience Engagement', 'Anchoring']
+    whatYoullGet: [
+      'Experience in hosting, anchoring and public speaking',
+      'Training to improve communication and stage presence',
+      'Opportunities to host club events and represent the community',
+      'A platform to build confidence and leadership skills'
+    ]
   },
   {
     id: 'events',
@@ -156,14 +169,18 @@ const RECRUITMENT_TEAMS = [
     subRole: 'Events',
     tagline: 'Logistics, Operations & Stage Management',
     icon: CalendarCheck,
-    description: 'The operational engine behind flagship hackathons, technical symposiums, workshops, and guest speaker sessions.',
-    responsibilities: [
-      'Planning venue logistics, stage technical setups, and timeline execution',
-      'Liaising with college administration, faculty advisors, and venue management',
-      'Managing student registrations, participant hospitality, and on-ground help desks',
-      'Coordinating technical judging panels, mentor slots, and prize distribution'
+    whatWeExpect: [
+      'Interest in planning and organizing events',
+      'Good communication and coordination skills',
+      'Ability to work effectively within a team',
+      'Willingness to take responsibility and execute tasks'
     ],
-    skills: ['Event Logistics', 'Time Management', 'Crisis Resolution', 'On-ground Execution', 'Team Leadership']
+    whatYoullGet: [
+      'Hands-on experience organizing technical and non-technical events',
+      'Exposure to planning, logistics and event execution',
+      'Experience working with teams, speakers and participants',
+      'Opportunities to develop leadership and management skills'
+    ]
   },
   {
     id: 'design',
@@ -172,14 +189,38 @@ const RECRUITMENT_TEAMS = [
     subRole: 'Design',
     tagline: 'Visual Identity & Product Experience',
     icon: Palette,
-    description: 'Shapes the aesthetic language of Celestius through event banners, brand assets, social media creatives, and UI prototypes.',
-    responsibilities: [
-      'Designing high-impact event posters, certificates, badges, and social media collaterals',
-      'Prototyping website interfaces and digital experiences in Figma',
-      'Maintaining visual consistency and branding guidelines across all club assets',
-      'Creating vector graphics, typography layouts, and merchandise designs'
+    whatWeExpect: [
+      'Interest in visual design and creativity',
+      'Basic familiarity with any design tool (Figma, Canva, Photoshop, etc.)',
+      'Understanding of basic visual principles is a plus',
+      'Willingness to experiment and learn'
     ],
-    skills: ['Figma', 'Graphic Design', 'Typography & Color Theory', 'UI/UX Prototyping', 'Brand Identity']
+    whatYoullGet: [
+      'Hands-on experience designing posters, social media content and interfaces',
+      'Guidance in Figma, UI/UX and visual design principles',
+      'Opportunities to shape the club\'s visual identity',
+      'Real projects to strengthen your design portfolio'
+    ]
+  },
+  {
+    id: 'editor',
+    name: 'Editor',
+    division: 'Non-Tech',
+    subRole: 'Editor',
+    tagline: 'Video Editing & Visual Storytelling',
+    icon: Film,
+    whatWeExpect: [
+      'Interest in video editing and visual storytelling',
+      'Basic familiarity with any editing tool (Premiere Pro, DaVinci Resolve, CapCut, etc.)',
+      'Good sense of timing, composition and creativity',
+      'Willingness to learn and experiment with different editing styles'
+    ],
+    whatYoullGet: [
+      'Hands-on experience creating event videos, reels and promotional content',
+      'Guidance in video editing, storytelling and motion techniques',
+      'Opportunities to work on real club content and projects',
+      'A portfolio of creative work and practical production experience'
+    ]
   }
 ];
 
@@ -314,24 +355,33 @@ const renderSkillLogo = (skill) => {
   return <Sparkles className="w-4 h-4 text-zinc-400 shrink-0" />;
 };
 
-export default function Recruitment({ introCompleted = true, setActivePage }) {
+export default function Recruitment({ introCompleted = true, setActivePage, recruitmentOpenStatus = true }) {
   const [activeDivision, setActiveDivision] = useState('all');
   const [selectedRole, setSelectedRole] = useState(null);
 
   // Dynamic Typewriter Effect for Hero
-  const phrases = [
+  const activePhrases = [
     "RECRUITMENT APPLICATIONS ARE NOW ACTIVE.",
     "APPLY FOR TECH & NON-TECH ROLES.",
     "JOIN THE CELESTIUS INNOVATION CREW.",
     "SUBMIT YOUR APPLICATION VIA STEP CONSOLE."
   ];
 
+  const closedPhrases = [
+    "STAY TUNED FOR APPLYING.",
+    "GET READY FOR JOINING THE CREW.",
+    "PREPARE YOUR PORTFOLIO & TRACKS.",
+    "APPLICATIONS OPENING SOON."
+  ];
+
+  const phrases = recruitmentOpenStatus ? activePhrases : closedPhrases;
+
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [displayText, setDisplayText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
-    const currentPhrase = phrases[phraseIndex];
+    const currentPhrase = phrases[phraseIndex % phrases.length];
     let timer;
 
     if (!isDeleting && displayText.length < currentPhrase.length) {
@@ -352,7 +402,7 @@ export default function Recruitment({ introCompleted = true, setActivePage }) {
     }
 
     return () => clearTimeout(timer);
-  }, [displayText, isDeleting, phraseIndex]);
+  }, [displayText, isDeleting, phraseIndex, phrases]);
 
   // Handle ESC key to close modal
   useEffect(() => {
@@ -379,12 +429,23 @@ export default function Recruitment({ introCompleted = true, setActivePage }) {
 
   // Navigate to /recruitment/apply and Pre-select role silently in localStorage
   const handleApplyForRole = (role) => {
+    if (!recruitmentOpenStatus) {
+      return;
+    }
+
     try {
-      const existingDraft = localStorage.getItem('celestius_recruitment_application_draft_v2');
-      const parsed = existingDraft ? JSON.parse(existingDraft) : {};
+      const v3Raw = localStorage.getItem('celestius_recruitment_application_draft_v3');
+      const v2Raw = localStorage.getItem('celestius_recruitment_application_draft_v2');
+      const parsed = v3Raw ? JSON.parse(v3Raw) : (v2Raw ? JSON.parse(v2Raw) : {});
       parsed.role = role.division;
       parsed.subRole = role.subRole;
+      localStorage.setItem('celestius_recruitment_application_draft_v3', JSON.stringify(parsed));
       localStorage.setItem('celestius_recruitment_application_draft_v2', JSON.stringify(parsed));
+      // Set explicit flag for pre-selected role
+      localStorage.setItem('celestius_recruitment_selected_role', JSON.stringify({
+        role: role.division,
+        subRole: role.subRole
+      }));
     } catch (e) {}
 
     setSelectedRole(null);
@@ -412,9 +473,18 @@ export default function Recruitment({ introCompleted = true, setActivePage }) {
       <section className="relative space-y-6 pt-2 pb-2">
         <div className="space-y-5 max-w-4xl">
           <ScrollReveal animation="fade-down" delay={0}>
-            <div className="flex items-center gap-2.5 font-mono text-xs text-[#FFCC00]">
-              <span className="w-2 h-2 rounded-full bg-[#FFCC00] animate-pulse" />
-              <span className="tracking-widest uppercase font-bold">[ CELESTIUS ADMISSIONS PORTAL 2026 ]</span>
+            <div className="flex items-center gap-2.5 font-mono text-xs">
+              {recruitmentOpenStatus ? (
+                <>
+                  <span className="w-2 h-2 rounded-full bg-[#FFCC00] animate-pulse" />
+                  <span className="tracking-widest uppercase font-bold text-[#FFCC00]">CELESTIUS RECRUITMENTS</span>
+                </>
+              ) : (
+                <>
+                  <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+                  <span className="tracking-widest uppercase font-bold text-amber-400">RECRUITMENTS CURRENTLY PAUSED • STAY TUNED </span>
+                </>
+              )}
             </div>
           </ScrollReveal>
 
@@ -432,26 +502,39 @@ export default function Recruitment({ introCompleted = true, setActivePage }) {
           </ScrollReveal>
 
           <ScrollReveal animation="fade-up" delay={160}>
-            <p className="text-sm sm:text-base text-zinc-300 font-sans leading-relaxed max-w-3xl">
-              Celestius recruitments are now officially live. Explore our Technical and Non-Technical divisions, review role mandates, and launch the multi-step application console.
-            </p>
+            {recruitmentOpenStatus ? (
+              <p className="text-sm sm:text-base text-zinc-300 font-sans leading-relaxed max-w-3xl">
+                Celestius recruitments are now officially live. Explore our Technical and Non-Technical divisions, review role mandates, and launch the multi-step application console.
+              </p>
+            ) : (
+              <p className="text-sm sm:text-base text-zinc-300 font-sans leading-relaxed max-w-3xl">
+                Recruitment applications are currently closed. Get ready for joining the crew and stay tuned for the next official intake announcement! In the meantime, explore our divisions and role mandates below.
+              </p>
+            )}
           </ScrollReveal>
 
           <ScrollReveal animation="fade-up" delay={240}>
             <div className="pt-3 flex flex-wrap items-center gap-4">
-              <button
-                onClick={() => {
-                  if (typeof setActivePage === 'function') {
-                    setActivePage('recruitment/apply');
-                  } else {
-                    window.location.href = '/recruitment/apply';
-                  }
-                }}
-                className="px-6 py-3.5 rounded-xl bg-[#FFCC00] hover:bg-[#FFE066] text-black font-mono text-sm font-bold uppercase tracking-wider flex items-center gap-2 transition-all shadow-[0_0_25px_rgba(255,204,0,0.35)] active:scale-95 cursor-pointer"
-              >
-                <Send className="w-4 h-4" />
-                <span>LAUNCH APPLICATION [MULTI-STEP FORM]</span>
-              </button>
+              {recruitmentOpenStatus ? (
+                <button
+                  onClick={() => {
+                    if (typeof setActivePage === 'function') {
+                      setActivePage('recruitment/apply');
+                    } else {
+                      window.location.href = '/recruitment/apply';
+                    }
+                  }}
+                  className="px-6 py-3.5 rounded-xl bg-[#FFCC00] hover:bg-[#FFE066] text-black font-mono text-sm font-bold uppercase tracking-wider flex items-center gap-2 transition-all shadow-[0_0_25px_rgba(255,204,0,0.35)] active:scale-95 cursor-pointer"
+                >
+                  <Send className="w-4 h-4" />
+                  <span>APPLY NOW</span>
+                </button>
+              ) : (
+                <div className="px-6 py-3.5 rounded-xl bg-white/5 border border-amber-500/30 text-amber-300 font-mono text-sm font-bold uppercase tracking-wider flex items-center gap-2.5 shadow-[0_0_20px_rgba(245,158,11,0.15)] select-none">
+                  <Clock className="w-4 h-4 text-amber-400" />
+                  <span>STAY TUNED • APPLICATIONS OPENING SOON</span>
+                </div>
+              )}
 
               <a
                 href="#roles-taxonomy"
@@ -504,7 +587,7 @@ export default function Recruitment({ introCompleted = true, setActivePage }) {
                     : 'text-zinc-400 hover:text-white'
                 }`}
               >
-                TECH [2]
+                TECH [{RECRUITMENT_TEAMS.filter((t) => t.division === 'Tech').length}]
               </button>
               <button
                 onClick={() => setActiveDivision('nonTechnical')}
@@ -514,7 +597,7 @@ export default function Recruitment({ introCompleted = true, setActivePage }) {
                     : 'text-zinc-400 hover:text-white'
                 }`}
               >
-                NON-TECH [3]
+                NON-TECH [{RECRUITMENT_TEAMS.filter((t) => t.division === 'Non-Tech').length}]
               </button>
             </div>
           </div>
@@ -587,15 +670,13 @@ export default function Recruitment({ introCompleted = true, setActivePage }) {
 
                   <div className="relative z-10 pt-4 mt-6 border-t border-white/10 flex items-center justify-between font-mono text-xs">
                     <span className="text-zinc-400 flex items-center gap-1.5">
-                      <Sparkles className="w-3.5 h-3.5 text-[#FFCC00]" />
-                      <span>SPECIFICATION</span>
                     </span>
                     <span 
                       className={`font-bold flex items-center gap-1 transition-transform group-hover:translate-x-1 ${
                         isTech ? 'text-[#FFCC00]' : 'text-sky-400'
                       }`}
                     >
-                      <span>VIEW DOSSIER</span>
+                      <span>VIEW DETAILS</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </span>
                   </div>
@@ -747,95 +828,130 @@ export default function Recruitment({ introCompleted = true, setActivePage }) {
 
                   {/* Left Column Bottom Action */}
                   <div className="pt-6 mt-6 border-t border-white/10 hidden md:block">
-                    <button
-                      onClick={() => handleApplyForRole(selectedRole)}
-                      className="group/applyBtn w-full py-3.5 px-4 rounded-xl text-black font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-all duration-300 active:scale-95 cursor-pointer hover:brightness-110 relative overflow-hidden"
-                      style={{
-                        backgroundColor: accentColor,
-                        boxShadow: `0 0 25px ${accentColor}40`
-                      }}
-                    >
-                      <span className="relative z-10 flex items-center gap-2">
-                        <span>APPLY FOR ROLE</span>
-                        <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover/applyBtn:translate-x-1" />
-                      </span>
-                      {/* Button shine sweep on hover */}
-                      <div className="absolute inset-0 bg-white/25 translate-x-[-100%] group-hover/applyBtn:translate-x-[100%] transition-transform duration-700 ease-out pointer-events-none" />
-                    </button>
+                    {recruitmentOpenStatus ? (
+                      <button
+                        onClick={() => handleApplyForRole(selectedRole)}
+                        className="group/applyBtn w-full py-3.5 px-4 rounded-xl text-black font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-all duration-300 active:scale-95 cursor-pointer hover:brightness-110 relative overflow-hidden"
+                        style={{
+                          backgroundColor: accentColor,
+                          boxShadow: `0 0 25px ${accentColor}40`
+                        }}
+                      >
+                        <span className="relative z-10 flex items-center gap-2">
+                          <span>APPLY FOR ROLE</span>
+                          <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover/applyBtn:translate-x-1" />
+                        </span>
+                        {/* Button shine sweep on hover */}
+                        <div className="absolute inset-0 bg-white/25 translate-x-[-100%] group-hover/applyBtn:translate-x-[100%] transition-transform duration-700 ease-out pointer-events-none" />
+                      </button>
+                    ) : (
+                      <div className="w-full py-3.5 px-4 rounded-xl bg-white/5 border border-amber-500/20 text-zinc-400 font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 select-none">
+                        <Clock className="w-3.5 h-3.5 text-amber-400" />
+                        <span>APPLICATIONS CURRENTLY CLOSED</span>
+                      </div>
+                    )}
                   </div>
                 </div>
 
                 {/* RIGHT FLANK: Clean Streamlined Original Content View */}
-                <div className="p-6 sm:p-8 flex-1 overflow-y-auto space-y-6 z-10">
+                <div className="p-6 sm:p-8 flex-1 overflow-y-auto space-y-8 z-10 text-left">
                   
-                  {/* 1. Description */}
-                  <div className="space-y-2">
-                    <h3 
-                      className="text-2xl sm:text-3xl uppercase tracking-wider leading-none"
-                      style={{ 
-                        fontFamily: "'VT323', monospace",
-                        color: accentColor 
-                      }}
-                    >
-                      MISSION SCOPE & OVERVIEW
-                    </h3>
-                    <p className="font-sans text-sm sm:text-base text-zinc-200 leading-relaxed">
-                      {selectedRole.description}
-                    </p>
-                  </div>
+                  {/* 1. What We Expect */}
+                  <div className="space-y-4">
+                    <div className="flex items-baseline justify-between pb-2 border-b border-white/10">
+                      <h3 
+                        className="text-3xl sm:text-4xl uppercase tracking-wider leading-none select-none"
+                        style={{ 
+                          fontFamily: "'VT323', monospace",
+                          color: accentColor 
+                        }}
+                      >
+                        WHAT WE EXPECT
+                      </h3>
+                      <span className="font-mono text-[10px] text-zinc-500 uppercase tracking-widest">
+                        // REQUIREMENTS
+                      </span>
+                    </div>
 
-                  {/* 2. Key Responsibilities */}
-                  <div className="space-y-3 pt-2">
-                    <span className="font-mono text-[11px] font-bold uppercase tracking-widest text-zinc-400 block">
-                      // KEY RESPONSIBILITIES
-                    </span>
-                    <div className="space-y-2.5">
-                      {selectedRole.responsibilities.map((resp, idx) => (
+                    <div className="space-y-3 pl-1">
+                      {selectedRole.whatWeExpect?.map((item, idx) => (
                         <div 
                           key={idx}
-                          className="group/resp p-3.5 rounded-xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/10 hover:border-white/20 transition-all duration-300 flex items-start gap-3 text-xs sm:text-sm text-zinc-300 hover:text-white hover:translate-x-1"
+                          className="flex items-start gap-3 group transition-colors"
                         >
-                          <CheckCircle2 
-                            className="w-4 h-4 shrink-0 mt-0.5 transition-transform duration-300 group-hover/resp:scale-115" 
-                            style={{ color: accentColor }} 
-                          />
-                          <span className="font-sans leading-relaxed">{resp}</span>
+                          <span 
+                            className="font-mono text-base font-bold shrink-0 leading-none mt-0.5 select-none transition-transform duration-200 group-hover:translate-x-1"
+                            style={{ color: accentColor }}
+                          >
+                            ›
+                          </span>
+                          <p className="font-sans text-xs sm:text-sm text-zinc-300 group-hover:text-white leading-relaxed transition-colors">
+                            {item}
+                          </p>
                         </div>
                       ))}
                     </div>
                   </div>
 
-                  {/* 3. Skills & Competencies */}
-                  <div className="space-y-3 pt-2">
-                    <span className="font-mono text-[11px] font-bold uppercase tracking-widest text-zinc-400 block">
-                      // SKILLS & COMPETENCIES
-                    </span>
-                    <div className="flex flex-wrap gap-2">
-                      {selectedRole.skills.map((skill, idx) => (
-                        <span 
+                  {/* 2. What You’ll Get */}
+                  <div className="space-y-4 pt-1">
+                    <div className="flex items-baseline justify-between pb-2 border-b border-white/10">
+                      <h3 
+                        className="text-3xl sm:text-4xl uppercase tracking-wider leading-none text-white select-none"
+                        style={{ 
+                          fontFamily: "'VT323', monospace" 
+                        }}
+                      >
+                        WHAT YOU’LL GET
+                      </h3>
+                      <span 
+                        className="font-mono text-[10px] uppercase tracking-widest"
+                        style={{ color: accentColor }}
+                      >
+                        // PERKS & VALUE
+                      </span>
+                    </div>
+
+                    <div className="space-y-3 pl-1">
+                      {selectedRole.whatYoullGet?.map((item, idx) => (
+                        <div 
                           key={idx}
-                          className="px-3 py-1.5 rounded-lg bg-black/80 hover:bg-black/95 border border-white/15 hover:border-white/35 font-mono text-xs text-zinc-200 hover:text-white transition-all duration-200 hover:-translate-y-0.5 cursor-default flex items-center gap-2 shadow-sm"
+                          className="flex items-start gap-3 group transition-colors"
                         >
-                          {renderSkillLogo(skill)}
-                          <span>{skill}</span>
-                        </span>
+                          <span 
+                            className="font-mono text-sm font-bold shrink-0 leading-none mt-0.5 select-none transition-transform duration-200 group-hover:translate-x-1"
+                            style={{ color: accentColor }}
+                          >
+                            →
+                          </span>
+                          <p className="font-sans text-xs sm:text-sm text-zinc-300 group-hover:text-white leading-relaxed transition-colors">
+                            {item}
+                          </p>
+                        </div>
                       ))}
                     </div>
                   </div>
 
                   {/* Mobile Only Apply Button */}
                   <div className="pt-4 border-t border-white/10 md:hidden">
-                    <button
-                      onClick={() => handleApplyForRole(selectedRole)}
-                      className="w-full py-3.5 px-4 rounded-xl text-black font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95 cursor-pointer"
-                      style={{
-                        backgroundColor: accentColor,
-                        boxShadow: `0 0 25px ${accentColor}35`
-                      }}
-                    >
-                      <span>APPLY FOR THIS ROLE</span>
-                      <ArrowRight className="w-4 h-4" />
-                    </button>
+                    {recruitmentOpenStatus ? (
+                      <button
+                        onClick={() => handleApplyForRole(selectedRole)}
+                        className="w-full py-3.5 px-4 rounded-xl text-black font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95 cursor-pointer"
+                        style={{
+                          backgroundColor: accentColor,
+                          boxShadow: `0 0 25px ${accentColor}35`
+                        }}
+                      >
+                        <span>APPLY FOR THIS ROLE</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </button>
+                    ) : (
+                      <div className="w-full py-3.5 px-4 rounded-xl bg-white/5 border border-amber-500/20 text-zinc-400 font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 select-none">
+                        <Clock className="w-3.5 h-3.5 text-amber-400" />
+                        <span>APPLICATIONS CURRENTLY CLOSED</span>
+                      </div>
+                    )}
                   </div>
 
                 </div>

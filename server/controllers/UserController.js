@@ -1,4 +1,5 @@
 import Student from "../models/Student.js";
+import Config from "../models/Config.js";
 
 /**
  * @desc    Register a new student application
@@ -7,8 +8,25 @@ import Student from "../models/Student.js";
  */
 export const registerUser = async (req, res) => {
   try {
+    // 0. Check global recruitment open status control step
+    try {
+      const config = await Config.findOne({ key: "recruitment_config" });
+      if (config && config.recruitmentOpenStatus === false) {
+        return res.status(403).json({
+          success: false,
+          recruitmentOpenStatus: false,
+          message: "Recruitment applications are currently closed. Stay tuned for joining the crew!",
+          error: "Recruitment is currently closed.",
+        });
+      }
+    } catch (configErr) {
+      console.warn("Could not query recruitment config, proceeding with default open status:", configErr.message);
+    }
+
     const {
+      personalEmail,
       email,
+      collegeEmail,
       Name,
       department,
       year,
@@ -23,45 +41,61 @@ export const registerUser = async (req, res) => {
 
     // 1. Basic validation for required fields
     if (
-      !email ||
       !Name ||
       !department ||
       !year ||
       !section ||
       !mobileNumber ||
-      !regNumber ||
+      !personalEmail ||
       !role ||
-      !subRole ||
-      !githubUrl ||
-      !linkedinUrl
+      !subRole
     ) {
       return res.status(400).json({
         success: false,
-        message: "All fields are required.",
+        message: "Name, Mobile Number, Personal Email, Department, Section, Track, and Role are required.",
       });
     }
 
-    const cleanEmail = email.toLowerCase().trim();
     const cleanMobile = mobileNumber.trim();
-    const cleanRegNumber = regNumber.trim().toUpperCase();
+    const cleanPersonalEmail = personalEmail && typeof personalEmail === 'string' && personalEmail.trim() ? personalEmail.toLowerCase().trim() : null;
+    const rawCollegeEmail = email || collegeEmail;
+    const cleanCollegeEmail = rawCollegeEmail && typeof rawCollegeEmail === 'string' && rawCollegeEmail.trim() ? rawCollegeEmail.toLowerCase().trim() : null;
+    const cleanRegNumber = regNumber && typeof regNumber === 'string' ? regNumber.trim().toUpperCase() : "";
 
-    // 2. Check if student already registered with email, mobile number, or register number
+    // Validate personal email must end with @gmail.com
+    if (!cleanPersonalEmail || !cleanPersonalEmail.endsWith('@gmail.com')) {
+      return res.status(400).json({
+        success: false,
+        message: "Personal email must be a valid @gmail.com address.",
+      });
+    }
+
+    // Validate university email if provided
+    if (cleanCollegeEmail && !cleanCollegeEmail.endsWith('@citchennai.net')) {
+      return res.status(400).json({
+        success: false,
+        message: "Only official @citchennai.net university accounts are permitted.",
+      });
+    }
+
+    // 2. Check if student already registered with mobile number, personal email, or (if provided) university email
+    const duplicateQueries = [{ mobileNumber: cleanMobile }, { personalEmail: cleanPersonalEmail }];
+    if (cleanCollegeEmail) {
+      duplicateQueries.push({ email: cleanCollegeEmail });
+    }
+
     const existingStudent = await Student.findOne({
-      $or: [
-        { email: cleanEmail },
-        { mobileNumber: cleanMobile },
-        { regNumber: cleanRegNumber },
-      ],
+      $or: duplicateQueries,
     });
 
     if (existingStudent) {
-      let duplicateField = "Email or Phone number";
-      if (existingStudent.email === cleanEmail) {
-        duplicateField = "Email address";
+      let duplicateField = "Mobile number";
+      if (existingStudent.personalEmail === cleanPersonalEmail) {
+        duplicateField = "Personal email address";
+      } else if (cleanCollegeEmail && existingStudent.email === cleanCollegeEmail) {
+        duplicateField = "University email address";
       } else if (existingStudent.mobileNumber === cleanMobile) {
         duplicateField = "Mobile number";
-      } else if (existingStudent.regNumber === cleanRegNumber) {
-        duplicateField = "Register number";
       }
 
       return res.status(409).json({
@@ -72,20 +106,25 @@ export const registerUser = async (req, res) => {
     }
 
     // 3. Create and store the new student record in Database
-    const newStudent = new Student({
-      email: cleanEmail,
+    const studentData = {
       Name: Name.trim(),
       department: department.trim(),
-      year: year.trim(),
+      year: (year || "1st Year").trim(),
       section: section.trim().toUpperCase(),
       mobileNumber: cleanMobile,
+      personalEmail: cleanPersonalEmail,
       regNumber: cleanRegNumber,
       role,
       subRole,
-      githubUrl: githubUrl.trim(),
-      linkedinUrl: linkedinUrl.trim(),
-    });
+      githubUrl: githubUrl ? githubUrl.trim() : "",
+      linkedinUrl: linkedinUrl ? linkedinUrl.trim() : "",
+    };
 
+    if (cleanCollegeEmail) {
+      studentData.email = cleanCollegeEmail;
+    }
+
+    const newStudent = new Student(studentData);
     const savedStudent = await newStudent.save();
 
     // 4. Send success response
@@ -99,52 +138,77 @@ export const registerUser = async (req, res) => {
 
     // Handle Mongoose validation errors gracefully
     if (error.name === "ValidationError") {
-      const messages = Object.values(error.errors).map((val) => val.message);
+      const messages = Object.values(error.errors).map((err) => err.message);
       return res.status(400).json({
         success: false,
-        message: messages.join(", "),
+        message: "Validation Error",
+        errors: messages,
+      });
+    }
+
+    // Handle MongoDB duplicate key error (code 11000)
+    if (error.code === 11000) {
+      const field = Object.keys(error.keyPattern || {})[0] || "field";
+      const fieldLabels = {
+        mobileNumber: "Mobile number",
+        personalEmail: "Personal email",
+        email: "University email",
+      };
+      const label = fieldLabels[field] || field;
+
+      return res.status(409).json({
+        success: false,
+        message: "Duplicate entry",
+        error: `A student with this ${label} is already registered.`,
       });
     }
 
     return res.status(500).json({
       success: false,
-      message: "Internal server error. Failed to submit registration.",
+      message: "Internal server error. Could not register.",
       error: error.message,
     });
   }
 };
 
 /**
- * @desc    Check if a student is already registered by email, regNumber, or mobile
+ * @desc    Check if a student is already registered by email, personalEmail, regNumber, or mobile
  * @route   POST /api/students/check
  * @access  Public
  */
 export const checkStudentExists = async (req, res) => {
   try {
-    const { email, regNumber, mobileNumber } = req.body;
+    const { email, personalEmail, collegeEmail, regNumber, mobileNumber } = req.body;
 
     const queries = [];
-    if (email) queries.push({ email: email.toLowerCase().trim() });
-    if (regNumber) queries.push({ regNumber: regNumber.toUpperCase().trim() });
-    if (mobileNumber) queries.push({ mobileNumber: mobileNumber.trim() });
+    const cleanPersonal = personalEmail && typeof personalEmail === 'string' && personalEmail.trim() ? personalEmail.toLowerCase().trim() : null;
+    const cleanCollege = (collegeEmail || email) && typeof (collegeEmail || email) === 'string' && (collegeEmail || email).trim() ? (collegeEmail || email).toLowerCase().trim() : null;
+
+    if (mobileNumber && mobileNumber.trim()) queries.push({ mobileNumber: mobileNumber.trim() });
+    if (cleanPersonal) queries.push({ personalEmail: cleanPersonal });
+    if (cleanCollege) queries.push({ email: cleanCollege });
+    if (regNumber && regNumber.trim()) queries.push({ regNumber: regNumber.toUpperCase().trim() });
 
     if (queries.length === 0) {
-      return res.status(400).json({
-        success: false,
-        message: "At least one identifier (email, regNumber, mobileNumber) must be provided.",
+      return res.status(200).json({
+        success: true,
+        exists: false,
+        message: "No identifiers provided to check.",
       });
     }
 
     const existingStudent = await Student.findOne({ $or: queries });
 
     if (existingStudent) {
-      let duplicateField = "Email";
-      if (email && existingStudent.email === email.toLowerCase().trim()) {
-        duplicateField = "Email address";
-      } else if (regNumber && existingStudent.regNumber === regNumber.toUpperCase().trim()) {
-        duplicateField = "Register number";
+      let duplicateField = "Mobile number";
+      if (cleanPersonal && existingStudent.personalEmail === cleanPersonal) {
+        duplicateField = "Personal email address";
+      } else if (cleanCollege && existingStudent.email === cleanCollege) {
+        duplicateField = "University email address";
       } else if (mobileNumber && existingStudent.mobileNumber === mobileNumber.trim()) {
         duplicateField = "Mobile number";
+      } else if (regNumber && existingStudent.regNumber === regNumber.toUpperCase().trim()) {
+        duplicateField = "Register number";
       }
 
       return res.status(200).json({

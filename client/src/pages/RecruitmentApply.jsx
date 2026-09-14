@@ -38,7 +38,8 @@ import {
   Package,
   Clock,
   Shield,
-  Edit3
+  Edit3,
+  Lock
 } from 'lucide-react';
 import logoImg from '../assets/logo.png';
 
@@ -860,7 +861,12 @@ function LanyardHook({ className = "" }) {
   );
 }
 
-export default function RecruitmentApply({ introCompleted = true, setActivePage }) {
+export default function RecruitmentApply({ 
+  introCompleted = true, 
+  setActivePage,
+  recruitmentOpenStatus = true,
+  recruitmentStatusLoading = false
+}) {
   // Step State (1 to 6) strictly persisted in localStorage so refresh/revisit restores exact active step
   const [currentStep, setCurrentStep] = useState(() => {
     try {
@@ -1487,6 +1493,90 @@ export default function RecruitmentApply({ introCompleted = true, setActivePage 
   const selectedRoleMeta = ROLE_DETAILS[formData.subRole] || ROLE_DETAILS['Frontend Developer'];
   const SelectedRoleIcon = selectedRoleMeta.icon || Layers;
   const activePlanet = PLANET_METADATA[currentStep] || PLANET_METADATA[1];
+
+  // Protected route display when recruitment is closed
+  if (!recruitmentOpenStatus) {
+    return (
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-28 sm:pt-36 pb-24 text-center space-y-8 select-none">
+        <div className="relative overflow-hidden rounded-3xl bg-[#090a10]/85 border border-white/10 backdrop-blur-2xl p-8 sm:p-14 shadow-[0_0_80px_rgba(0,0,0,0.8)] space-y-8">
+          {/* Subtle cosmic grid background */}
+          <div 
+            className="absolute inset-0 opacity-15 pointer-events-none"
+            style={{
+              backgroundImage: 'radial-gradient(circle, rgba(255,204,0,0.15) 1px, transparent 1px)',
+              backgroundSize: '24px 24px'
+            }}
+          />
+
+          {/* Ambient planetary glow */}
+          <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-80 h-80 rounded-full bg-[#FFCC00]/10 blur-[90px] pointer-events-none" />
+
+          {/* Planetary emblem */}
+          <div className="relative z-10 flex flex-col items-center space-y-5">
+            <div className="relative">
+              <div className="w-20 h-20 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center shadow-[0_0_35px_rgba(245,158,11,0.25)]">
+                <Lock className="w-9 h-9 text-[#FFCC00]" />
+              </div>
+              <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-amber-400 border-2 border-[#090a10] animate-pulse" />
+            </div>
+
+            {/* Status Tag */}
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-amber-500/30 font-mono text-xs">
+              <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+              <span className="text-amber-300 font-bold uppercase tracking-wider">[ RECRUITMENT APPLICATIONS PAUSED ]</span>
+            </div>
+          </div>
+
+          {/* Main Title & Subtitle */}
+          <div className="relative z-10 space-y-4 max-w-2xl mx-auto">
+            <h1 
+              className="font-ndot text-4xl sm:text-6xl text-white tracking-wide uppercase leading-tight"
+              style={{ fontFamily: "'VT323', monospace" }}
+            >
+              STAY TUNED FOR APPLYING.
+            </h1>
+            <p className="font-mono text-sm sm:text-base text-[#FFCC00] uppercase tracking-wider font-semibold">
+              // GET READY FOR JOINING THE CREW.
+            </p>
+            <p className="font-sans text-xs sm:text-sm text-zinc-300 leading-relaxed pt-2">
+              Celestius recruitment submissions are currently closed as candidate applications undergo evaluation. Stay tuned for future intake announcements and track updates. In the meantime, explore all our technical and non-technical domains!
+            </p>
+          </div>
+
+          {/* Action CTAs */}
+          <div className="relative z-10 pt-4 flex flex-wrap items-center justify-center gap-4">
+            <button
+              onClick={() => {
+                if (typeof setActivePage === 'function') {
+                  setActivePage('recruitment');
+                } else {
+                  window.location.href = '/recruitment';
+                }
+              }}
+              className="px-6 py-3.5 rounded-xl bg-[#FFCC00] hover:bg-[#FFE066] text-black font-mono text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center gap-2 transition-all shadow-[0_0_25px_rgba(255,204,0,0.35)] active:scale-95 cursor-pointer"
+            >
+              <span>EXPLORE ROLES & TRACKS</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+
+            <button
+              onClick={() => {
+                if (typeof setActivePage === 'function') {
+                  setActivePage('home');
+                } else {
+                  window.location.href = '/';
+                }
+              }}
+              className="px-5 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-zinc-300 hover:text-white font-mono text-xs sm:text-sm tracking-wider uppercase transition-all flex items-center gap-2 cursor-pointer"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>RETURN TO HOME</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-28 sm:pt-32 pb-16 text-left space-y-4 sm:space-y-5 select-none">

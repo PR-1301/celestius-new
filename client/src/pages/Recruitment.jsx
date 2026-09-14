@@ -355,24 +355,33 @@ const renderSkillLogo = (skill) => {
   return <Sparkles className="w-4 h-4 text-zinc-400 shrink-0" />;
 };
 
-export default function Recruitment({ introCompleted = true, setActivePage }) {
+export default function Recruitment({ introCompleted = true, setActivePage, recruitmentOpenStatus = true }) {
   const [activeDivision, setActiveDivision] = useState('all');
   const [selectedRole, setSelectedRole] = useState(null);
 
   // Dynamic Typewriter Effect for Hero
-  const phrases = [
+  const activePhrases = [
     "RECRUITMENT APPLICATIONS ARE NOW ACTIVE.",
     "APPLY FOR TECH & NON-TECH ROLES.",
     "JOIN THE CELESTIUS INNOVATION CREW.",
     "SUBMIT YOUR APPLICATION VIA STEP CONSOLE."
   ];
 
+  const closedPhrases = [
+    "STAY TUNED FOR APPLYING.",
+    "GET READY FOR JOINING THE CREW.",
+    "PREPARE YOUR PORTFOLIO & TRACKS.",
+    "APPLICATIONS OPENING SOON."
+  ];
+
+  const phrases = recruitmentOpenStatus ? activePhrases : closedPhrases;
+
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [displayText, setDisplayText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
-    const currentPhrase = phrases[phraseIndex];
+    const currentPhrase = phrases[phraseIndex % phrases.length];
     let timer;
 
     if (!isDeleting && displayText.length < currentPhrase.length) {
@@ -393,7 +402,7 @@ export default function Recruitment({ introCompleted = true, setActivePage }) {
     }
 
     return () => clearTimeout(timer);
-  }, [displayText, isDeleting, phraseIndex]);
+  }, [displayText, isDeleting, phraseIndex, phrases]);
 
   // Handle ESC key to close modal
   useEffect(() => {
@@ -420,6 +429,10 @@ export default function Recruitment({ introCompleted = true, setActivePage }) {
 
   // Navigate to /recruitment/apply and Pre-select role silently in localStorage
   const handleApplyForRole = (role) => {
+    if (!recruitmentOpenStatus) {
+      return;
+    }
+
     try {
       const existingDraft = localStorage.getItem('celestius_recruitment_application_draft_v2');
       const parsed = existingDraft ? JSON.parse(existingDraft) : {};
@@ -453,9 +466,18 @@ export default function Recruitment({ introCompleted = true, setActivePage }) {
       <section className="relative space-y-6 pt-2 pb-2">
         <div className="space-y-5 max-w-4xl">
           <ScrollReveal animation="fade-down" delay={0}>
-            <div className="flex items-center gap-2.5 font-mono text-xs text-[#FFCC00]">
-              <span className="w-2 h-2 rounded-full bg-[#FFCC00] animate-pulse" />
-              <span className="tracking-widest uppercase font-bold">[ CELESTIUS ADMISSIONS PORTAL 2026 ]</span>
+            <div className="flex items-center gap-2.5 font-mono text-xs">
+              {recruitmentOpenStatus ? (
+                <>
+                  <span className="w-2 h-2 rounded-full bg-[#FFCC00] animate-pulse" />
+                  <span className="tracking-widest uppercase font-bold text-[#FFCC00]">[ CELESTIUS ADMISSIONS PORTAL 2026 ]</span>
+                </>
+              ) : (
+                <>
+                  <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+                  <span className="tracking-widest uppercase font-bold text-amber-400">[ RECRUITMENTS CURRENTLY PAUSED • STAY TUNED ]</span>
+                </>
+              )}
             </div>
           </ScrollReveal>
 
@@ -473,26 +495,39 @@ export default function Recruitment({ introCompleted = true, setActivePage }) {
           </ScrollReveal>
 
           <ScrollReveal animation="fade-up" delay={160}>
-            <p className="text-sm sm:text-base text-zinc-300 font-sans leading-relaxed max-w-3xl">
-              Celestius recruitments are now officially live. Explore our Technical and Non-Technical divisions, review role mandates, and launch the multi-step application console.
-            </p>
+            {recruitmentOpenStatus ? (
+              <p className="text-sm sm:text-base text-zinc-300 font-sans leading-relaxed max-w-3xl">
+                Celestius recruitments are now officially live. Explore our Technical and Non-Technical divisions, review role mandates, and launch the multi-step application console.
+              </p>
+            ) : (
+              <p className="text-sm sm:text-base text-zinc-300 font-sans leading-relaxed max-w-3xl">
+                Recruitment applications are currently closed. Get ready for joining the crew and stay tuned for the next official intake announcement! In the meantime, explore our divisions and role mandates below.
+              </p>
+            )}
           </ScrollReveal>
 
           <ScrollReveal animation="fade-up" delay={240}>
             <div className="pt-3 flex flex-wrap items-center gap-4">
-              <button
-                onClick={() => {
-                  if (typeof setActivePage === 'function') {
-                    setActivePage('recruitment/apply');
-                  } else {
-                    window.location.href = '/recruitment/apply';
-                  }
-                }}
-                className="px-6 py-3.5 rounded-xl bg-[#FFCC00] hover:bg-[#FFE066] text-black font-mono text-sm font-bold uppercase tracking-wider flex items-center gap-2 transition-all shadow-[0_0_25px_rgba(255,204,0,0.35)] active:scale-95 cursor-pointer"
-              >
-                <Send className="w-4 h-4" />
-                <span>LAUNCH APPLICATION [MULTI-STEP FORM]</span>
-              </button>
+              {recruitmentOpenStatus ? (
+                <button
+                  onClick={() => {
+                    if (typeof setActivePage === 'function') {
+                      setActivePage('recruitment/apply');
+                    } else {
+                      window.location.href = '/recruitment/apply';
+                    }
+                  }}
+                  className="px-6 py-3.5 rounded-xl bg-[#FFCC00] hover:bg-[#FFE066] text-black font-mono text-sm font-bold uppercase tracking-wider flex items-center gap-2 transition-all shadow-[0_0_25px_rgba(255,204,0,0.35)] active:scale-95 cursor-pointer"
+                >
+                  <Send className="w-4 h-4" />
+                  <span>LAUNCH APPLICATION [MULTI-STEP FORM]</span>
+                </button>
+              ) : (
+                <div className="px-6 py-3.5 rounded-xl bg-white/5 border border-amber-500/30 text-amber-300 font-mono text-sm font-bold uppercase tracking-wider flex items-center gap-2.5 shadow-[0_0_20px_rgba(245,158,11,0.15)] select-none">
+                  <Clock className="w-4 h-4 text-amber-400" />
+                  <span>STAY TUNED • APPLICATIONS OPENING SOON</span>
+                </div>
+              )}
 
               <a
                 href="#roles-taxonomy"
@@ -786,21 +821,28 @@ export default function Recruitment({ introCompleted = true, setActivePage }) {
 
                   {/* Left Column Bottom Action */}
                   <div className="pt-6 mt-6 border-t border-white/10 hidden md:block">
-                    <button
-                      onClick={() => handleApplyForRole(selectedRole)}
-                      className="group/applyBtn w-full py-3.5 px-4 rounded-xl text-black font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-all duration-300 active:scale-95 cursor-pointer hover:brightness-110 relative overflow-hidden"
-                      style={{
-                        backgroundColor: accentColor,
-                        boxShadow: `0 0 25px ${accentColor}40`
-                      }}
-                    >
-                      <span className="relative z-10 flex items-center gap-2">
-                        <span>APPLY FOR ROLE</span>
-                        <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover/applyBtn:translate-x-1" />
-                      </span>
-                      {/* Button shine sweep on hover */}
-                      <div className="absolute inset-0 bg-white/25 translate-x-[-100%] group-hover/applyBtn:translate-x-[100%] transition-transform duration-700 ease-out pointer-events-none" />
-                    </button>
+                    {recruitmentOpenStatus ? (
+                      <button
+                        onClick={() => handleApplyForRole(selectedRole)}
+                        className="group/applyBtn w-full py-3.5 px-4 rounded-xl text-black font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-all duration-300 active:scale-95 cursor-pointer hover:brightness-110 relative overflow-hidden"
+                        style={{
+                          backgroundColor: accentColor,
+                          boxShadow: `0 0 25px ${accentColor}40`
+                        }}
+                      >
+                        <span className="relative z-10 flex items-center gap-2">
+                          <span>APPLY FOR ROLE</span>
+                          <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover/applyBtn:translate-x-1" />
+                        </span>
+                        {/* Button shine sweep on hover */}
+                        <div className="absolute inset-0 bg-white/25 translate-x-[-100%] group-hover/applyBtn:translate-x-[100%] transition-transform duration-700 ease-out pointer-events-none" />
+                      </button>
+                    ) : (
+                      <div className="w-full py-3.5 px-4 rounded-xl bg-white/5 border border-amber-500/20 text-zinc-400 font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 select-none">
+                        <Clock className="w-3.5 h-3.5 text-amber-400" />
+                        <span>APPLICATIONS CURRENTLY CLOSED</span>
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -885,17 +927,24 @@ export default function Recruitment({ introCompleted = true, setActivePage }) {
 
                   {/* Mobile Only Apply Button */}
                   <div className="pt-4 border-t border-white/10 md:hidden">
-                    <button
-                      onClick={() => handleApplyForRole(selectedRole)}
-                      className="w-full py-3.5 px-4 rounded-xl text-black font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95 cursor-pointer"
-                      style={{
-                        backgroundColor: accentColor,
-                        boxShadow: `0 0 25px ${accentColor}35`
-                      }}
-                    >
-                      <span>APPLY FOR THIS ROLE</span>
-                      <ArrowRight className="w-4 h-4" />
-                    </button>
+                    {recruitmentOpenStatus ? (
+                      <button
+                        onClick={() => handleApplyForRole(selectedRole)}
+                        className="w-full py-3.5 px-4 rounded-xl text-black font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95 cursor-pointer"
+                        style={{
+                          backgroundColor: accentColor,
+                          boxShadow: `0 0 25px ${accentColor}35`
+                        }}
+                      >
+                        <span>APPLY FOR THIS ROLE</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </button>
+                    ) : (
+                      <div className="w-full py-3.5 px-4 rounded-xl bg-white/5 border border-amber-500/20 text-zinc-400 font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 select-none">
+                        <Clock className="w-3.5 h-3.5 text-amber-400" />
+                        <span>APPLICATIONS CURRENTLY CLOSED</span>
+                      </div>
+                    )}
                   </div>
 
                 </div>

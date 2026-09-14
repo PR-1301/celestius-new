@@ -37,11 +37,11 @@ export default function Navbar({ activePage, setActivePage, introCompleted = tru
   }, [mobileMenuOpen]);
 
   const navItems = [
-    { id: 'home', label: 'HOME', code: '01' },
-    { id: 'events', label: 'EVENTS', code: '02' },
-    { id: 'team', label: 'TEAM', code: '03' },
-    { id: 'recruitment', label: 'RECRUITMENT', code: '04' },
-    { id: 'contact', label: 'CONTACT', code: '05' },
+    { id: 'home', label: 'HOME' },
+    { id: 'events', label: 'EVENTS' },
+    { id: 'team', label: 'TEAM' },
+    { id: 'recruitment', label: 'RECRUITMENT' },
+    { id: 'contact', label: 'CONTACT' },
   ];
 
   const handleNavClick = (id) => {
@@ -73,37 +73,37 @@ export default function Navbar({ activePage, setActivePage, introCompleted = tru
                 : {}
             }
           >
-            {/* Left Holder Bracket */}
+            {/* Left Holder Bracket (Minimal Celestius Gold Anchor) */}
             <div className="absolute -left-5 xl:-left-8 -top-3 sm:-top-4 w-5 xl:w-8 h-12 sm:h-14 pointer-events-none">
-              <div className="w-full h-full border-l-2 border-b-2 border-[#FFCC00] rounded-bl-2xl relative">
+              <div className="w-full h-full border-l-2 border-b-2 border-[#FFCC00]/50 rounded-bl-2xl relative shadow-[0_0_6px_rgba(255,204,0,0.12)]">
                 {/* Minimal top ceiling anchor point */}
-                <div className="absolute -top-1 -left-[3px] w-2 h-1 bg-[#FFCC00] rounded-t-sm" />
+                <div className="absolute -top-1 -left-[3px] w-2 h-1 bg-[#FFCC00]/70 rounded-t-sm" />
                 
                 {/* Enlarged dock connector node */}
-                <div className="absolute -bottom-[7px] -right-[7px] w-3.5 h-3.5 rounded-full bg-[#FFCC00] border-2 border-[#0e0e14] shadow-[0_0_10px_#FFCC00]" />
+                <div className="absolute -bottom-[6px] -right-[6px] w-3 h-3 rounded-full bg-[#FFCC00] border-2 border-[#08080c] shadow-[0_0_6px_rgba(255,204,0,0.35)]" />
               </div>
             </div>
 
-            {/* Right Holder Bracket */}
+            {/* Right Holder Bracket (Minimal Celestius Gold Anchor) */}
             <div className="absolute -right-5 xl:-right-8 -top-3 sm:-top-4 w-5 xl:w-8 h-12 sm:h-14 pointer-events-none">
-              <div className="w-full h-full border-r-2 border-b-2 border-[#FFCC00] rounded-br-2xl relative">
+              <div className="w-full h-full border-r-2 border-b-2 border-[#FFCC00]/50 rounded-br-2xl relative shadow-[0_0_6px_rgba(255,204,0,0.12)]">
                 {/* Minimal top ceiling anchor point */}
-                <div className="absolute -top-1 -right-[3px] w-2 h-1 bg-[#FFCC00] rounded-t-sm" />
+                <div className="absolute -top-1 -right-[3px] w-2 h-1 bg-[#FFCC00]/70 rounded-t-sm" />
                 
                 {/* Enlarged dock connector node */}
-                <div className="absolute -bottom-[7px] -left-[7px] w-3.5 h-3.5 rounded-full bg-[#FFCC00] border-2 border-[#0e0e14] shadow-[0_0_10px_#FFCC00]" />
+                <div className="absolute -bottom-[6px] -left-[6px] w-3 h-3 rounded-full bg-[#FFCC00] border-2 border-[#08080c] shadow-[0_0_6px_rgba(255,204,0,0.35)]" />
               </div>
             </div>
           </div>
 
-          {/* Main Navbar Capsule */}
+          {/* Main Navbar Capsule with Ultra-Refined Frosted Glass & Minimal Yellow Edge Accents */}
           <div 
-            className={`w-full transition-all duration-300 ${
+            className={`w-full transition-all duration-300 relative p-[1px] ${
               mobileMenuOpen 
-                ? 'rounded-2xl bg-[#09090d] border border-[#FFCC00]/40 shadow-[0_20px_50px_rgba(0,0,0,0.95)] p-4 sm:px-6' 
+                ? 'rounded-2xl bg-gradient-to-r from-[#FFCC00]/20 via-white/10 to-[#FFCC00]/20 shadow-[0_20px_50px_rgba(0,0,0,0.95)]' 
                 : scrolled 
-                  ? 'rounded-full sm:rounded-2xl bg-[#08080c]/95 backdrop-blur-2xl border border-white/15 shadow-[0_12px_40px_rgba(0,0,0,0.8)] py-2.5 px-4 sm:px-6' 
-                  : 'rounded-full sm:rounded-2xl bg-[#0e0e14]/85 backdrop-blur-xl border border-white/10 py-3 px-4 sm:px-6'
+                  ? 'rounded-full sm:rounded-2xl bg-gradient-to-r from-[#FFCC00]/15 via-white/[0.07] to-[#FFCC00]/15 shadow-[0_16px_40px_rgba(0,0,0,0.85)]' 
+                  : 'rounded-full sm:rounded-2xl bg-gradient-to-r from-[#FFCC00]/10 via-white/[0.05] to-[#FFCC00]/10 shadow-[0_12px_36px_rgba(0,0,0,0.7)]'
             } ${!introCompleted ? 'opacity-0' : ''}`}
             style={
               introCompleted && isFirstMount.current
@@ -111,124 +111,149 @@ export default function Navbar({ activePage, setActivePage, introCompleted = tru
                 : {}
             }
           >
-          <div className="flex items-center justify-between">
-          
-          {/* Brand & Plain Celestius Logo */}
-          <button 
-            onClick={() => handleNavClick('home')}
-            className="flex items-center gap-3 group text-left focus:outline-none select-none"
-          >
-            {/* Plain Celestius Logo without container */}
-            <img 
-              src={logoImg} 
-              alt="Celestius" 
-              className="h-7 sm:h-8 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-            />
-
-            {/* Brand text: hidden on mobile view, shown on md and larger screens */}
-            <div className="hidden md:flex flex-col">
-              <span 
-                style={{ fontFamily: "'VT323', monospace" }} 
-                className="font-ndot text-xl sm:text-2xl tracking-widest text-white group-hover:text-[#FFCC00] transition-colors"
-              >
-                CELESTIUS
-              </span>
-              <span className="font-mono text-[10px] text-zinc-400 tracking-wider">
-                Innovate. Build. Collaborate
-              </span>
-            </div>
-          </button>
-
-          {/* Desktop Nav Items (Nothing OS Monospace / Pixel Pill Tabs) */}
-          <nav className="hidden md:flex items-center gap-1.5 bg-black/70 p-1.5 rounded-full border border-white/10">
-            {navItems.map((item) => {
-              const isActive = activePage === item.id;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => handleNavClick(item.id)}
-                  className={`font-mono text-xs px-3.5 py-1.5 rounded-full transition-all duration-200 flex items-center gap-1.5 tracking-wider ${
-                    isActive
-                      ? 'bg-[#FFCC00] text-black font-bold shadow-md shadow-[#FFCC00]/15'
-                      : 'text-zinc-400 hover:text-white hover:bg-white/5'
-                  }`}
-                >
-                  <span className={`text-[9px] ${isActive ? 'text-black/60' : 'text-zinc-600'}`}>
-                    {item.code}
-                  </span>
-                  <span>{item.label}</span>
-                  {item.badge && (
-                    <span className={`text-[8px] px-1.5 py-0.2 rounded-full font-mono font-bold ${
-                      isActive 
-                        ? 'bg-black text-[#FFCC00]' 
-                        : 'bg-[#FFCC00]/20 text-[#FFCC00] border border-[#FFCC00]/30'
-                    }`}>
-                      {item.badge}
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-          </nav>
-
-          {/* Action CTA & Mobile Toggle */}
-          <div className="flex items-center gap-2.5">
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-full text-zinc-400 hover:text-white bg-black/60 border border-white/10 focus:outline-none cursor-pointer transition-transform duration-200 active:scale-90"
-              aria-label="Toggle navigation"
+            {/* Pure Frosted Glass Core */}
+            <div 
+              className={`w-full relative overflow-hidden transition-all duration-300 ${
+                mobileMenuOpen 
+                  ? 'rounded-[15px] bg-[#09090e]/85 backdrop-blur-2xl p-4 sm:px-6' 
+                  : scrolled 
+                    ? 'rounded-full sm:rounded-[15px] bg-[#07070b]/60 hover:bg-[#07070b]/70 backdrop-blur-2xl backdrop-saturate-150 py-2.5 px-4 sm:px-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.12),inset_0_-1px_1px_rgba(0,0,0,0.4)]' 
+                    : 'rounded-full sm:rounded-[15px] bg-[#08080d]/45 hover:bg-[#08080d]/55 backdrop-blur-2xl backdrop-saturate-150 py-3 px-4 sm:px-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15),inset_0_-1px_1px_rgba(0,0,0,0.3)]'
+              }`}
             >
-              <div className="w-5 h-5 flex items-center justify-center transition-transform duration-300">
-                {mobileMenuOpen ? (
-                  <X className="w-5 h-5 text-[#FFCC00] animate-modal-pop" />
-                ) : (
-                  <Menu className="w-5 h-5 text-zinc-200" />
-                )}
-              </div>
-            </button>
-          </div>
+              {/* Left Edge: Barely Perceptible Faint Warm Glow */}
+              <div 
+                className="absolute -left-6 top-1/2 -translate-y-1/2 w-24 sm:w-32 h-14 sm:h-16 rounded-full pointer-events-none blur-2xl opacity-[0.09] transition-opacity duration-500"
+                style={{
+                  background: 'radial-gradient(circle, rgba(255,204,0,0.5) 0%, transparent 70%)'
+                }}
+              />
 
-        </div>
+              {/* Right Edge: Barely Perceptible Faint Warm Glow */}
+              <div 
+                className="absolute -right-6 top-1/2 -translate-y-1/2 w-24 sm:w-32 h-14 sm:h-16 rounded-full pointer-events-none blur-2xl opacity-[0.09] transition-opacity duration-500"
+                style={{
+                  background: 'radial-gradient(circle, rgba(255,204,0,0.5) 0%, transparent 70%)'
+                }}
+              />
 
-        {/* Mobile Dropdown Menu with Buttery-Smooth Animation */}
-        {mobileMenuOpen && (
-          <div className="md:hidden mt-3 pt-3 border-t border-white/10 space-y-1.5 animate-mobile-menu">
-            {navItems.map((item, idx) => {
-              const isActive = activePage === item.id;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => handleNavClick(item.id)}
-                  style={{ animationDelay: `${(idx * 0.045).toFixed(3)}s` }}
-                  className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl font-mono text-xs transition-all duration-200 cursor-pointer animate-mobile-item ${
-                    isActive
-                      ? 'bg-[#FFCC00] text-black font-bold shadow-md shadow-[#FFCC00]/20'
-                      : 'text-zinc-400 hover:text-white hover:bg-white/5 border border-transparent'
-                  }`}
+              {/* Top Edge Specular White Sheen Line (Prismatic Glass Bevel) */}
+              <div className="absolute inset-x-8 sm:inset-x-14 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none opacity-60" />
+
+              {/* Content Row */}
+              <div className="flex items-center justify-between relative z-10">
+              
+                {/* Brand & Plain Celestius Logo */}
+                <button 
+                  onClick={() => handleNavClick('home')}
+                  className="flex items-center gap-3 group text-left focus:outline-none select-none cursor-pointer"
                 >
-                  <div className="flex items-center gap-2.5">
-                    <span className={`text-[10px] ${isActive ? 'text-black/70 font-mono font-bold' : 'text-zinc-500'}`}>[{item.code}]</span>
+                  {/* Plain Celestius Logo without container */}
+                  <img 
+                    src={logoImg} 
+                    alt="Celestius" 
+                    className="h-7 sm:h-8 w-auto object-contain transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_0_12px_rgba(255,204,0,0.3)]"
+                  />
+
+                  {/* Brand text: hidden on mobile view, shown on md and larger screens */}
+                  <div className="hidden md:flex flex-col">
                     <span 
-                      className="font-ndot tracking-wider text-base uppercase"
-                      style={{ fontFamily: "'VT323', monospace" }}
+                      style={{ fontFamily: "'VT323', monospace" }} 
+                      className="font-ndot text-xl sm:text-2xl tracking-widest text-white group-hover:text-[#FFCC00] transition-colors drop-shadow-sm"
                     >
-                      {item.label}
+                      CELESTIUS
+                    </span>
+                    <span className="font-mono text-[10px] text-zinc-400 tracking-wider">
+                      Innovate. Build. Collaborate
                     </span>
                   </div>
-                  {item.badge && (
-                    <span className={`text-[9px] px-2 py-0.5 rounded-full font-mono font-bold ${
-                      isActive ? 'bg-black text-[#FFCC00]' : 'bg-[#FFCC00]/20 text-[#FFCC00] border border-[#FFCC00]/40'
-                    }`}>
-                      {item.badge}
-                    </span>
-                  )}
                 </button>
-              );
-            })}
-          </div>
-        )}
 
-        </div>
+                {/* Desktop Nav Items (Nothing OS Monospace / Pixel Pill Tabs with Glass Dock) */}
+                <nav className="hidden md:flex items-center gap-1 bg-black/40 backdrop-blur-md p-1.5 rounded-full border border-white/10 shadow-inner">
+                  {navItems.map((item) => {
+                    const isActive = activePage === item.id;
+                    return (
+                      <button
+                        key={item.id}
+                        onClick={() => handleNavClick(item.id)}
+                        className={`font-mono text-xs px-4 py-1.5 rounded-full transition-all duration-200 flex items-center justify-center tracking-wider cursor-pointer select-none ${
+                          isActive
+                            ? 'bg-[#FFCC00] text-black font-bold shadow-sm shadow-[#FFCC00]/25'
+                            : 'text-zinc-400 hover:text-white hover:bg-white/10'
+                        }`}
+                      >
+                        <span>{item.label}</span>
+                        {item.badge && (
+                          <span className={`ml-1.5 text-[8px] px-1.5 py-0.2 rounded-full font-mono font-bold ${
+                            isActive 
+                              ? 'bg-black text-[#FFCC00]' 
+                              : 'bg-[#FFCC00]/20 text-[#FFCC00] border border-[#FFCC00]/30'
+                          }`}>
+                            {item.badge}
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </nav>
+
+                {/* Action CTA & Mobile Toggle */}
+                <div className="flex items-center gap-2.5">
+                  <button
+                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                    className="md:hidden p-2 rounded-full text-zinc-300 hover:text-white bg-white/[0.06] hover:bg-white/10 border border-white/15 backdrop-blur-md focus:outline-none cursor-pointer transition-transform duration-200 active:scale-90"
+                    aria-label="Toggle navigation"
+                  >
+                    <div className="w-5 h-5 flex items-center justify-center transition-transform duration-300">
+                      {mobileMenuOpen ? (
+                        <X className="w-5 h-5 text-[#FFCC00] animate-modal-pop" />
+                      ) : (
+                        <Menu className="w-5 h-5 text-zinc-200" />
+                      )}
+                    </div>
+                  </button>
+                </div>
+
+              </div>
+
+              {/* Mobile Dropdown Menu with Glass Backing & Smooth Animation */}
+              {mobileMenuOpen && (
+                <div className="relative z-10 md:hidden mt-3 pt-3 border-t border-white/10 space-y-1.5 animate-mobile-menu">
+                  {navItems.map((item, idx) => {
+                    const isActive = activePage === item.id;
+                    return (
+                      <button
+                        key={item.id}
+                        onClick={() => handleNavClick(item.id)}
+                        style={{ animationDelay: `${(idx * 0.045).toFixed(3)}s` }}
+                        className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl font-mono text-xs transition-all duration-200 cursor-pointer animate-mobile-item ${
+                          isActive
+                            ? 'bg-[#FFCC00] text-black font-bold shadow-md shadow-[#FFCC00]/20'
+                            : 'text-zinc-300 hover:text-white hover:bg-white/10 border border-transparent'
+                        }`}
+                      >
+                        <span 
+                          className="font-ndot tracking-wider text-base uppercase"
+                          style={{ fontFamily: "'VT323', monospace" }}
+                        >
+                          {item.label}
+                        </span>
+                        {item.badge && (
+                          <span className={`text-[9px] px-2 py-0.5 rounded-full font-mono font-bold ${
+                            isActive ? 'bg-black text-[#FFCC00]' : 'bg-[#FFCC00]/20 text-[#FFCC00] border border-[#FFCC00]/40'
+                          }`}>
+                            {item.badge}
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+
+            </div>
+          </div>
       </div>
     </header>
     </>

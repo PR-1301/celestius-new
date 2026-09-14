@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import User from './models/User.js';
+import Config from './models/Config.js';
 import { registerUser, checkStudentExists } from './controllers/UserController.js';
 
 dotenv.config();
@@ -29,6 +30,20 @@ const connectDB = async () => {
     });
     isDbConnected = true;
     console.log('✓ [DATABASE] MongoDB connected successfully');
+
+    // Ensure recruitment config document exists
+    try {
+      const existingConfig = await Config.findOne({ key: 'recruitment_config' });
+      if (!existingConfig) {
+        await Config.create({
+          key: 'recruitment_config',
+          recruitmentOpenStatus: true,
+        });
+        console.log('✓ [DATABASE] Initialized recruitment_config document with recruitmentOpenStatus: true');
+      }
+    } catch (cfgErr) {
+      console.warn('! [DATABASE] Could not verify recruitment_config initialization:', cfgErr.message);
+    }
   } catch (err) {
     isDbConnected = false;
     console.warn('! [DATABASE] MongoDB connection failed:', err.message);
@@ -45,6 +60,57 @@ app.post('/api/students/register', registerUser);
 // Check if student already registered (email, regNumber, mobile)
 app.post('/api/students/check', checkStudentExists);
 app.post('/check-student', checkStudentExists);
+
+// Recruitment Open Status Check API
+app.get('/api/recruitment/status', async (req, res) => {
+  try {
+    const config = await Config.findOne({ key: 'recruitment_config' });
+    const recruitmentOpenStatus = config ? config.recruitmentOpenStatus : true;
+    return res.status(200).json({
+      success: true,
+      recruitmentOpenStatus,
+    });
+  } catch (error) {
+    console.error("Error fetching recruitment status:", error);
+    return res.status(200).json({
+      success: true,
+      recruitmentOpenStatus: true,
+      warning: "Offline fallback mode: defaulted to open",
+    });
+  }
+});
+
+// Update Recruitment Open Status API (Control step toggle)
+app.post('/api/recruitment/status', async (req, res) => {
+  try {
+    const { recruitmentOpenStatus } = req.body;
+    if (typeof recruitmentOpenStatus !== 'boolean') {
+      return res.status(400).json({
+        success: false,
+        message: "recruitmentOpenStatus must be a boolean (true or false).",
+      });
+    }
+
+    const config = await Config.findOneAndUpdate(
+      { key: 'recruitment_config' },
+      { recruitmentOpenStatus },
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+
+    return res.status(200).json({
+      success: true,
+      recruitmentOpenStatus: config.recruitmentOpenStatus,
+      message: `Recruitment status updated to ${config.recruitmentOpenStatus}.`,
+    });
+  } catch (error) {
+    console.error("Error updating recruitment status:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to update recruitment status.",
+      error: error.message,
+    });
+  }
+});
 
 // Health Check API
 app.get('/api/health', (req, res) => {

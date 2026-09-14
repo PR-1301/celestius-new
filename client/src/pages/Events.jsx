@@ -21,7 +21,9 @@ import {
   Lock,
   Play,
   Check,
-  Clock
+  Clock,
+  ArrowRight,
+  Globe
 } from 'lucide-react';
 
 import promptVerse1Logo from '../assets/prompt-verse-dark-logo.png';
@@ -58,21 +60,390 @@ function distributePhotosEqually(photos) {
   if (total === 0) return [];
 
   // Determine optimal column count based on photo count
-  let colCount = 5;
-  if (total <= 6) colCount = 2;
-  else if (total <= 12) colCount = 3;
-  else if (total <= 20) colCount = 4;
-  else if (total >= 40) colCount = 6;
-
-  const cols = Array.from({ length: colCount }, () => []);
-  photos.forEach((photo, index) => {
-    cols[index % colCount].push(photo);
+  // Desktop: 5 columns, Tablet: 3 columns, Mobile: 2 columns
+  const cols = [[], [], [], [], []];
+  
+  photos.forEach((photo, idx) => {
+    cols[idx % 5].push({
+      ...photo,
+      originalIndex: idx
+    });
   });
 
   return cols;
 }
 
-export default function Events({ introCompleted = true }) {
+// Cinematic Celestial Sphere Showpiece with Centered Blurred Sphere & 3D Concentric Orbital Rings
+function CelestialSphereShowpiece() {
+  const containerRef = useRef(null);
+  const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseMove = (e) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    const rotateX = -(y / (rect.height / 2)) * 6;
+    const rotateY = (x / (rect.width / 2)) * 6;
+    setTilt({ rotateX, rotateY });
+  };
+
+  const handleMouseLeave = () => {
+    setTilt({ rotateX: 0, rotateY: 0 });
+    setIsHovered(false);
+  };
+
+  return (
+    <div 
+      ref={containerRef}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={handleMouseLeave}
+      className="relative w-full h-[380px] sm:h-[450px] lg:h-[500px] flex items-center justify-center lg:justify-end select-none overflow-visible cursor-pointer"
+    >
+      <style>{`
+        @keyframes celestialFloat {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-6px) rotate(0.4deg); }
+        }
+        @keyframes coronaBreathe {
+          0%, 100% { opacity: 0.65; transform: scale(1); }
+          50% { opacity: 0.85; transform: scale(1.025); }
+        }
+        @keyframes ringStreamSlow {
+          from { stroke-dashoffset: 0; }
+          to { stroke-dashoffset: -400; }
+        }
+        @keyframes rimGleam {
+          0%, 100% { opacity: 0.88; }
+          50% { opacity: 1; }
+        }
+      `}</style>
+
+      <div 
+        className="relative w-full max-w-[520px] h-full flex items-center justify-center lg:justify-end transition-transform duration-300 ease-out will-change-transform"
+        style={{
+          transform: `perspective(1000px) rotateX(${tilt.rotateX}deg) rotateY(${tilt.rotateY}deg) scale(${isHovered ? 1.02 : 1})`,
+        }}
+      >
+        {/* Ambient Back Glow - Centered behind the central blurred sphere */}
+        <div 
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 sm:w-80 h-72 sm:h-80 rounded-full bg-[#FFCC00]/12 blur-[110px] pointer-events-none"
+          style={{ animation: 'coronaBreathe 10s ease-in-out infinite' }}
+        />
+
+        <svg 
+          viewBox="0 0 600 600" 
+          className="w-full h-full max-w-[530px] overflow-visible"
+          fill="none" 
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            {/* Atmospheric Corona Outer Glow Filter */}
+            <filter id="coronaAtmosphere" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="16" result="blur1" />
+              <feGaussianBlur in="SourceGraphic" stdDeviation="36" result="blur2" />
+              <feMerge>
+                <feMergeNode in="blur2" />
+                <feMergeNode in="blur1" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+
+            {/* Outermost Diffuse Atmospheric Blur */}
+            <filter id="outerGlowBlur" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur stdDeviation="28" />
+            </filter>
+
+            {/* Inner Yellow Sphere Soft Gaussian Blur Filter */}
+            <filter id="innerSphereBlur" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur stdDeviation="16" />
+            </filter>
+
+            {/* Inner Incandescent Core Blur Filter */}
+            <filter id="coreGlowBlur" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur stdDeviation="8" />
+            </filter>
+
+            {/* Centered Glowing Yellow Sphere Radial Gradient */}
+            <radialGradient id="centeredBlurredSphereGrad" cx="58%" cy="40%" r="58%">
+              <stop offset="0%" stopColor="#FFFDE7" stopOpacity="1" />
+              <stop offset="26%" stopColor="#FFE066" stopOpacity="0.95" />
+              <stop offset="56%" stopColor="#FFCC00" stopOpacity="0.85" />
+              <stop offset="80%" stopColor="#D97706" stopOpacity="0.55" />
+              <stop offset="94%" stopColor="#92400E" stopOpacity="0.25" />
+              <stop offset="100%" stopColor="#08080C" stopOpacity="0" />
+            </radialGradient>
+
+            {/* 3D Volumetric Spherical Shadow Falloff */}
+            <radialGradient id="sphereVolumetricShadow" cx="60%" cy="38%" r="62%">
+              <stop offset="0%" stopColor="#000000" stopOpacity="0" />
+              <stop offset="52%" stopColor="#000000" stopOpacity="0.04" />
+              <stop offset="76%" stopColor="#060609" stopOpacity="0.4" />
+              <stop offset="92%" stopColor="#060609" stopOpacity="0.75" />
+              <stop offset="100%" stopColor="#060609" stopOpacity="0.95" />
+            </radialGradient>
+
+            {/* Orbit Gradient */}
+            <linearGradient id="orbitTrajectoryGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#FFCC00" stopOpacity="0.85" />
+              <stop offset="35%" stopColor="#FFCC00" stopOpacity="0.35" />
+              <stop offset="70%" stopColor="#FFCC00" stopOpacity="0.1" />
+              <stop offset="100%" stopColor="#FFCC00" stopOpacity="0.65" />
+            </linearGradient>
+          </defs>
+
+          {/* ========================================================================= */}
+          {/* LAYER 1: BACK ARCS OF CONCENTRIC RINGS (Behind the Centered Blurred Sphere) */}
+          {/* ========================================================================= */}
+          <g opacity="0.4">
+            {/* Concentric Outer Equatorial Track (Back Arc) */}
+            <g transform="rotate(-20 300 300)">
+              <animateTransform
+                attributeName="transform"
+                attributeType="XML"
+                type="rotate"
+                values="-20 300 300; -16 300 300; -20 300 300; -24 300 300; -20 300 300"
+                keyTimes="0; 0.25; 0.5; 0.75; 1"
+                keySplines="0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95"
+                calcMode="spline"
+                dur="26s"
+                repeatCount="indefinite"
+              />
+              <path 
+                d="M 20 300 A 280 95 0 0 1 580 300" 
+                stroke="url(#orbitTrajectoryGrad)" 
+                strokeWidth="1.1" 
+                fill="none" 
+                strokeDasharray="6 5"
+                style={{ animation: 'ringStreamSlow 45s linear infinite' }}
+              />
+            </g>
+
+            {/* Concentric Inner Equatorial Track (Back Arc) */}
+            <g transform="rotate(-20 300 300)">
+              <animateTransform
+                attributeName="transform"
+                attributeType="XML"
+                type="rotate"
+                values="-20 300 300; -16 300 300; -20 300 300; -24 300 300; -20 300 300"
+                keyTimes="0; 0.25; 0.5; 0.75; 1"
+                keySplines="0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95"
+                calcMode="spline"
+                dur="26s"
+                repeatCount="indefinite"
+              />
+              <path 
+                d="M 80 300 A 220 75 0 0 1 520 300" 
+                stroke="#FFCC00" 
+                strokeWidth="1" 
+                fill="none" 
+                strokeOpacity="0.4"
+              />
+            </g>
+
+            {/* Inclined 3D Cross-Ring (Back Arc) */}
+            <g transform="rotate(38 300 300)">
+              <animateTransform
+                attributeName="transform"
+                attributeType="XML"
+                type="rotate"
+                values="38 300 300; 42 300 300; 38 300 300; 34 300 300; 38 300 300"
+                keyTimes="0; 0.25; 0.5; 0.75; 1"
+                keySplines="0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95"
+                calcMode="spline"
+                dur="24s"
+                repeatCount="indefinite"
+              />
+              <path 
+                d="M 35 300 A 265 125 0 0 1 565 300" 
+                stroke="url(#orbitTrajectoryGrad)" 
+                strokeWidth="1.3" 
+                fill="none" 
+              />
+            </g>
+          </g>
+
+          {/* ========================================================================= */}
+          {/* LAYER 2: THE CENTERED BLURRED SPHERE (In the Exact Center of the Rings)   */}
+          {/* ========================================================================= */}
+          <g style={{ transformOrigin: '300px 300px', animation: 'celestialFloat 12s ease-in-out infinite' }}>
+            {/* Outermost Diffuse Atmospheric Halo */}
+            <circle 
+              cx="300" 
+              cy="300" 
+              r="140" 
+              fill="#FFCC00" 
+              opacity="0.2" 
+              filter="url(#outerGlowBlur)" 
+              style={{ transformOrigin: '300px 300px', animation: 'coronaBreathe 8s ease-in-out infinite' }}
+            />
+
+            {/* Atmospheric Corona Glow */}
+            <circle 
+              cx="300" 
+              cy="300" 
+              r="115" 
+              stroke="#FFCC00" 
+              strokeWidth="2.5" 
+              strokeOpacity="0.5" 
+              filter="url(#coronaAtmosphere)" 
+            />
+
+            {/* The Main Blurred Yellow Celestial Sphere */}
+            <circle 
+              cx="300" 
+              cy="300" 
+              r="108" 
+              fill="url(#centeredBlurredSphereGrad)" 
+              filter="url(#innerSphereBlur)" 
+              opacity="0.95"
+            />
+
+            {/* Volumetric 3D Spherical Shadow for Curvature and Depth */}
+            <circle 
+              cx="300" 
+              cy="300" 
+              r="108" 
+              fill="url(#sphereVolumetricShadow)" 
+            />
+
+            {/* Focused Incandescent Core Glow with Soft Optical Blur */}
+            <circle 
+              cx="312" 
+              cy="288" 
+              r="48" 
+              fill="#FFFDE7" 
+              filter="url(#coreGlowBlur)" 
+              opacity="0.9"
+            />
+
+            {/* Sharp High-Intensity Golden Arc Terminator on the Upper-Right Limb */}
+            <path 
+              d="M 300 192 A 108 108 0 0 1 408 300" 
+              stroke="#FFF9C4" 
+              strokeWidth="2.8" 
+              strokeLinecap="round"
+              opacity="0.92"
+              style={{ animation: 'rimGleam 6s ease-in-out infinite' }}
+            />
+            <path 
+              d="M 322 196 A 108 108 0 0 1 408 278" 
+              stroke="#FFFFFF" 
+              strokeWidth="1.4" 
+              strokeLinecap="round"
+              opacity="0.95"
+            />
+          </g>
+
+          {/* ========================================================================= */}
+          {/* LAYER 3: FRONT ARCS OF CONCENTRIC RINGS (Passing in Front of the Sphere)  */}
+          {/* ========================================================================= */}
+          <g>
+            {/* Concentric Inner Equatorial Track (Front Arc Passing Across the Sphere) */}
+            <g transform="rotate(-20 300 300)">
+              <animateTransform
+                attributeName="transform"
+                attributeType="XML"
+                type="rotate"
+                values="-20 300 300; -16 300 300; -20 300 300; -24 300 300; -20 300 300"
+                keyTimes="0; 0.25; 0.5; 0.75; 1"
+                keySplines="0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95"
+                calcMode="spline"
+                dur="26s"
+                repeatCount="indefinite"
+              />
+              <path 
+                d="M 520 300 A 220 75 0 0 1 80 300" 
+                stroke="#FFE066" 
+                strokeWidth="1.2" 
+                strokeOpacity="0.75"
+                fill="none" 
+              />
+            </g>
+
+            {/* Inclined 3D Cross-Ring (Front Arc Sweeping in Front of the Central Sphere) */}
+            <g transform="rotate(38 300 300)">
+              <animateTransform
+                attributeName="transform"
+                attributeType="XML"
+                type="rotate"
+                values="38 300 300; 42 300 300; 38 300 300; 34 300 300; 38 300 300"
+                keyTimes="0; 0.25; 0.5; 0.75; 1"
+                keySplines="0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95"
+                calcMode="spline"
+                dur="24s"
+                repeatCount="indefinite"
+              />
+              {/* Hidden flight path for exact animateMotion navigation */}
+              <path 
+                id="orbitFlightPath1" 
+                d="M 35 300 a 265 125 0 1 0 530 0 a 265 125 0 1 0 -530 0 Z" 
+                fill="none" 
+              />
+              <path 
+                d="M 565 300 A 265 125 0 0 1 35 300" 
+                stroke="url(#orbitTrajectoryGrad)" 
+                strokeWidth="1.5" 
+                fill="none" 
+              />
+              {/* Traveling Satellite Node 1 */}
+              <g>
+                <circle cx="0" cy="0" r="10" fill="#FFCC00" opacity="0.2" className="animate-pulse" />
+                <circle cx="0" cy="0" r="4.5" fill="#FFCC00" filter="drop-shadow(0 0 6px #FFCC00)" />
+                <circle cx="0" cy="0" r="1.8" fill="#FFFFFF" />
+                <animateMotion dur="24s" repeatCount="indefinite">
+                  <mpath href="#orbitFlightPath1" />
+                </animateMotion>
+              </g>
+            </g>
+
+            {/* Concentric Outer Equatorial Track (Front Arc Sweeping in Front of the Sphere) */}
+            <g transform="rotate(-20 300 300)">
+              <animateTransform
+                attributeName="transform"
+                attributeType="XML"
+                type="rotate"
+                values="-20 300 300; -16 300 300; -20 300 300; -24 300 300; -20 300 300"
+                keyTimes="0; 0.25; 0.5; 0.75; 1"
+                keySplines="0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95"
+                calcMode="spline"
+                dur="26s"
+                repeatCount="indefinite"
+              />
+              {/* Hidden flight path for exact animateMotion navigation */}
+              <path 
+                id="orbitFlightPath2" 
+                d="M 20 300 a 280 95 0 1 0 560 0 a 280 95 0 1 0 -560 0 Z" 
+                fill="none" 
+              />
+              <path 
+                d="M 580 300 A 280 95 0 0 1 20 300" 
+                stroke="#FFCC00" 
+                strokeWidth="1.4" 
+                strokeOpacity="0.85"
+                strokeDasharray="650 240"
+                fill="none" 
+              />
+              {/* Traveling Satellite Beacon 2 */}
+              <g>
+                <circle cx="0" cy="0" r="7" fill="#FFCC00" opacity="0.18" />
+                <circle cx="0" cy="0" r="3.2" fill="#FFCC00" filter="drop-shadow(0 0 5px #FFCC00)" />
+                <circle cx="0" cy="0" r="1.4" fill="#FFFFFF" />
+                <animateMotion dur="32s" repeatCount="indefinite" begin="-8s">
+                  <mpath href="#orbitFlightPath2" />
+                </animateMotion>
+              </g>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </div>
+  );
+}
+
+export default function Events({ introCompleted = true, setActivePage }) {
   // Full-Screen 3D Spatial Vault State
   const [isSpatialOpen, setIsSpatialOpen] = useState(false);
   const [isEntering, setIsEntering] = useState(false);
@@ -104,6 +475,7 @@ export default function Events({ introCompleted = true }) {
   // Fluid Touchpad & Drag Pan Coordinates (Restricted bounds to keep images always dense and in view)
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const touchStartRef = useRef({ x: 0, y: 0, panX: 0, panY: 0 });
+  const spatialContainerRef = useRef(null);
 
   const wasIntroPlayingOnMount = useRef(!introCompleted);
 
@@ -134,22 +506,24 @@ export default function Events({ introCompleted = true }) {
   }, [isSpatialOpen]);
 
   // Fluid Touchpad & Mousewheel Navigation Handler
-  // Clamped dynamically with ample vertical range so any column drifting up/down can always be brought fully into view
-  const handleWheel = (e) => {
-    if (e.cancelable) e.preventDefault();
-    const dx = e.deltaX || 0;
-    const dy = e.deltaY || 0;
-    setPan((prev) => ({
-      x: Math.max(-480, Math.min(480, prev.x - dx * 0.9)),
-      y: Math.max(-750, Math.min(750, prev.y - dy * 0.9)),
-    }));
-  };
-
+  // Attaches directly to spatialContainerRef with { passive: false } to cleanly prevent default window scrolling without passive listener errors
   useEffect(() => {
     if (!isSpatialOpen) return;
+    const container = spatialContainerRef.current;
+    if (!container) return;
 
-    window.addEventListener('wheel', handleWheel, { passive: false });
-    return () => window.removeEventListener('wheel', handleWheel);
+    const handleWheelNonPassive = (e) => {
+      e.preventDefault();
+      const dx = e.deltaX || 0;
+      const dy = e.deltaY || 0;
+      setPan((prev) => ({
+        x: Math.max(-480, Math.min(480, prev.x - dx * 0.9)),
+        y: Math.max(-750, Math.min(750, prev.y - dy * 0.9)),
+      }));
+    };
+
+    container.addEventListener('wheel', handleWheelNonPassive, { passive: false });
+    return () => container.removeEventListener('wheel', handleWheelNonPassive);
   }, [isSpatialOpen]);
 
   // Mobile Touch Swipe Navigation (Sufficient vertical and horizontal range)
@@ -313,65 +687,29 @@ export default function Events({ introCompleted = true }) {
             Step inside our zero-gravity 3D spatial vault or explore our complete archive. Relive hackathons, workshops, and team milestones in an unrestricted perspective with smooth navigation.
           </p>
 
-          {/* Cyber Dual-Segment Capsule Switcher / Control Console */}
+          {/* Simple & Minimal Capsule Switcher */}
           <div 
             className="pt-2 inline-flex items-center"
             style={getAnimStyle('eventsDeckRise', 0.12, '0.6s')}
           >
-            <div className="inline-flex items-stretch p-1.5 sm:p-2 rounded-2xl sm:rounded-[22px] bg-[#0c0d12]/90 border border-white/10 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.6)]">
-              {/* Primary Segment: 3D Spatial Vault (Glowing Amber Capsule) */}
+            <div className="inline-flex items-center p-1 sm:p-1.5 rounded-full bg-black/60 border border-white/10 backdrop-blur-xl">
+              {/* Primary: Spatial Vault */}
               <button
                 onClick={launchSpatialVault}
-                className="group/vault relative flex items-center gap-3 px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl sm:rounded-[18px] bg-[#FFCC00] hover:bg-[#FFE066] text-black font-mono transition-all duration-300 shadow-[0_2px_16px_rgba(255,204,0,0.3)] hover:shadow-[0_4px_24px_rgba(255,204,0,0.5)] active:scale-95 cursor-pointer text-left"
+                className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-[#FFCC00] hover:bg-[#FFE066] text-black font-mono text-xs font-bold transition-all duration-200 active:scale-95 cursor-pointer shadow-md shadow-[#FFCC00]/15"
               >
-                {/* Icon box */}
-                <div className="w-8 h-8 rounded-lg bg-black/10 flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover/vault:scale-105">
-                  <Maximize2 className="w-4 h-4 text-black" />
-                </div>
-                
-                {/* Text Block */}
-                <div className="flex flex-col">
-                  <span className="text-[9px] sm:text-[10px] tracking-wider text-black/70 font-semibold uppercase leading-none">
-                    VAULT_ACCESS // 3D
-                  </span>
-                  <span className="text-xs sm:text-sm font-bold tracking-tight text-black mt-1 leading-tight whitespace-nowrap">
-                    LAUNCH SPATIAL<br className="hidden sm:inline" /> VAULT
-                  </span>
-                </div>
-
-                {/* Arrow Action Badge */}
-                <div className="ml-1 sm:ml-2 w-7 h-7 rounded-md sm:rounded-lg bg-black flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover/vault:translate-x-0.5 group-hover/vault:-translate-y-0.5">
-                  <ArrowUpRight className="w-3.5 h-3.5 text-[#FFCC00]" />
-                </div>
+                <Maximize2 className="w-3.5 h-3.5" />
+                <span>SPATIAL VAULT</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
               </button>
 
-              {/* Vertical Subtle Separator */}
-              <div className="w-[1px] bg-white/10 mx-1.5 sm:mx-2 self-stretch" />
-
-              {/* Secondary Segment: Normal Grid Archive */}
+              {/* Secondary: Normal Grid */}
               <button
                 onClick={() => setIsGridOpen(true)}
-                className="group/grid relative flex items-center gap-3 px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl sm:rounded-[18px] hover:bg-white/[0.05] text-zinc-300 hover:text-white font-mono transition-all duration-300 active:scale-95 cursor-pointer text-left"
+                className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-full text-zinc-400 hover:text-white hover:bg-white/[0.06] font-mono text-xs font-medium transition-all duration-200 active:scale-95 cursor-pointer"
               >
-                {/* Icon box */}
-                <div className="w-8 h-8 rounded-lg bg-white/[0.05] border border-white/10 flex items-center justify-center flex-shrink-0 group-hover/grid:border-[#FFCC00]/40 group-hover/grid:bg-[#FFCC00]/10 transition-colors duration-300">
-                  <Grid className="w-4 h-4 text-zinc-400 group-hover/grid:text-[#FFCC00] transition-colors" />
-                </div>
-
-                {/* Text Block */}
-                <div className="flex flex-col">
-                  <span className="text-[9px] sm:text-[10px] tracking-wider text-zinc-500 font-medium uppercase leading-none">
-                    ARCHIVE_MODE
-                  </span>
-                  <span className="text-xs sm:text-sm font-bold tracking-tight text-zinc-200 group-hover/grid:text-white mt-1 leading-tight whitespace-nowrap">
-                    NORMAL<br className="hidden sm:inline" /> GRID
-                  </span>
-                </div>
-
-                {/* ESC key indicator */}
-                <span className="hidden md:inline-block ml-2 text-[10px] text-zinc-500 font-mono">
-                  [ESC]
-                </span>
+                <Grid className="w-3.5 h-3.5" />
+                <span>NORMAL GRID</span>
               </button>
             </div>
           </div>
@@ -905,6 +1243,54 @@ export default function Events({ introCompleted = true }) {
         </div>
       </section>
 
+      {/* 4. All Events Conducted By Us Section (Celestial Orbital Showpiece) */}
+      <section 
+        data-scroll-id="all-events-conducted"
+        className="relative border-t border-white/10 pt-16 sm:pt-20 text-left overflow-visible"
+        style={getAnimStyle('eventsDeckRise', 0.16, '0.6s')}
+      >
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 items-center">
+          
+          {/* Left Column: Pure Typography & Action CTA (Zero Clutter, Zero Extra Badges) */}
+          <div className="lg:col-span-6 space-y-6">
+            <div className="space-y-3">
+              <span className="font-mono text-[11px] text-[#FFCC00] uppercase tracking-widest flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#FFCC00] animate-pulse" />
+                // INITIATIVES & CHRONICLE
+              </span>
+              
+              <h2 
+                className="font-ndot text-4xl sm:text-6xl lg:text-7xl text-white uppercase tracking-wide leading-[0.98]"
+                style={{ fontFamily: "'VT323', monospace" }}
+              >
+                ALL EVENTS <br />
+                <span className="text-[#FFCC00]">CONDUCTED BY US.</span>
+              </h2>
+
+              <p className="text-sm sm:text-base text-zinc-300 leading-relaxed font-sans max-w-xl pt-1">
+                Explore the complete chronicle of workshops, competitive arenas, hackathons, and digital platforms engineered and hosted by Celestius. Featuring the official Takshashila'24 web portal, AI and Transformers masterclasses, system reverse engineering, and head-to-head coding tournaments.
+              </p>
+            </div>
+
+            <div className="pt-2">
+              <button
+                onClick={() => setActivePage && setActivePage('all-events')}
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-[#FFCC00] text-black font-mono text-xs font-bold hover:bg-[#FFE066] active:scale-95 transition-all shadow-lg shadow-[#FFCC00]/25 cursor-pointer"
+              >
+                <span>VIEW ALL CONDUCTED EVENTS</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
+
+          {/* Right Column: Glowing Celestial Sphere with 3D Orbital Trajectories */}
+          <div className="lg:col-span-6 flex justify-center lg:justify-end overflow-visible">
+            <CelestialSphereShowpiece />
+          </div>
+
+        </div>
+      </section>
+
       {/* 3. DEDICATED NORMAL PHOTO ARCHIVE GRID MODAL (Appears only when clicked; has full hover & popup effects) */}
       {isGridOpen && typeof document !== 'undefined' && createPortal(
         <div className="fixed inset-0 z-[9985] h-screen w-screen bg-black/95 backdrop-blur-2xl overflow-y-auto select-none p-4 sm:p-8 animate-fadeIn">
@@ -979,8 +1365,8 @@ export default function Events({ introCompleted = true }) {
       {/* 5. DEDICATED FULL-SCREEN 3D SPATIAL MEMORY VAULT (100% Full-Screen, Pure Images, Touchpad Nav) */}
       {isSpatialOpen && typeof document !== 'undefined' && createPortal(
         <div 
-          className="fixed inset-0 z-[9990] h-screen w-screen bg-[#050508] text-white select-none overflow-hidden animate-spatial-entry"
-          onWheel={handleWheel}
+          ref={spatialContainerRef}
+          className="fixed inset-0 z-[9990] h-screen w-screen bg-[#050508] text-white select-none overflow-hidden touch-none animate-spatial-entry"
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
         >
@@ -1003,19 +1389,8 @@ export default function Events({ introCompleted = true }) {
               <span>EXIT TO ARCHIVE</span>
             </button>
 
-            {/* Central Monospace Telemetry */}
-            <div className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full bg-black/80 border border-white/15 backdrop-blur-xl font-mono text-xs text-zinc-300 shadow-2xl">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#FFCC00] animate-pulse" />
-              <span className="text-[#FFCC00] font-bold">CELESTIUS // SPATIAL ARCHIVE</span>
-              <span className="text-zinc-600">•</span>
-              <span>{galleryPhotos.length} CAPTURES</span>
-            </div>
-
             {/* Exit Shortcut & Close Button */}
             <div className="pointer-events-auto flex items-center gap-2">
-              <span className="hidden md:inline font-mono text-[10px] text-zinc-500 bg-black/70 px-3 py-1.5 rounded-full border border-white/10">
-                [TWO-FINGER SCROLL TO PAN • ESC TO EXIT]
-              </span>
               <button
                 onClick={() => {
                   setIsSpatialOpen(false);
@@ -1088,14 +1463,6 @@ export default function Events({ introCompleted = true }) {
                 })}
               </div>
             </div>
-          </div>
-
-          {/* Subtle Ambient Telemetry Hint (Clean & minimal, no cluttered toggles) */}
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2 px-4 py-2 rounded-full bg-black/75 border border-white/10 backdrop-blur-xl font-mono text-[11px] text-zinc-400 pointer-events-none shadow-xl">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#FFCC00] animate-pulse" />
-            <span>TOUCHPAD TO NAVIGATE</span>
-            <span className="text-zinc-600">•</span>
-            <span>CLICK PHOTO TO EXPAND</span>
           </div>
 
         </div>,

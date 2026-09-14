@@ -1,4 +1,5 @@
 import Student from "../models/Student.js";
+import Config from "../models/Config.js";
 
 /**
  * @desc    Register a new student application
@@ -7,6 +8,21 @@ import Student from "../models/Student.js";
  */
 export const registerUser = async (req, res) => {
   try {
+    // 0. Check global recruitment open status control step
+    try {
+      const config = await Config.findOne({ key: "recruitment_config" });
+      if (config && config.recruitmentOpenStatus === false) {
+        return res.status(403).json({
+          success: false,
+          recruitmentOpenStatus: false,
+          message: "Recruitment applications are currently closed. Stay tuned for joining the crew!",
+          error: "Recruitment is currently closed.",
+        });
+      }
+    } catch (configErr) {
+      console.warn("Could not query recruitment config, proceeding with default open status:", configErr.message);
+    }
+
     const {
       email,
       Name,

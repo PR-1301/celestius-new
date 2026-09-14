@@ -56,7 +56,7 @@ export default function Footer({ setActivePage }) {
 
             {/* Description */}
             <p className="font-sans text-xs sm:text-sm text-zinc-400 leading-relaxed max-w-md">
-              The premier student-driven technical society of Chennai Institute of Technology. Fostering engineering excellence, open-source innovation, hackathons, and research.
+              The premier student-driven technical society of Chennai Institute of Technology. Fostering engineering excellence, competitive coding and hackathons.
             </p>
 
             {/* Minimal Social Links */}

@@ -197,7 +197,6 @@ const RECRUITMENT_TEAMS = [
     ],
     whatYoullGet: [
       'Hands-on experience designing posters, social media content and interfaces',
-      'Guidance in Figma, UI/UX and visual design principles',
       'Opportunities to shape the club\'s visual identity',
       'Real projects to strengthen your design portfolio'
     ]
@@ -211,13 +210,12 @@ const RECRUITMENT_TEAMS = [
     icon: Film,
     whatWeExpect: [
       'Interest in video editing and visual storytelling',
-      'Basic familiarity with any editing tool (Premiere Pro, DaVinci Resolve, CapCut, etc.)',
+      'Basic familiarity with any editing tool (Premiere Pro, DaVinci Resolve, CapCut, Canva, etc.)',
       'Good sense of timing, composition and creativity',
       'Willingness to learn and experiment with different editing styles'
     ],
     whatYoullGet: [
       'Hands-on experience creating event videos, reels and promotional content',
-      'Guidance in video editing, storytelling and motion techniques',
       'Opportunities to work on real club content and projects',
       'A portfolio of creative work and practical production experience'
     ]

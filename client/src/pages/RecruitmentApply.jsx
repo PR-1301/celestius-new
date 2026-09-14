@@ -58,14 +58,14 @@ const RECRUITMENT_CONTACTS = [
     displayPhone: '+91 94877 90898'
   },
   {
-    name: 'Venkatesh GS',
-    phone: '8838077893',
-    displayPhone: '+91 88380 77893'
-  },
-  {
     name: 'Varun M',
     phone: '7550172567',
     displayPhone: '+91 75501 72567'
+  },
+  {
+    name: 'Venkatesh GS',
+    phone: '8838077893',
+    displayPhone: '+91 88380 77893'
   }
 ];
 
@@ -237,7 +237,7 @@ const ROLE_DETAILS = {
       'Collaborating with designers to translate Figma prototypes into performant code',
       'Optimizing client-side rendering speed and cross-browser responsiveness'
     ],
-    skills: ['HTML/CSS/JS', 'React / Next.js', 'Tailwind CSS', 'UI Animation', 'Git']
+    skills: ['HTML/CSS','JS','Python', 'React / Next.js', 'Tailwind CSS', 'UI Animation', 'Git']
   },
   'Backend Developer': {
     division: 'Tech',
@@ -335,7 +335,6 @@ const ROLE_DETAILS = {
     ],
     whatYoullGet: [
       'Hands-on experience designing posters, social media content and interfaces',
-      'Guidance in Figma, UI/UX and visual design principles',
       'Opportunities to shape the club\'s visual identity',
       'Real projects to strengthen your design portfolio'
     ],
@@ -362,7 +361,6 @@ const ROLE_DETAILS = {
     ],
     whatYoullGet: [
       'Hands-on experience creating event videos, reels and promotional content',
-      'Guidance in video editing, storytelling and motion techniques',
       'Opportunities to work on real club content and projects',
       'A portfolio of creative work and practical production experience'
     ],
@@ -372,7 +370,7 @@ const ROLE_DETAILS = {
       'Experimenting with modern editing styles, color grading, and visual storytelling',
       'Collaborating with event and design teams to capture and showcase club milestones'
     ],
-    skills: ['Premiere Pro', 'DaVinci Resolve', 'CapCut', 'Motion Design', 'Video Editing']
+    skills: ['Premiere Pro', 'DaVinci Resolve', 'CapCut', 'Motion Design', 'Video Editing', 'Canva']
   }
 };
 

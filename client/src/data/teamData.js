@@ -1,3 +1,5 @@
+import varunPhoto from '../assets/team/IMG_5972.JPG?url';
+
 export const teamData = [
   {
     id: "venkatesh-g-s",
@@ -20,11 +22,12 @@ export const teamData = [
   {
     id: "varun-m",
     name: "Varun M",
+    image: varunPhoto,
     role: "Vice President",
     category: "leadership",
     division: "Executive Core",
-    github: "https://github.com",
-    linkedin: "https://linkedin.com"
+    github: "https://github.com/vakeer56/",
+    linkedin: "https://www.linkedin.com/in/varun-mahendran/"
   },
   {
     id: "ponnurajan-r",

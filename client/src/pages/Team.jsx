@@ -717,15 +717,24 @@ export default function Team({ introCompleted = true, setActivePage }) {
                       <div className="relative -mt-12 z-20 flex flex-col items-center pointer-events-none">
                         <div className="w-24 h-24 rounded-full p-1 bg-white shadow-[0_8px_20px_rgba(0,0,0,0.15)] flex items-center justify-center">
                           <div 
-                            className="w-full h-full rounded-full flex items-center justify-center shadow-inner"
+                            className="w-full h-full rounded-full overflow-hidden flex items-center justify-center shadow-inner"
                             style={{ background: config.bannerBg }}
                           >
-                            <span 
-                              className="font-ndot text-3xl sm:text-4xl text-black font-bold tracking-wider leading-none select-none"
-                              style={{ fontFamily: "'VT323', monospace" }}
-                            >
-                              {initials}
-                            </span>
+                            {member.image ? (
+                              <img
+                                src={member.image}
+                                alt={`${member.name}, ${member.role}`}
+                                className="w-full h-full object-cover object-top"
+                                loading="lazy"
+                              />
+                            ) : (
+                              <span
+                                className="font-ndot text-3xl sm:text-4xl text-black font-bold tracking-wider leading-none select-none"
+                                style={{ fontFamily: "'VT323', monospace" }}
+                              >
+                                {initials}
+                              </span>
+                            )}
                           </div>
                         </div>
                       </div>

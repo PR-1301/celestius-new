@@ -235,7 +235,7 @@ export default function Home({
               className="text-sm sm:text-base text-zinc-400 leading-relaxed font-sans max-w-lg pt-1"
             >
               Celestius is the premier student-run technical community of Chennai Institute of Technology. 
-              Forging open-source systems, competitive engineering, artificial intelligence, and shared craftsmanship.
+              Forging intelligent software, competitive engineering, artificial intelligence, and shared craftsmanship.
             </p>
           </div>
 
@@ -444,7 +444,7 @@ export default function Home({
 
               <ScrollReveal animation="fade-up" delay={80}>
                 <p className="text-sm sm:text-base text-zinc-300 leading-relaxed font-sans max-w-xl pt-1">
-                  Explore everything about Celestius — from our technical events and hackathon podium track records to our diverse community of student builders, mentors, and open-source visionaries.
+                  Explore everything about Celestius — from our technical events and hackathon podium track records to our diverse community of student builders, mentors, and technology leaders.
                 </p>
               </ScrollReveal>
             </div>

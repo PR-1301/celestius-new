@@ -1,38 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { createPortal } from 'react-dom';
 import { 
   Github, 
   Linkedin, 
-  Code2, 
-  Palette, 
-  Megaphone,
-  CalendarCheck,
-  Mic2,
-  Sparkles,
+  Search,
   ArrowRight,
-  X,
-  ShieldCheck,
-  Terminal,
-  User,
-  Cpu,
-  Layers,
-  Award,
-  Zap,
-  Radio,
-  ExternalLink,
-  MapPin,
-  CheckCircle2
+  Sparkles
 } from 'lucide-react';
 import { teamData } from '../data/teamData';
+import logoImg from '../assets/logo.png';
 
 // Dynamic Bi-directional Scroll Reveal Component
-// Seamlessly animates elements into view on scroll, and resets on exit so it replays dynamically every time
 function ScrollReveal({
   children,
-  animation = 'fade-up', // 'fade-up' | 'fade-down' | 'slide-left' | 'slide-right' | 'zoom-in' | 'fade'
+  animation = 'fade-up',
   delay = 0,
-  duration = 700,
-  threshold = 0.08,
+  duration = 600,
+  threshold = 0.05,
   className = '',
   style = {}
 }) {
@@ -54,7 +37,7 @@ function ScrollReveal({
       },
       {
         threshold,
-        rootMargin: '0px 0px -40px 0px'
+        rootMargin: '0px 0px -30px 0px'
       }
     );
 
@@ -65,15 +48,11 @@ function ScrollReveal({
   const getHiddenTransform = () => {
     switch (animation) {
       case 'fade-up':
-        return 'translate3d(0, 36px, 0) scale(0.96)';
+        return 'translate3d(0, 28px, 0) scale(0.97)';
       case 'fade-down':
-        return 'translate3d(0, -36px, 0) scale(0.96)';
-      case 'slide-left':
-        return 'translate3d(-40px, 0, 0)';
-      case 'slide-right':
-        return 'translate3d(40px, 0, 0)';
+        return 'translate3d(0, -28px, 0) scale(0.97)';
       case 'zoom-in':
-        return 'scale(0.92)';
+        return 'scale(0.94)';
       case 'fade':
       default:
         return 'none';
@@ -83,7 +62,7 @@ function ScrollReveal({
   const animStyle = {
     opacity: isVisible ? 1 : 0,
     transform: isVisible ? 'translate3d(0, 0, 0) scale(1)' : getHiddenTransform(),
-    filter: isVisible ? 'blur(0px)' : 'blur(4px)',
+    filter: isVisible ? 'blur(0px)' : 'blur(3px)',
     transition: `opacity ${duration}ms cubic-bezier(0.16, 1, 0.3, 1), transform ${duration}ms cubic-bezier(0.16, 1, 0.3, 1), filter ${duration}ms cubic-bezier(0.16, 1, 0.3, 1)`,
     transitionDelay: isVisible ? `${delay}ms` : '0ms',
     willChange: 'transform, opacity, filter',
@@ -92,937 +71,751 @@ function ScrollReveal({
 
   return (
     <div ref={ref} className={className} style={animStyle}>
-      {children}
+      {typeof children === 'function' ? children({ isVisible }) : children}
     </div>
   );
 }
 
-// Brand logos & topic icons for crew skill tags
-const renderSkillLogo = (skill) => {
-  const s = skill.toLowerCase();
-
-  // 1. Web & Full-Stack
-  if (s.includes('react') || s.includes('web') || s.includes('frontend')) {
-    return (
-      <svg viewBox="-11.5 -10.23174 23 20.46348" className="w-3.5 h-3.5 shrink-0" fill="none">
-        <circle cx="0" cy="0" r="2.05" fill="#61dafb"/>
-        <g stroke="#61dafb" strokeWidth="1">
-          <ellipse rx="11" ry="4.2"/>
-          <ellipse rx="11" ry="4.2" transform="rotate(60)"/>
-          <ellipse rx="11" ry="4.2" transform="rotate(120)"/>
-        </g>
-      </svg>
-    );
-  }
-  // 2. Systems, Architecture & Distributed Compute
-  if (s.includes('system') || s.includes('architect') || s.includes('distributed') || s.includes('backend') || s.includes('dsa')) {
-    return (
-      <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 shrink-0" fill="none" stroke="#FFCC00" strokeWidth="2">
-        <rect x="4" y="4" width="16" height="16" rx="2" />
-        <rect x="9" y="9" width="6" height="6" />
-        <line x1="9" y1="1" x2="9" y2="4" />
-        <line x1="15" y1="1" x2="15" y2="4" />
-        <line x1="9" y1="20" x2="9" y2="23" />
-        <line x1="15" y1="20" x2="15" y2="23" />
-        <line x1="20" y1="9" x2="23" y2="9" />
-        <line x1="20" y1="14" x2="23" y2="14" />
-        <line x1="1" y1="9" x2="4" y2="9" />
-        <line x1="1" y1="14" x2="4" y2="14" />
-      </svg>
-    );
-  }
-  // 3. Cloud, DevOps & Containers
-  if (s.includes('cloud') || s.includes('devops') || s.includes('docker')) {
-    return (
-      <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 shrink-0" fill="#38BDF8">
-        <path d="M13.5 8h2v2h-2zm-3 0h2v2h-2zm-3 0h2v2h-2zm9 3h2v2h-2zm-3 0h2v2h-2zm-3 0h2v2h-2zm-3 0h2v2h-2zm-3 0h2v2h-2zm12.5 3c-.28 0-.54.04-.8.1-.51-2.36-2.6-4.1-5.2-4.1-1.35 0-2.58.48-3.54 1.28C8.94 11.16 7.6 11 6.5 11c-2.48 0-4.5 2.02-4.5 4.5 0 .2.02.4.05.6C.85 16.7 0 17.75 0 19c0 1.66 1.34 3 3 3h16.5c2.48 0 4.5-2.02 4.5-4.5S21.98 14 19.5 14z"/>
-      </svg>
-    );
-  }
-  // 4. Applied AI & Machine Learning
-  if (s.includes('ai') || s.includes('machine') || s.includes('data') || s.includes('algo')) {
-    return (
-      <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 shrink-0" fill="none" stroke="#A78BFA" strokeWidth="2">
-        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-        <circle cx="12" cy="12" r="3" fill="#A78BFA" />
-      </svg>
-    );
-  }
-  // 5. Open Source & Git
-  if (s.includes('open') || s.includes('source') || s.includes('git') || s.includes('code')) {
-    return (
-      <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 shrink-0" fill="#F05032">
-        <path d="M2.6 10.59L8.38 4.8a2.53 2.53 0 013.6 0l1.45 1.45-2.28 2.29a2 2 0 00-.77 2.05l-2.12 2.12a2 2 0 101.42 1.42l2.05-2.05a2 2 0 001.9-.38l2.36 2.36a2 2 0 101.41-1.42l-2.34-2.34a2 2 0 00-.45-1.92l2.25-2.25 5.8 5.79a2.55 2.55 0 010 3.6l-5.79 5.79a2.55 2.55 0 01-3.6 0L2.6 14.2a2.55 2.55 0 010-3.61z"/>
-      </svg>
-    );
-  }
-  // 6. Design, Prototyping & Figma
-  if (s.includes('figma') || s.includes('design') || s.includes('ui/ux') || s.includes('motion') || s.includes('brand')) {
-    return (
-      <svg viewBox="0 0 38 57" className="w-3.5 h-3.5 shrink-0" fill="none">
-        <path d="M19 28.5A9.5 9.5 0 1 1 28.5 19 9.5 9.5 0 0 1 19 28.5z" fill="#1ABCFE"/>
-        <path d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 1 1-19 0z" fill="#0ACF83"/>
-        <path d="M19 0v19h9.5a9.5 9.5 0 1 0 0-19H19z" fill="#FF7262"/>
-        <path d="M0 9.5A9.5 9.5 0 0 0 9.5 19H19V0H9.5A9.5 9.5 0 0 0 0 9.5z" fill="#F24E1E"/>
-        <path d="M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5z" fill="#A259FF"/>
-      </svg>
-    );
-  }
-  // 7. Event Operations & Stage Production
-  if (s.includes('event') || s.includes('stage') || s.includes('logistics') || s.includes('operation')) {
-    return (
-      <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 shrink-0" fill="none" stroke="#C084FC" strokeWidth="2">
-        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-        <line x1="16" y1="2" x2="16" y2="6"/>
-        <line x1="8" y1="2" x2="8" y2="6"/>
-        <line x1="3" y1="10" x2="21" y2="10"/>
-      </svg>
-    );
-  }
-  // 8. Public Speaking, Keynotes & Anchoring
-  if (s.includes('public') || s.includes('speech') || s.includes('speaking') || s.includes('keynote') || s.includes('moderation') || s.includes('comms')) {
-    return (
-      <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 shrink-0" fill="none" stroke="#38BDF8" strokeWidth="2">
-        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-        <line x1="12" y1="19" x2="12" y2="23"/>
-        <line x1="8" y1="23" x2="16" y2="23"/>
-      </svg>
-    );
-  }
-  // 9. Digital Media, Campaigns & Broadcasting
-  if (s.includes('media') || s.includes('campaign') || s.includes('content') || s.includes('broadcast')) {
-    return (
-      <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 shrink-0" fill="none" stroke="#F472B6" strokeWidth="2">
-        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
-      </svg>
-    );
-  }
-
-  // Fallback icon
-  return <Sparkles className="w-3.5 h-3.5 text-zinc-400 shrink-0" />;
-};
-
-// ==========================================
-// 3D GRADIENT GEOMETRIC SHAPES (PRISM, CONE, PYRAMID, OCTAHEDRON)
-// ==========================================
-
-// 1. 3D Gradient Pointed Cone with Specular Highlight Ridge
-function Gradient3DCone({ className = "", theme, style = {} }) {
-  const id = React.useId().replace(/:/g, '');
-  return (
-    <svg viewBox="0 0 130 170" className={className} style={style} fill="none">
-      <defs>
-        <linearGradient id={`coneGrad_${id}`} x1="15%" y1="10%" x2="85%" y2="90%">
-          <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.9" />
-          <stop offset="25%" stopColor={theme.light} stopOpacity="0.95" />
-          <stop offset="60%" stopColor={theme.mid} stopOpacity="0.95" />
-          <stop offset="85%" stopColor={theme.dark} stopOpacity="0.98" />
-          <stop offset="100%" stopColor={theme.deep} stopOpacity="1" />
-        </linearGradient>
-        <radialGradient id={`coneBase_${id}`} cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor={theme.light} stopOpacity="0.7" />
-          <stop offset="55%" stopColor={theme.dark} stopOpacity="0.95" />
-          <stop offset="100%" stopColor={theme.deep} stopOpacity="1" />
-        </radialGradient>
-        <linearGradient id={`coneSpecular_${id}`} x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0" />
-          <stop offset="50%" stopColor="#FFFFFF" stopOpacity="0.9" />
-          <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0" />
-        </linearGradient>
-        <filter id={`coneGlow_${id}`} x="-30%" y="-30%" width="160%" height="160%">
-          <feGaussianBlur stdDeviation="9" result="blur" />
-          <feComposite in="SourceGraphic" in2="blur" operator="over" />
-        </filter>
-      </defs>
-      {/* Ambient glow */}
-      <ellipse cx="65" cy="142" rx="46" ry="14" fill={theme.glow} filter={`url(#coneGlow_${id})`} opacity="0.65" />
-      {/* 3D Base */}
-      <ellipse cx="65" cy="135" rx="44" ry="14" fill={`url(#coneBase_${id})`} stroke="rgba(255,255,255,0.3)" strokeWidth="1" />
-      {/* Cone Body */}
-      <path d="M 65 14 L 21 135 A 44 14 0 0 0 109 135 Z" fill={`url(#coneGrad_${id})`} stroke="rgba(255,255,255,0.35)" strokeWidth="1.2" />
-      {/* Specular ridge down side */}
-      <path d="M 65 14 L 46 138" stroke={`url(#coneSpecular_${id})`} strokeWidth="3.5" strokeLinecap="round" opacity="0.85" />
-    </svg>
-  );
-}
-
-// 2. 3D Gradient Faceted Triangular Prism (Crisp 3D Standing Prism)
-function Gradient3DPrism({ className = "", theme, style = {} }) {
-  const id = React.useId().replace(/:/g, '');
-  return (
-    <svg viewBox="0 0 140 145" className={className} style={style} fill="none">
-      <defs>
-        {/* Top Facet Gradient (Specular highlight) */}
-        <linearGradient id={`prismTop_${id}`} x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.95" />
-          <stop offset="50%" stopColor={theme.light} stopOpacity="0.9" />
-          <stop offset="100%" stopColor={theme.mid} stopOpacity="0.85" />
-        </linearGradient>
-        {/* Left Vertical Face (Illuminated front-left) */}
-        <linearGradient id={`prismLeft_${id}`} x1="20%" y1="0%" x2="80%" y2="100%">
-          <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.9" />
-          <stop offset="25%" stopColor={theme.light} stopOpacity="0.95" />
-          <stop offset="65%" stopColor={theme.mid} stopOpacity="0.92" />
-          <stop offset="100%" stopColor={theme.dark} stopOpacity="0.98" />
-        </linearGradient>
-        {/* Right Vertical Face (Shadow side) */}
-        <linearGradient id={`prismRight_${id}`} x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor={theme.mid} stopOpacity="0.9" />
-          <stop offset="50%" stopColor={theme.dark} stopOpacity="0.95" />
-          <stop offset="100%" stopColor={theme.deep} stopOpacity="1" />
-        </linearGradient>
-        {/* Ambient Prism Glow Filter */}
-        <filter id={`prismGlow_${id}`} x="-30%" y="-30%" width="160%" height="160%">
-          <feGaussianBlur stdDeviation="10" result="blur" />
-          <feComposite in="SourceGraphic" in2="blur" operator="over" />
-        </filter>
-      </defs>
-
-      {/* Ambient Glow */}
-      <polygon 
-        points="20,20 70,40 120,20 120,105 70,125 20,105" 
-        fill={theme.glow} 
-        filter={`url(#prismGlow_${id})`} 
-        opacity="0.65" 
-      />
-
-      {/* Left Face (Illuminated) */}
-      <polygon 
-        points="20,20 70,40 70,125 20,105" 
-        fill={`url(#prismLeft_${id})`} 
-        stroke="rgba(255,255,255,0.4)" 
-        strokeWidth="1.2" 
-      />
-
-      {/* Right Face (Shadow) */}
-      <polygon 
-        points="70,40 120,20 120,105 70,125" 
-        fill={`url(#prismRight_${id})`} 
-        stroke="rgba(255,255,255,0.25)" 
-        strokeWidth="1.2" 
-      />
-
-      {/* Top Facet (Specular Cap) */}
-      <polygon 
-        points="20,20 120,20 70,40" 
-        fill={`url(#prismTop_${id})`} 
-        stroke="rgba(255,255,255,0.6)" 
-        strokeWidth="1.5" 
-      />
-
-      {/* Central Sharp Reflection Ridge */}
-      <line x1="70" y1="40" x2="70" y2="125" stroke="#FFFFFF" strokeWidth="2" opacity="0.85" />
-      {/* Top Bevel Highlight */}
-      <line x1="20" y1="20" x2="70" y2="40" stroke="#FFFFFF" strokeWidth="1.5" opacity="0.9" />
-    </svg>
-  );
-}
-
-// 3. 3D Gradient Isometric Pyramid
-function Gradient3DPyramid({ className = "", theme, style = {} }) {
-  const id = React.useId().replace(/:/g, '');
-  return (
-    <svg viewBox="0 0 130 130" className={className} style={style} fill="none">
-      <defs>
-        <linearGradient id={`pyrLeft_${id}`} x1="30%" y1="0%" x2="70%" y2="100%">
-          <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.92" />
-          <stop offset="35%" stopColor={theme.light} stopOpacity="0.95" />
-          <stop offset="75%" stopColor={theme.mid} stopOpacity="0.95" />
-          <stop offset="100%" stopColor={theme.dark} stopOpacity="1" />
-        </linearGradient>
-        <linearGradient id={`pyrRight_${id}`} x1="0%" y1="10%" x2="100%" y2="90%">
-          <stop offset="0%" stopColor={theme.mid} stopOpacity="0.9" />
-          <stop offset="55%" stopColor={theme.dark} stopOpacity="0.95" />
-          <stop offset="100%" stopColor={theme.deep} stopOpacity="1" />
-        </linearGradient>
-        <filter id={`pyrGlow_${id}`} x="-25%" y="-25%" width="150%" height="150%">
-          <feGaussianBlur stdDeviation="8" result="blur" />
-          <feComposite in="SourceGraphic" in2="blur" operator="over" />
-        </filter>
-      </defs>
-      {/* Glow */}
-      <polygon points="65,15 15,95 65,125 115,95" fill={theme.glow} filter={`url(#pyrGlow_${id})`} opacity="0.6" />
-      {/* Left Face */}
-      <polygon points="65,15 15,95 65,125" fill={`url(#pyrLeft_${id})`} stroke="rgba(255,255,255,0.4)" strokeWidth="1.2" />
-      {/* Right Face */}
-      <polygon points="65,15 65,125 115,95" fill={`url(#pyrRight_${id})`} stroke="rgba(255,255,255,0.25)" strokeWidth="1.2" />
-      {/* Ridge Line */}
-      <line x1="65" y1="15" x2="65" y2="125" stroke="#FFFFFF" strokeWidth="2" opacity="0.9" />
-      <line x1="65" y1="15" x2="15" y2="95" stroke="rgba(255,255,255,0.6)" strokeWidth="1" />
-    </svg>
-  );
-}
-
-// 4. 3D Gradient Octahedral Crystal Gem
-function Gradient3DOctahedron({ className = "", theme, style = {} }) {
-  const id = React.useId().replace(/:/g, '');
-  return (
-    <svg viewBox="0 0 110 140" className={className} style={style} fill="none">
-      <defs>
-        <linearGradient id={`octaTopL_${id}`} x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.95" />
-          <stop offset="55%" stopColor={theme.light} stopOpacity="0.92" />
-          <stop offset="100%" stopColor={theme.mid} stopOpacity="0.9" />
-        </linearGradient>
-        <linearGradient id={`octaTopR_${id}`} x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor={theme.light} stopOpacity="0.9" />
-          <stop offset="60%" stopColor={theme.mid} stopOpacity="0.92" />
-          <stop offset="100%" stopColor={theme.dark} stopOpacity="0.98" />
-        </linearGradient>
-        <linearGradient id={`octaBotL_${id}`} x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor={theme.mid} stopOpacity="0.88" />
-          <stop offset="60%" stopColor={theme.dark} stopOpacity="0.96" />
-          <stop offset="100%" stopColor={theme.deep} stopOpacity="1" />
-        </linearGradient>
-        <linearGradient id={`octaBotR_${id}`} x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor={theme.dark} stopOpacity="0.92" />
-          <stop offset="70%" stopColor={theme.deep} stopOpacity="0.98" />
-          <stop offset="100%" stopColor="#050308" stopOpacity="1" />
-        </linearGradient>
-      </defs>
-      {/* Top Left */}
-      <polygon points="55,10 15,65 55,78" fill={`url(#octaTopL_${id})`} stroke="rgba(255,255,255,0.4)" strokeWidth="1" />
-      {/* Top Right */}
-      <polygon points="55,10 55,78 95,65" fill={`url(#octaTopR_${id})`} stroke="rgba(255,255,255,0.25)" strokeWidth="1" />
-      {/* Bottom Left */}
-      <polygon points="15,65 55,78 55,130" fill={`url(#octaBotL_${id})`} stroke="rgba(255,255,255,0.25)" strokeWidth="1" />
-      {/* Bottom Right */}
-      <polygon points="55,78 95,65 55,130" fill={`url(#octaBotR_${id})`} stroke="rgba(255,255,255,0.2)" strokeWidth="1" />
-      {/* Center Facet Lines */}
-      <line x1="55" y1="10" x2="55" y2="130" stroke="#FFFFFF" strokeWidth="1.6" opacity="0.8" />
-      <line x1="15" y1="65" x2="95" y2="65" stroke="rgba(255,255,255,0.6)" strokeWidth="1.2" />
-    </svg>
-  );
-}
-
-// Signature 3D Geometric Shape mapping per team member card
-// Ensures exactly ONE distinct 3D shape per card popup for a clean, minimal, and professional aesthetic
-const MEMBER_SHAPES = ['prism', 'cone', 'pyramid', 'octahedron'];
-
-const getMemberShapeType = (memberId) => {
-  const index = teamData.findIndex(m => m.id === memberId);
-  if (index === -1) return 'prism';
-  return MEMBER_SHAPES[index % MEMBER_SHAPES.length];
-};
-
-// 3 Distinct category configuration with custom 3D geometric shape palettes
+// 4 Category Themes aligned with Celestius Brand Gold/Amber (#FFCC00)
 const CATEGORY_CONFIG = {
+  leadership: {
+    label: "LEADERSHIP",
+    accent: "#D97706", // Rich amber for high contrast text on white
+    bannerAccent: "#FFCC00",
+    bannerBg: "linear-gradient(135deg, #FFCC00 0%, #F59E0B 45%, #D97706 100%)",
+    glow: "hover:shadow-[0_20px_50px_rgba(255,204,0,0.32)]"
+  },
   technical: {
     label: "TECHNICAL",
-    accent: "#FFCC00",
-    badgeBg: "bg-[#FFCC00]/10",
-    badgeBorder: "border-[#FFCC00]/30",
-    badgeText: "text-[#FFCC00]",
-    cardBorder: "border-[#FFCC00]/30 hover:border-[#FFCC00]",
-    cardGlow: "group-hover:shadow-[0_20px_50px_rgba(255,204,0,0.22)]",
-    ambientFrom: "from-[#FFCC00]/20",
-    iconBoxBg: "bg-[#FFCC00]/15",
-    iconBoxBorder: "border-[#FFCC00]/40 group-hover:border-[#FFCC00]",
-    iconColor: "text-[#FFCC00]",
-    titleHover: "group-hover:text-[#FFCC00]",
-    lineBg: "bg-[#FFCC00]/20",
-    linkHover: "hover:bg-[#FFCC00] hover:text-black hover:border-[#FFCC00]",
-    cardGradient: "linear-gradient(180deg, rgba(22, 20, 11, 0.85) 0%, rgba(11, 12, 15, 0.92) 50%, rgba(6, 6, 8, 0.98) 100%)",
-    shapeTheme: {
-      light: "#FFFBEB",
-      mid: "#F59E0B",
-      dark: "#B45309",
-      deep: "#3D1500",
-      glow: "rgba(245, 158, 11, 0.45)",
-      accent: "#FFCC00"
-    }
+    accent: "#D97706",
+    bannerAccent: "#FFCC00",
+    bannerBg: "linear-gradient(135deg, #FFCC00 0%, #F59E0B 45%, #D97706 100%)",
+    glow: "hover:shadow-[0_20px_50px_rgba(255,204,0,0.32)]"
   },
   events: {
     label: "EVENTS",
-    accent: "#a855f7",
-    badgeBg: "bg-purple-500/10",
-    badgeBorder: "border-purple-500/30",
-    badgeText: "text-purple-400",
-    cardBorder: "border-purple-500/30 hover:border-purple-400",
-    cardGlow: "group-hover:shadow-[0_20px_50px_rgba(168,85,247,0.22)]",
-    ambientFrom: "from-purple-500/20",
-    iconBoxBg: "bg-purple-500/15",
-    iconBoxBorder: "border-purple-500/40 group-hover:border-purple-400",
-    iconColor: "text-purple-400",
-    titleHover: "group-hover:text-purple-400",
-    lineBg: "bg-purple-500/20",
-    linkHover: "hover:bg-purple-500 hover:text-white hover:border-purple-500",
-    cardGradient: "linear-gradient(180deg, rgba(25, 13, 36, 0.85) 0%, rgba(11, 12, 15, 0.92) 50%, rgba(6, 6, 8, 0.98) 100%)",
-    shapeTheme: {
-      light: "#FAF5FF",
-      mid: "#A855F7",
-      dark: "#7E22CE",
-      deep: "#260342",
-      glow: "rgba(168, 85, 247, 0.45)",
-      accent: "#a855f7"
-    }
+    accent: "#D97706",
+    bannerAccent: "#FFCC00",
+    bannerBg: "linear-gradient(135deg, #FFCC00 0%, #F59E0B 45%, #D97706 100%)",
+    glow: "hover:shadow-[0_20px_50px_rgba(255,204,0,0.32)]"
   },
-  nonTechnical: {
-    label: "NON-TECHNICAL",
-    accent: "#38bdf8",
-    badgeBg: "bg-sky-400/10",
-    badgeBorder: "border-sky-400/30",
-    badgeText: "text-sky-400",
-    cardBorder: "border-sky-400/30 hover:border-sky-400",
-    cardGlow: "group-hover:shadow-[0_20px_50px_rgba(56,189,248,0.22)]",
-    ambientFrom: "from-sky-400/20",
-    iconBoxBg: "bg-sky-400/15",
-    iconBoxBorder: "border-sky-400/40 group-hover:border-sky-400",
-    iconColor: "text-sky-400",
-    titleHover: "group-hover:text-sky-400",
-    lineBg: "bg-sky-400/20",
-    linkHover: "hover:bg-sky-400 hover:text-black hover:border-sky-400",
-    cardGradient: "linear-gradient(180deg, rgba(9, 21, 34, 0.85) 0%, rgba(11, 12, 15, 0.92) 50%, rgba(6, 6, 8, 0.98) 100%)",
-    shapeTheme: {
-      light: "#F0F9FF",
-      mid: "#0EA5E9",
-      dark: "#0369A1",
-      deep: "#041F38",
-      glow: "rgba(14, 165, 233, 0.45)",
-      accent: "#38bdf8"
-    }
+  creative: {
+    label: "CREATIVE & COMMS",
+    accent: "#D97706",
+    bannerAccent: "#FFCC00",
+    bannerBg: "linear-gradient(135deg, #FFCC00 0%, #F59E0B 45%, #D97706 100%)",
+    glow: "hover:shadow-[0_20px_50px_rgba(255,204,0,0.32)]"
   }
 };
 
-export default function Team({ introCompleted = true }) {
-  const [activeFilter, setActiveFilter] = useState('all');
-  const [selectedMember, setSelectedMember] = useState(null);
+/* --- SPARKLE CLUSTER COMPONENT (Inspired by Reference Graphic) ---
+   Twinkling 4-dot rounded starburst in signature Cyan/Gold accents.
+*/
+function SparkleCluster({ x, y, color = "#38BDF8", size = 1, delay = false }) {
+  return (
+    <g 
+      transform={`translate(${x}, ${y}) scale(${size})`} 
+      className={`${delay ? 'animate-sparkle-twinkle-delay' : 'animate-sparkle-twinkle'} origin-center`}
+    >
+      <rect x="-2.5" y="-11" width="5" height="9" rx="2.5" fill={color} />
+      <rect x="-2.5" y="2" width="5" height="9" rx="2.5" fill={color} />
+      <rect x="-11" y="-2.5" width="9" height="5" rx="2.5" fill={color} />
+      <rect x="2" y="-2.5" width="9" height="5" rx="2.5" fill={color} />
+    </g>
+  );
+}
 
-  // Close modal on Escape key and prevent background scroll when open
+/* --- 1. VISION ANIMATION COMPONENT (Dark-Themed Celestial Astrolabe / Compass) ---
+   Symbolizes: Vision, discovering direction, finding strengths.
+   Design: Deep obsidian badge disc, 8-point navigational compass star, calibrated reticle rings,
+   signature Celestius Gold and Cyan glowing accents, and twinkling sparkles.
+*/
+function VisionAnimation({ inView = true }) {
+  return (
+    <div className="relative w-full max-w-[280px] sm:max-w-[320px] aspect-square flex items-center justify-center select-none">
+      {/* Soft Gold Atmospheric Glow */}
+      <div 
+        className={`absolute inset-4 rounded-full bg-[#FFCC00]/10 blur-2xl pointer-events-none transition-opacity duration-1000 ${
+          inView ? 'opacity-100' : 'opacity-0'
+        }`} 
+      />
+
+      <svg 
+        viewBox="0 0 320 320" 
+        className={`w-full h-full relative z-10 overflow-visible drop-shadow-[0_16px_36px_rgba(0,0,0,0.65)] transition-all duration-1000 ${
+          inView ? 'opacity-100 scale-100 filter-none' : 'opacity-0 scale-90 blur-sm'
+        }`}
+        fill="none"
+      >
+        <defs>
+          <radialGradient id="vision-dark-disc" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#141926" />
+            <stop offset="70%" stopColor="#0B0E17" />
+            <stop offset="100%" stopColor="#07090F" />
+          </radialGradient>
+
+          <linearGradient id="vision-needle-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#FFCC00" />
+            <stop offset="100%" stopColor="#F59E0B" />
+          </linearGradient>
+
+          <filter id="vision-dark-glow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="3" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+
+        {/* 1. Dark Themed Base Disc */}
+        <circle 
+          cx="160" 
+          cy="160" 
+          r="145" 
+          fill="url(#vision-dark-disc)" 
+          stroke="rgba(255, 204, 0, 0.28)" 
+          strokeWidth="1.5" 
+        />
+
+        {/* Outer Calibrated Degree Ring */}
+        <circle 
+          cx="160" 
+          cy="160" 
+          r="128" 
+          stroke="rgba(255, 255, 255, 0.12)" 
+          strokeWidth="1" 
+          strokeDasharray="3 6" 
+        />
+
+        {/* 2. Celestial Compass / Astrolabe Aperture */}
+        <g className="animate-reticle-breath origin-center">
+          {/* Outer Bold Dark Reticle Ring */}
+          <circle 
+            cx="160" 
+            cy="160" 
+            r="105" 
+            stroke="#1E2638" 
+            strokeWidth="7" 
+            fill="none" 
+          />
+
+          {/* 4 Cardinal Crosshair Tick Marks (N, S, E, W - including the top line pointed out by user) */}
+          {/* North (Top) Line */}
+          <line x1="160" y1="48" x2="160" y2="76" stroke="rgba(255,255,255,0.45)" strokeWidth="3" strokeLinecap="round" />
+          {/* South (Bottom) Line */}
+          <line x1="160" y1="244" x2="160" y2="272" stroke="rgba(255,255,255,0.45)" strokeWidth="3" strokeLinecap="round" />
+          {/* West (Left) Line */}
+          <line x1="48" y1="160" x2="76" y2="160" stroke="rgba(255,255,255,0.45)" strokeWidth="3" strokeLinecap="round" />
+          {/* East (Right) Line */}
+          <line x1="244" y1="160" x2="272" y2="160" stroke="rgba(255,255,255,0.45)" strokeWidth="3" strokeLinecap="round" />
+
+          {/* Middle Concentric Ring */}
+          <circle 
+            cx="160" 
+            cy="160" 
+            r="76" 
+            stroke="rgba(56, 189, 248, 0.4)" 
+            strokeWidth="3" 
+            fill="none" 
+            strokeDasharray="16 8" 
+          />
+
+          {/* Inner Glowing Cyan Reticle Ring */}
+          <circle 
+            cx="160" 
+            cy="160" 
+            r="48" 
+            stroke="#38BDF8" 
+            strokeWidth="5" 
+            fill="none" 
+            filter="url(#vision-dark-glow)" 
+          />
+
+          {/* Slow Rotating Navigational Compass Star (Finding Direction) */}
+          <g className="origin-center animate-radar-slow">
+            {/* 8-Point Compass Star Rays */}
+            <polygon points="160,118 165,155 160,160 155,155" fill="url(#vision-needle-grad)" />
+            <polygon points="160,202 165,165 160,160 155,165" fill="#38BDF8" />
+            <polygon points="118,160 155,165 160,160 155,155" fill="rgba(255,255,255,0.4)" />
+            <polygon points="202,160 165,165 160,160 165,155" fill="rgba(255,255,255,0.4)" />
+
+            {/* Corner Star Diamonds */}
+            <polygon points="132,132 155,157 157,155" fill="rgba(255,204,0,0.5)" />
+            <polygon points="188,132 165,157 163,155" fill="rgba(255,204,0,0.5)" />
+            <polygon points="132,188 155,163 157,165" fill="rgba(56,189,248,0.5)" />
+            <polygon points="188,188 165,163 163,165" fill="rgba(56,189,248,0.5)" />
+
+            {/* Center Gold Core */}
+            <circle cx="160" cy="160" r="14" fill="#0B0E17" stroke="#FFCC00" strokeWidth="2.5" />
+            <circle cx="160" cy="160" r="5" fill="#FFCC00" />
+          </g>
+        </g>
+
+        {/* 3. Dark Themed Twinkling Sparkle Clusters */}
+        <SparkleCluster x={248} y={72} color="#FFCC00" size={1.05} />
+        <SparkleCluster x={72} y={248} color="#38BDF8" size={0.9} delay={true} />
+      </svg>
+    </div>
+  );
+}
+
+/* --- 2. MISSION ANIMATION COMPONENT (Dark-Themed Target Bullseye & Action Dart) ---
+   Symbolizes: Mission, hitting the target, building real projects, practical execution.
+   Design: Deep obsidian badge disc, concentric target rings, pulsing gold/cyan bullseye,
+   and a dynamic flight dart piercing dead-center with quick impact twang and shockwave ripples.
+*/
+function MissionAnimation({ inView = true }) {
+  const [hasTriggered, setHasTriggered] = useState(false);
+
   useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') {
-        setSelectedMember(null);
-      }
-    };
-
-    if (selectedMember) {
-      document.body.style.overflow = 'hidden';
-      window.addEventListener('keydown', handleKeyDown);
+    if (inView) {
+      // Re-trigger animation cleanly when scrolled into view
+      setHasTriggered(false);
+      const timer = setTimeout(() => {
+        setHasTriggered(true);
+      }, 50);
+      return () => clearTimeout(timer);
     } else {
-      document.body.style.overflow = '';
+      setHasTriggered(false);
     }
+  }, [inView]);
 
-    return () => {
-      document.body.style.overflow = '';
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [selectedMember]);
+  return (
+    <div className="relative w-full max-w-[280px] sm:max-w-[320px] aspect-square flex items-center justify-center select-none">
+      {/* Soft Cyan/Gold Atmospheric Glow */}
+      <div 
+        className={`absolute inset-4 rounded-full bg-[#38BDF8]/10 blur-2xl pointer-events-none transition-opacity duration-1000 ${
+          inView ? 'opacity-100' : 'opacity-0'
+        }`} 
+      />
 
-  const getRoleIcon = (role) => {
-    const r = role.toLowerCase();
-    if (r.includes('tech')) return Code2;
-    if (r.includes('design')) return Palette;
-    if (r.includes('social')) return Megaphone;
-    if (r.includes('event')) return CalendarCheck;
-    if (r.includes('ps') || r.includes('public')) return Mic2;
-    return Sparkles;
+      <svg 
+        viewBox="0 0 320 320" 
+        className={`w-full h-full relative z-10 overflow-visible drop-shadow-[0_16px_36px_rgba(0,0,0,0.65)] transition-all duration-1000 ${
+          inView ? 'opacity-100 scale-100 filter-none' : 'opacity-0 scale-90 blur-sm'
+        }`}
+        fill="none"
+      >
+        <defs>
+          <radialGradient id="mission-dark-disc" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#141926" />
+            <stop offset="70%" stopColor="#0B0E17" />
+            <stop offset="100%" stopColor="#07090F" />
+          </radialGradient>
+
+          <filter id="mission-dark-glow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="3" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+
+        {/* 1. Dark Themed Base Disc */}
+        <circle 
+          cx="160" 
+          cy="160" 
+          r="145" 
+          fill="url(#mission-dark-disc)" 
+          stroke="rgba(56, 189, 248, 0.28)" 
+          strokeWidth="1.5" 
+        />
+
+        {/* 2. Dynamic Bullseye Target with Rings */}
+        <g className="animate-reticle-breath origin-center">
+          {/* Outer Target Track */}
+          <circle 
+            cx="160" 
+            cy="160" 
+            r="108" 
+            stroke="#1E2638" 
+            strokeWidth="7" 
+            fill="none" 
+          />
+
+          {/* Middle Target Ring in Celestius Gold */}
+          <circle 
+            cx="160" 
+            cy="160" 
+            r="78" 
+            stroke="rgba(255, 204, 0, 0.45)" 
+            strokeWidth="4" 
+            fill="none" 
+          />
+
+          {/* Inner Accent Ring in Electric Cyan */}
+          <circle 
+            cx="160" 
+            cy="160" 
+            r="50" 
+            stroke="#38BDF8" 
+            strokeWidth="5" 
+            fill="none" 
+            filter="url(#mission-dark-glow)" 
+          />
+
+          {/* Scroll-Triggered Impact Shockwave Rings (Expanding violently when arrow strikes) */}
+          {hasTriggered && (
+            <>
+              <circle cx="160" cy="160" r="16" fill="none" stroke="#FFCC00" className="animate-impact-shockwave-1" />
+              <circle cx="160" cy="160" r="16" fill="none" stroke="#38BDF8" className="animate-impact-shockwave-2" />
+            </>
+          )}
+
+          {/* Concentric Bullseye Core (Pulsing Energy Target) */}
+          <g className={`origin-center ${hasTriggered ? 'animate-bullseye-pulse' : ''}`}>
+            <circle cx="160" cy="160" r="24" fill="#FFCC00" filter="url(#mission-dark-glow)" />
+            <circle cx="160" cy="160" r="14" fill="#0B0E17" />
+            <circle cx="160" cy="160" r="6" fill="#38BDF8" />
+          </g>
+
+          {/* Dynamic Action Arrow Striking Dead-Center on Scroll */}
+          <g transform="translate(160, 160) rotate(-45)">
+            <g 
+              key={hasTriggered ? 'arrow-struck' : 'arrow-idle'} 
+              className={hasTriggered ? 'animate-arrow-flight-strike' : 'opacity-0'} 
+              style={{ transformOrigin: '0px 0px' }}
+            >
+              {/* Bold Solid Arrow Shaft - High Contrast Dual-Layer */}
+              <line x1="0" y1="-5" x2="0" y2="-100" stroke="#FFCC00" strokeWidth="5.5" strokeLinecap="round" />
+              <line x1="0" y1="-5" x2="0" y2="-100" stroke="#FFFFFF" strokeWidth="2.5" strokeLinecap="round" />
+
+              {/* Aerodynamic Arrow Head (embedded dead-center in bullseye) */}
+              <polygon points="0,2 -9,-20 0,-15 9,-20" fill="#FFFFFF" filter="url(#mission-dark-glow)" />
+              <polygon points="0,-2 -6,-18 0,-14 6,-18" fill="#FFCC00" />
+
+              {/* Arrow Fletching / Fins (Clean Aerodynamic Feathers) */}
+              <polygon points="0,-72 -14,-86 0,-82" fill="#FFCC00" />
+              <polygon points="0,-72 14,-86 0,-82" fill="#FFCC00" />
+              <polygon points="0,-82 -14,-96 0,-92" fill="#38BDF8" />
+              <polygon points="0,-82 14,-96 0,-92" fill="#38BDF8" />
+
+              {/* Arrow Nock Cap */}
+              <circle cx="0" cy="-98" r="3.5" fill="#FFFFFF" />
+            </g>
+          </g>
+
+          {/* Scroll Impact Burst Sparks */}
+          {hasTriggered && (
+            <g>
+              <circle r="2" fill="#FFFFFF">
+                <animate attributeName="cx" values="160; 144" dur="1.2s" fill="freeze" />
+                <animate attributeName="cy" values="160; 176" dur="1.2s" fill="freeze" />
+                <animate attributeName="opacity" values="0; 1; 0" dur="1.2s" keyTimes="0; 0.45; 1" fill="freeze" />
+              </circle>
+              <circle r="2" fill="#FFCC00">
+                <animate attributeName="cx" values="160; 176" dur="1.2s" fill="freeze" />
+                <animate attributeName="cy" values="160; 174" dur="1.2s" fill="freeze" />
+                <animate attributeName="opacity" values="0; 1; 0" dur="1.2s" keyTimes="0; 0.45; 1" fill="freeze" />
+              </circle>
+              <circle r="1.8" fill="#38BDF8">
+                <animate attributeName="cx" values="160; 178" dur="1.2s" fill="freeze" />
+                <animate attributeName="cy" values="160; 144" dur="1.2s" fill="freeze" />
+                <animate attributeName="opacity" values="0; 1; 0" dur="1.2s" keyTimes="0; 0.45; 1" fill="freeze" />
+              </circle>
+            </g>
+          )}
+
+          {/* Circular Target Tick Marks at Quadrants */}
+          <circle cx="160" cy="52" r="3.5" fill="#38BDF8" />
+          <circle cx="160" cy="268" r="3.5" fill="#38BDF8" />
+          <circle cx="52" cy="160" r="3.5" fill="#FFCC00" />
+          <circle cx="268" cy="160" r="3.5" fill="#FFCC00" />
+        </g>
+
+        {/* 3. Dark Themed Twinkling Sparkles (Opposite Corners) */}
+        <SparkleCluster x={68} y={76} color="#38BDF8" size={1.05} />
+        <SparkleCluster x={252} y={244} color="#FFCC00" size={0.9} delay={true} />
+      </svg>
+    </div>
+  );
+}
+
+export default function Team({ introCompleted = true, setActivePage }) {
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Extract initials helper
+  const getInitials = (name) => {
+    const parts = name.trim().split(/\s+/);
+    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
   };
 
-  const filteredMembers = teamData.filter(member => {
-    if (activeFilter === 'all') return true;
-    return member.category === activeFilter;
+  // Split name into first and remaining words for two-tone typography
+  const splitName = (name) => {
+    const parts = name.trim().split(/\s+/);
+    if (parts.length === 1) return { first: parts[0], last: '' };
+    return { first: parts[0], last: parts.slice(1).join(' ') };
+  };
+
+  const filteredMembers = teamData.filter((member) => {
+    return searchQuery === '' || 
+      member.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      member.role.toLowerCase().includes(searchQuery.toLowerCase());
   });
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-28 sm:pt-36 pb-28 text-left space-y-12 select-none">
       
-      {/* 1. Header Section: Cyber HUD + Bi-directional Scroll Reveal */}
-      <section className="relative space-y-6 border-b border-white/10 pb-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div className="space-y-3 max-w-2xl">
-            {/* Top Tag */}
-            <ScrollReveal animation="fade-down" delay={0}>
-              <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#FFCC00]/10 border border-[#FFCC00]/30 font-mono text-[11px] text-[#FFCC00] font-bold tracking-wider uppercase">
-                <span className="w-2 h-2 rounded-full bg-[#FFCC00] animate-pulse" />
-                <span>CELESTIUS // LEADERSHIP_CORE // {teamData.length} DIRECTORS</span>
+      {/* Page Header: Centered "KNOW ABOUT US" Title */}
+      <section className="relative text-center pt-2 pb-4">
+        <ScrollReveal animation="fade-up" delay={0}>
+          <h1 
+            className="font-ndot text-4xl sm:text-6xl lg:text-7xl text-white tracking-wider uppercase leading-none"
+            style={{ fontFamily: "'VT323', monospace" }}
+          >
+            KNOW ABOUT <span className="text-[#FFCC00]">US</span>
+          </h1>
+        </ScrollReveal>
+      </section>
+
+      {/* Horizontal Line Divider */}
+      <div className="w-full border-b border-white/10" />
+
+      {/* 1. VISION SECTION (Open, Unboxed Editorial Architecture with Left-aligned Animation) */}
+      <section className="relative pt-10 sm:pt-14">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
+          {/* Left Column: Vision Graphic (Inspired by Reference Image) */}
+          <div className="lg:col-span-5 flex justify-center order-2 lg:order-1">
+            <ScrollReveal animation="zoom-in" delay={60}>
+              {({ isVisible }) => <VisionAnimation inView={isVisible} />}
+            </ScrollReveal>
+          </div>
+
+          {/* Right Column: Vision Editorial Text */}
+          <div className="lg:col-span-7 space-y-5 order-1 lg:order-2">
+            <ScrollReveal animation="fade-up" delay={50}>
+              <div className="space-y-2">
+                <div className="inline-flex items-center gap-2.5 font-mono text-xs font-bold text-[#FFCC00] tracking-[0.25em] uppercase">
+                </div>
+
+                <div className="space-y-2">
+                  <h2 
+                    className="font-ndot text-4xl sm:text-5xl lg:text-6xl text-white tracking-wider uppercase leading-none"
+                    style={{ fontFamily: "'VT323', monospace" }}
+                  >
+                    OUR VISION
+                  </h2>
+                  {/* Reference-Inspired Yellow Accent Underline Bar */}
+                  <div className="w-20 h-1.5 bg-[#FFCC00] rounded-full" />
+                </div>
               </div>
             </ScrollReveal>
 
-            {/* Main Title */}
-            <ScrollReveal animation="fade-up" delay={80}>
-              <h1 
-                className="font-ndot text-4xl sm:text-5xl lg:text-6xl text-white tracking-wider uppercase leading-none"
-                style={{ fontFamily: "'VT323', monospace" }}
-              >
-                TEAM LEADERSHIP
-              </h1>
+            <ScrollReveal animation="fade-up" delay={120}>
+              <p className="text-lg sm:text-xl md:text-2xl text-zinc-300 font-light leading-relaxed max-w-2xl tracking-normal pt-1">
+                "To build a learning community where every student can discover their strengths, find their direction, and become capable of turning what they learn into something real."
+              </p>
+            </ScrollReveal>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. MISSION SECTION (Open, Unboxed Architecture - Alternating Zig-Zag: Content Left, Graphic Right) */}
+      <section className="relative border-t border-white/10 pt-16 sm:pt-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
+          {/* Left Column: Mission Editorial Text */}
+          <div className="lg:col-span-7 space-y-5 order-2 lg:order-1">
+            <ScrollReveal animation="fade-up" delay={50}>
+              <div className="space-y-2">
+                <div className="inline-flex items-center gap-2.5 font-mono text-xs font-bold text-[#FFCC00] tracking-[0.25em] uppercase">
+                </div>
+
+                <div className="space-y-2">
+                  <h2 
+                    className="font-ndot text-4xl sm:text-5xl lg:text-6xl text-white tracking-wider uppercase leading-none"
+                    style={{ fontFamily: "'VT323', monospace" }}
+                  >
+                    OUR MISSION
+                  </h2>
+                  {/* Reference-Inspired Yellow Accent Underline Bar */}
+                  <div className="w-20 h-1.5 bg-[#FFCC00] rounded-full" />
+                </div>
+              </div>
             </ScrollReveal>
 
-            {/* Description */}
-            <ScrollReveal animation="fade-up" delay={160}>
-              <p className="font-sans text-sm sm:text-base text-zinc-400 font-light leading-relaxed max-w-xl">
-                Meet the directors leading Celestius across engineering, live symposiums, creative design, and community discourse.
+            <ScrollReveal animation="fade-up" delay={120}>
+              <p className="text-lg sm:text-xl md:text-2xl text-zinc-300 font-light leading-relaxed max-w-2xl tracking-normal pt-1">
+                "To help students start early, explore different fields, build strong fundamentals, work on real projects, learn from one another, and grow through practical experience."
               </p>
             </ScrollReveal>
           </div>
 
-          {/* Color Key Indicator Bar */}
-          <ScrollReveal animation="fade-up" delay={200}>
-            <div className="flex items-center gap-4 p-3 rounded-2xl bg-[#0c0d12]/90 border border-white/10 backdrop-blur-md text-xs font-mono">
-              <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#FFCC00] shadow-[0_0_8px_#FFCC00]" />
-                <span className="text-zinc-300">TECHNICAL</span>
-              </div>
-              <div className="w-px h-3 bg-white/15" />
-              <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-purple-500 shadow-[0_0_8px_#a855f7]" />
-                <span className="text-zinc-300">EVENTS</span>
-              </div>
-              <div className="w-px h-3 bg-white/15" />
-              <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-sky-400 shadow-[0_0_8px_#38bdf8]" />
-                <span className="text-zinc-300">NON-TECH</span>
+          {/* Right Column: Mission Graphic (Inspired by Reference Image) */}
+          <div className="lg:col-span-5 flex justify-center order-1 lg:order-2">
+            <ScrollReveal animation="zoom-in" delay={80}>
+              {({ isVisible }) => <MissionAnimation inView={isVisible} />}
+            </ScrollReveal>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. CREW DIRECTORY & ACCESS BADGES */}
+      <section className="relative border-t border-white/10 pt-16 sm:pt-20 space-y-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <ScrollReveal animation="fade-up" delay={50}>
+            <div className="space-y-2">
+              <h2 
+                className="font-ndot text-4xl sm:text-5xl lg:text-6xl text-white tracking-wider uppercase leading-none"
+                style={{ fontFamily: "'VT323', monospace" }}
+              >
+                OUR TECH <span className="text-[#FFCC00]">COMMUNITY</span>
+              </h2>
+            </div>
+          </ScrollReveal>
+
+          {/* Sizable, High-End Futuristic Search Bar */}
+          <ScrollReveal animation="fade-up" delay={100} className="w-full md:w-auto">
+            <div className="relative w-full md:w-80 lg:w-96 group">
+              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#FFCC00]/20 via-sky-400/20 to-transparent opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300 blur-sm pointer-events-none" />
+              <div className="relative flex items-center bg-[#0e121d]/85 backdrop-blur-md border border-white/15 group-hover:border-[#FFCC00]/40 group-focus-within:border-[#FFCC00] rounded-xl transition-all duration-300 shadow-inner">
+                <Search className="w-4 h-4 ml-4 text-zinc-400 group-focus-within:text-[#FFCC00] transition-colors shrink-0" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search crew by name or role..."
+                  className="w-full px-3.5 py-3 bg-transparent text-sm font-mono text-white placeholder-zinc-500 focus:outline-none"
+                />
+                {searchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => setSearchQuery('')}
+                    className="mr-3 p-1 rounded-md text-zinc-500 hover:text-white hover:bg-white/10 transition-colors text-xs font-mono"
+                    title="Clear search"
+                  >
+                    ✕
+                  </button>
+                )}
               </div>
             </div>
           </ScrollReveal>
         </div>
+      </section>
 
-        {/* 2. Filter Capsule Controls */}
-        <ScrollReveal animation="fade-up" delay={240}>
-          <div className="pt-2 flex flex-wrap items-center gap-2.5">
-            {[
-              { id: 'all', label: `ALL LEADS [${teamData.length}]` },
-              { id: 'technical', label: `TECHNICAL [${teamData.filter(m => m.category === 'technical').length}]` },
-              { id: 'events', label: `EVENTS [${teamData.filter(m => m.category === 'events').length}]` },
-              { id: 'nonTechnical', label: `NON-TECHNICAL [${teamData.filter(m => m.category === 'nonTechnical').length}]` },
-            ].map((tab) => {
-              const isActive = activeFilter === tab.id;
+      {/* 3. Authentic ID Cards Grid (Faithfully Inspired by Reference Image) */}
+      <section className="relative">
+        {filteredMembers.length === 0 ? (
+          <div className="py-20 text-center space-y-3 font-mono">
+            <p className="text-zinc-500 text-sm">NO CREW MEMBERS FOUND MATCHING "{searchQuery.toUpperCase()}"</p>
+            <button
+              onClick={() => setSearchQuery('')}
+              className="text-xs text-[#FFCC00] underline uppercase hover:text-white transition-colors"
+            >
+              CLEAR SEARCH
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {filteredMembers.map((member, index) => {
+              const config = CATEGORY_CONFIG[member.category] || CATEGORY_CONFIG.technical;
+              const initials = getInitials(member.name);
+              const { first, last } = splitName(member.name);
+
               return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveFilter(tab.id)}
-                  className={`px-4 py-2 rounded-full font-mono text-xs font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer border ${
-                    isActive
-                      ? 'bg-white text-black border-white shadow-lg'
-                      : 'bg-white/[0.03] text-zinc-400 border-white/10 hover:border-white/25 hover:text-white'
-                  }`}
+                <ScrollReveal
+                  key={member.id}
+                  animation="fade-up"
+                  delay={(index % 4) * 60}
+                  className="h-full"
                 >
-                  {tab.label}
-                </button>
+                  {/* Outer Translucent Acrylic Badge Pouch Holder */}
+                  <div
+                    className="group relative rounded-[32px] p-2.5 sm:p-3 bg-[#E2E8F0] border border-white/80 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-200 ease-out hover:-translate-y-2 hover:shadow-[0_25px_55px_rgba(0,0,0,0.55),0_0_35px_rgba(255,204,0,0.25)] flex flex-col justify-between h-full select-none will-change-transform"
+                  >
+                    {/* Top Lanyard Clip Bar with 3 Punch Holes */}
+                    <div className="pt-1 pb-3 flex items-center justify-center gap-3 pointer-events-none">
+                      {/* Left Circular Punch Hole */}
+                      <div className="w-3 h-3 rounded-full bg-zinc-800/80 border border-zinc-600/40 shadow-inner" />
+                      
+                      {/* Center Wide Oval Lanyard Slot */}
+                      <div className="w-14 h-3.5 rounded-full bg-zinc-800/80 border border-zinc-600/40 shadow-inner flex items-center justify-center">
+                        <div className="w-7 h-1 rounded-full bg-zinc-600/40" />
+                      </div>
+
+                      {/* Right Circular Punch Hole */}
+                      <div className="w-3 h-3 rounded-full bg-zinc-800/80 border border-zinc-600/40 shadow-inner" />
+                    </div>
+
+                    {/* Inner Physical ID Card */}
+                    <div className="relative rounded-[22px] overflow-hidden bg-white shadow-md flex flex-col justify-between flex-1">
+                      
+                      {/* TOP SECTION: Celestius Brand Gold/Amber Header with Logo & Brand Name */}
+                      <div 
+                        className="relative overflow-hidden pt-4 pb-14 px-4 text-center"
+                        style={{ background: config.bannerBg }}
+                      >
+                        {/* Refined Club Logo & Tech Community Subtitle */}
+                        <div className="relative z-10 flex flex-col items-center justify-center pt-0.5 pb-1">
+                          <img 
+                            src={logoImg} 
+                            alt="Celestius Logo" 
+                            className="h-8 sm:h-9 w-auto object-contain drop-shadow-sm" 
+                          />
+                          <span className="font-mono text-[9px] font-black text-black tracking-[0.22em] uppercase mt-1 select-none">
+                            TECH COMMUNITY
+                          </span>
+                        </div>
+
+                        {/* Smooth Organic Layered Wave Dividing Header and Body */}
+                        <svg 
+                          viewBox="0 0 300 65" 
+                          preserveAspectRatio="none" 
+                          className="absolute -bottom-0.5 inset-x-0 w-full h-12 pointer-events-none z-10"
+                        >
+                          {/* Soft Amber Shadow Wave */}
+                          <path 
+                            d="M 0,15 C 80,45 150,15 220,35 C 260,45 285,30 300,20 L 300,65 L 0,65 Z" 
+                            fill="#FEF3C7" 
+                          />
+                          {/* Main White Cut Wave */}
+                          <path 
+                            d="M 0,25 C 70,50 140,25 210,40 C 255,50 280,35 300,25 L 300,65 L 0,65 Z" 
+                            fill="#FFFFFF" 
+                          />
+                        </svg>
+                      </div>
+
+                      {/* CENTER CIRCULAR PORTRAIT AVATAR (Overlapping the Wave Boundary) */}
+                      <div className="relative -mt-12 z-20 flex flex-col items-center pointer-events-none">
+                        <div className="w-24 h-24 rounded-full p-1 bg-white shadow-[0_8px_20px_rgba(0,0,0,0.15)] flex items-center justify-center">
+                          <div 
+                            className="w-full h-full rounded-full flex items-center justify-center shadow-inner"
+                            style={{ background: config.bannerBg }}
+                          >
+                            <span 
+                              className="font-ndot text-3xl sm:text-4xl text-black font-bold tracking-wider leading-none select-none"
+                              style={{ fontFamily: "'VT323', monospace" }}
+                            >
+                              {initials}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* LOWER SECTION: Name & Role Designation (No truncation, complete full name) */}
+                      <div className="px-3 pt-3 pb-2 text-center space-y-1 relative z-20 min-h-[72px] flex flex-col justify-center">
+                        {/* Member Full Name */}
+                        <h3 
+                          className="text-base sm:text-[17px] font-bold uppercase tracking-tight text-zinc-900 leading-snug flex flex-wrap items-center justify-center gap-x-1.5"
+                          title={member.name}
+                        >
+                          <span>{first}</span>
+                          {last && <span style={{ color: config.accent }}>{last}</span>}
+                        </h3>
+
+                        {/* Designation / Role */}
+                        <p className="text-xs sm:text-[13px] font-semibold tracking-wide text-zinc-600 uppercase leading-snug">
+                          {member.role}
+                        </p>
+                      </div>
+
+                      {/* HANDLES: ONLY GitHub & LinkedIn Links */}
+                      <div className="px-4 pt-2 pb-3 flex items-center justify-center gap-2 relative z-20">
+                        {member.github && (
+                          <a
+                            href={member.github}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full bg-zinc-100 hover:bg-zinc-200 border border-zinc-200 text-zinc-800 hover:text-black font-mono text-[10px] font-bold uppercase tracking-wider transition-colors duration-150 active:scale-95 shadow-sm cursor-pointer"
+                            title={`${member.name}'s GitHub`}
+                          >
+                            <Github className="w-3.5 h-3.5 text-zinc-700" />
+                            <span>GITHUB</span>
+                          </a>
+                        )}
+
+                        {member.linkedin && (
+                          <a
+                            href={member.linkedin}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-900 hover:text-black font-mono text-[10px] font-bold uppercase tracking-wider transition-colors duration-150 active:scale-95 shadow-sm cursor-pointer"
+                            title={`${member.name}'s LinkedIn`}
+                          >
+                            <Linkedin className="w-3.5 h-3.5 text-[#D97706]" />
+                            <span>LINKEDIN</span>
+                          </a>
+                        )}
+                      </div>
+
+                      {/* AUTHENTIC BARCODE STRIP (Faithful to Reference Image) */}
+                      <div className="pt-1 pb-2 flex flex-col items-center justify-center pointer-events-none">
+                        <div className="h-6 flex items-end justify-center gap-[2px] opacity-75 select-none">
+                          <span className="w-0.5 h-6 bg-zinc-900" />
+                          <span className="w-1.5 h-6 bg-zinc-900" />
+                          <span className="w-0.5 h-6 bg-zinc-900" />
+                          <span className="w-0.5 h-6 bg-zinc-900" />
+                          <span className="w-1 h-6 bg-zinc-900" />
+                          <span className="w-0.5 h-6 bg-zinc-900" />
+                          <span className="w-1.5 h-6 bg-zinc-900" />
+                          <span className="w-0.5 h-6 bg-zinc-900" />
+                          <span className="w-1 h-6 bg-zinc-900" />
+                          <span className="w-0.5 h-6 bg-zinc-900" />
+                          <span className="w-2 h-6 bg-zinc-900" />
+                          <span className="w-0.5 h-6 bg-zinc-900" />
+                          <span className="w-1 h-6 bg-zinc-900" />
+                          <span className="w-0.5 h-6 bg-zinc-900" />
+                          <span className="w-1.5 h-6 bg-zinc-900" />
+                          <span className="w-0.5 h-6 bg-zinc-900" />
+                          <span className="w-0.5 h-6 bg-zinc-900" />
+                          <span className="w-1 h-6 bg-zinc-900" />
+                        </div>
+                      </div>
+
+                      {/* BOTTOM ACCENT SMILE CURVE STRIP */}
+                      <div 
+                        className="h-2 w-full pointer-events-none"
+                        style={{ backgroundColor: config.bannerAccent || config.accent }}
+                      />
+
+                    </div>
+                  </div>
+                </ScrollReveal>
               );
             })}
           </div>
-        </ScrollReveal>
+        )}
       </section>
 
-      {/* 3. Cyber-Pod Crew Cards Grid with Bi-directional Staggered ScrollReveal */}
-      <section className="relative">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {filteredMembers.map((member, index) => {
-            const config = CATEGORY_CONFIG[member.category] || CATEGORY_CONFIG.technical;
-            const RoleIcon = getRoleIcon(member.role);
+      {/* 4. Join Our Community CTA Banner */}
+      <ScrollReveal animation="fade-up" delay={150}>
+        <section className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-white/10 bg-gradient-to-b from-[#121624]/90 to-[#0a0d16]/95 backdrop-blur-xl p-6 sm:p-10 text-center space-y-5 shadow-2xl">
+          {/* Subtle Ambient Radial Glow */}
+          <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-[#FFCC00]/10 rounded-full blur-3xl pointer-events-none" />
 
-            return (
-              <ScrollReveal
-                key={member.id}
-                animation="fade-up"
-                delay={(index % 4) * 90}
-                className="h-full"
-              >
-                <div
-                  onClick={() => setSelectedMember(member)}
-                  className={`group relative rounded-3xl p-6 sm:p-7 cursor-pointer transition-all duration-300 ease-out border flex flex-col justify-between overflow-hidden hover:-translate-y-2 hover:scale-[1.01] h-full ${config.cardBorder} ${config.cardGlow}`}
-                  style={{
-                    background: config.cardGradient,
-                    boxShadow: `0 10px 30px -10px ${config.accent}15`
-                  }}
-                >
-                  {/* Ambient Corner Atmosphere */}
-                  <div 
-                    className={`absolute -top-16 -right-16 w-36 h-36 rounded-full bg-gradient-to-br ${config.ambientFrom} to-transparent blur-2xl opacity-40 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none`}
-                  />
+          {/* Small Top Tag */}
 
-                  {/* Top Glossy Highlight Sheen */}
-                  <div className="absolute top-0 inset-x-0 h-10 bg-gradient-to-b from-white/10 via-white/[0.03] to-transparent rounded-t-3xl pointer-events-none" />
+          {/* Main Hook */}
+          <div className="space-y-2 max-w-2xl mx-auto">
+            <h3 
+              className="font-ndot text-3xl sm:text-4xl lg:text-5xl text-white uppercase tracking-wider leading-tight"
+              style={{ fontFamily: "'VT323', monospace" }}
+            >
+              WANT TO BE A PART OF OUR <span className="text-[#FFCC00]">COMMUNITY</span>?
+            </h3>
+            <p className="font-sans text-sm sm:text-base text-zinc-400 font-light leading-relaxed">
+              Start early, build real-world products, and collaborate with passionate builders across development, AI, design, and events.
+            </p>
+          </div>
 
-                  {/* Card Main Information Bay */}
-                  <div className="relative z-10 space-y-4">
-                    
-                    {/* Header Row: Crew Identifier Badge & Holographic Icon Capsule */}
-                    <div className="flex items-center justify-between gap-2">
-                      <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full ${config.badgeBg} border ${config.badgeBorder} font-mono text-[10px] ${config.badgeText} font-bold tracking-wider uppercase`}>
-                        <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: config.accent }} />
-                        {member.leadTag}
-                      </span>
-
-                      {/* Holographic Icon Emblem */}
-                      <div 
-                        className={`w-10 h-10 rounded-2xl ${config.iconBoxBg} border ${config.iconBoxBorder} flex items-center justify-center transition-all duration-300 group-hover:scale-110 shadow-sm`}
-                      >
-                        <RoleIcon className={`w-5 h-5 ${config.iconColor}`} />
-                      </div>
-                    </div>
-
-                    {/* Member Name in Signature Pixel Font */}
-                    <div>
-                      <h3 
-                        className={`font-ndot text-3xl sm:text-4xl text-white tracking-wide uppercase leading-tight transition-colors duration-200 ${config.titleHover}`}
-                        style={{ fontFamily: "'VT323', monospace" }}
-                      >
-                        {member.name}
-                      </h3>
-
-                      <p 
-                        className="font-mono text-xs font-bold tracking-wider mt-1 uppercase"
-                        style={{ color: config.accent }}
-                      >
-                        {member.role}
-                      </p>
-
-                      <p className="font-sans text-xs text-zinc-300 mt-1.5 line-clamp-1 font-medium">
-                        {member.domain}
-                      </p>
-                    </div>
-
-                    {/* Bio Excerpt */}
-                    <p className="font-sans text-xs text-zinc-400 leading-relaxed line-clamp-2">
-                      {member.bio}
-                    </p>
-
-                    {/* Skill Pills with Authentic Vector Logos */}
-                    <div className="pt-2 flex flex-wrap gap-1.5">
-                      {member.skills.slice(0, 3).map((skill, sIdx) => (
-                        <span 
-                          key={sIdx}
-                          className="px-2.5 py-1 rounded-lg bg-black/60 border border-white/10 font-mono text-[10px] text-zinc-300 flex items-center gap-1.5 group-hover:border-white/20 transition-colors"
-                        >
-                          {renderSkillLogo(skill)}
-                          <span>{skill}</span>
-                        </span>
-                      ))}
-                      {member.skills.length > 3 && (
-                        <span className="px-2 py-1 rounded-lg bg-white/[0.04] border border-white/5 font-mono text-[10px] text-zinc-400">
-                          +{member.skills.length - 3}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Card Bottom: View Dossier Action & Direct Social Icons */}
-                  <div className="relative z-10 pt-4 mt-6 border-t border-white/10 flex items-center justify-between font-mono text-xs">
-                    <span 
-                      className={`font-bold flex items-center gap-1.5 transition-transform duration-300 group-hover:translate-x-1`}
-                      style={{ color: config.accent }}
-                    >
-                      <span>VIEW DOSSIER</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </span>
-
-                    {/* Social Connect Icons (stops card click propagation) */}
-                    <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
-                      {member.github && (
-                        <a
-                          href={member.github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={`w-7 h-7 rounded-lg bg-white/[0.05] border border-white/10 flex items-center justify-center text-zinc-400 transition-all duration-200 ${config.linkHover}`}
-                          title="GitHub Profile"
-                        >
-                          <Github className="w-3.5 h-3.5" />
-                        </a>
-                      )}
-                      {member.linkedin && (
-                        <a
-                          href={member.linkedin}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={`w-7 h-7 rounded-lg bg-white/[0.05] border border-white/10 flex items-center justify-center text-zinc-400 transition-all duration-200 ${config.linkHover}`}
-                          title="LinkedIn Profile"
-                        >
-                          <Linkedin className="w-3.5 h-3.5" />
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </ScrollReveal>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* 4. ULTRA-MODERN CREW MEMBER DOSSIER MODAL (Popup Portal) */}
-      {selectedMember && typeof document !== 'undefined' && createPortal(
-        <div 
-          className="fixed inset-0 z-[999] flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-md animate-fade-in"
-          onClick={() => setSelectedMember(null)}
-        >
-          {(() => {
-            const config = CATEGORY_CONFIG[selectedMember.category] || CATEGORY_CONFIG.technical;
-            const RoleIcon = getRoleIcon(selectedMember.role);
-            const sTheme = config.shapeTheme;
-            const shapeType = getMemberShapeType(selectedMember.id);
-
-            // Generate initial monograms for avatar capsule
-            const nameParts = selectedMember.name.split(' ');
-            const initials = nameParts.map(p => p[0]).join('').slice(0, 2).toUpperCase();
-
-            return (
-              <div 
-                className="relative w-full max-w-4xl max-h-[92vh] bg-[#07080d] border border-white/20 rounded-[28px] sm:rounded-[36px] overflow-hidden flex flex-col md:flex-row text-left animate-modal-pop shadow-2xl"
-                onClick={(e) => e.stopPropagation()}
-                style={{
-                  boxShadow: `0 0 80px ${config.accent}30, 0 35px 90px rgba(0,0,0,0.95)`
-                }}
-              >
-                {/* 1. Single Soft Ambient Aura Light */}
-                <div 
-                  className="absolute -top-16 -left-16 w-80 h-80 rounded-full blur-[100px] pointer-events-none opacity-30"
-                  style={{ backgroundColor: sTheme.glow }}
-                />
-
-                {/* 2. EXACTLY ONE SIGNATURE 3D GRADIENT SHAPE (Unique per member card, minimal & professional) */}
-                <div className="absolute -top-4 left-4 sm:left-8 w-52 h-52 sm:w-60 sm:h-60 pointer-events-none opacity-90 animate-bubble-1 transition-all duration-700 z-0">
-                  {shapeType === 'prism' && (
-                    <Gradient3DPrism theme={sTheme} className="w-full h-full drop-shadow-[0_20px_45px_rgba(0,0,0,0.9)] rotate-12" />
-                  )}
-                  {shapeType === 'cone' && (
-                    <Gradient3DCone theme={sTheme} className="w-full h-full drop-shadow-[0_20px_45px_rgba(0,0,0,0.9)] -rotate-6" />
-                  )}
-                  {shapeType === 'pyramid' && (
-                    <Gradient3DPyramid theme={sTheme} className="w-full h-full drop-shadow-[0_20px_45px_rgba(0,0,0,0.9)] rotate-6" />
-                  )}
-                  {shapeType === 'octahedron' && (
-                    <Gradient3DOctahedron theme={sTheme} className="w-full h-full drop-shadow-[0_20px_45px_rgba(0,0,0,0.9)] rotate-12" />
-                  )}
-                </div>
-
-                {/* Frosted Scrim ensuring 3D shape is clear while keeping all text 100% readable */}
-                <div className="absolute inset-0 bg-gradient-to-b from-[#07080d]/25 via-[#07080d]/40 to-[#07080d]/65 pointer-events-none backdrop-blur-[1px] z-[1]" />
-
-                {/* Top Inner Specular Rim */}
-                <div className="absolute top-0 inset-x-0 h-16 bg-gradient-to-b from-white/10 to-transparent pointer-events-none rounded-t-[28px] sm:rounded-t-[36px] z-10" />
-
-                {/* Close Button */}
-                <button
-                  onClick={() => setSelectedMember(null)}
-                  className="absolute top-5 right-5 z-30 p-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-zinc-300 hover:text-white transition-all duration-200 hover:rotate-90 cursor-pointer shadow-lg active:scale-95"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-
-                {/* LEFT COLUMN: Crew Identity Clearance Bay */}
-                <div className="md:w-5/12 p-6 sm:p-8 flex flex-col justify-between border-b md:border-b-0 md:border-r border-white/10 relative z-10 bg-black/25 backdrop-blur-sm">
-                  <div className="space-y-6">
-                    
-                    {/* Top Identity Capsule */}
-                    <div className="flex items-center gap-3">
-                      <div 
-                        className="w-12 h-12 rounded-2xl flex items-center justify-center text-white border shadow-lg shrink-0 animate-icon-levitate"
-                        style={{
-                          backgroundColor: `${config.accent}20`,
-                          borderColor: `${config.accent}60`,
-                          boxShadow: `0 0 20px ${config.accent}35`
-                        }}
-                      >
-                        <RoleIcon className="w-6 h-6" style={{ color: config.accent }} />
-                      </div>
-
-                      <div className="space-y-0.5">
-                        <span 
-                          className="font-mono text-[11px] font-bold uppercase tracking-widest block"
-                          style={{ color: config.accent }}
-                        >
-                          {selectedMember.leadTag}
-                        </span>
-                        <span className="font-mono text-[10px] text-zinc-400 block uppercase">
-                          {selectedMember.division}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Holographic Crew Avatar Frame */}
-                    <div className="relative mx-auto my-2 w-32 h-32 sm:w-36 sm:h-36 rounded-3xl p-1 bg-gradient-to-b from-white/20 via-white/5 to-transparent border border-white/20 flex items-center justify-center shadow-2xl">
-                      {/* Orbital scan pulse */}
-                      <div 
-                        className="absolute inset-0 rounded-3xl animate-pulse opacity-40 pointer-events-none"
-                        style={{ boxShadow: `0 0 35px ${config.accent}50` }}
-                      />
-
-                      <div 
-                        className="w-full h-full rounded-[22px] flex flex-col items-center justify-center relative overflow-hidden"
-                        style={{
-                          background: `radial-gradient(circle at 50% 40%, ${config.accent}25 0%, #0a0c14 80%)`,
-                          borderColor: `${config.accent}40`
-                        }}
-                      >
-                        <span 
-                          className="font-ndot text-4xl sm:text-5xl font-bold tracking-widest text-white drop-shadow-md"
-                          style={{ fontFamily: "'VT323', monospace" }}
-                        >
-                          {initials}
-                        </span>
-                        <span className="font-mono text-[9px] uppercase tracking-widest text-zinc-400 mt-1">
-                          CREW ID // CIT
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Clearance & Station Intel */}
-                    <div className="space-y-2 text-center">
-                      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-400/10 border border-emerald-400/30 font-mono text-[11px] text-emerald-400 font-bold uppercase">
-                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                        <span>ACTIVE CORE DIRECTOR</span>
-                      </div>
-                      <p className="font-mono text-[11px] text-zinc-400">
-                        {selectedMember.department}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Left Column Bottom: Direct Social Connect Buttons */}
-                  <div className="pt-6 border-t border-white/10 space-y-2.5">
-                    <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-zinc-500 block">
-                      // DIRECT COMMS & NETWORK
-                    </span>
-                    <div className="grid grid-cols-2 gap-2">
-                      {selectedMember.github && (
-                        <a
-                          href={selectedMember.github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="py-2.5 px-3 rounded-xl bg-black/60 border border-white/15 hover:border-white/40 text-zinc-200 hover:text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all duration-200 hover:scale-[1.02] shadow-sm backdrop-blur-sm"
-                        >
-                          <Github className="w-3.5 h-3.5" />
-                          <span>GITHUB</span>
-                        </a>
-                      )}
-                      {selectedMember.linkedin && (
-                        <a
-                          href={selectedMember.linkedin}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="py-2.5 px-3 rounded-xl font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all duration-200 hover:scale-[1.02] shadow-lg text-black font-extrabold backdrop-blur-sm"
-                          style={{
-                            backgroundColor: config.accent,
-                            boxShadow: `0 0 20px ${config.accent}40`
-                          }}
-                        >
-                          <Linkedin className="w-3.5 h-3.5 text-black" />
-                          <span>LINKEDIN</span>
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                {/* RIGHT COLUMN: Executive Dossier Intel */}
-                <div className="md:w-7/12 p-6 sm:p-8 flex flex-col justify-between overflow-y-auto space-y-6 relative z-10 custom-scrollbar bg-black/20 backdrop-blur-none">
-                  <div className="space-y-6">
-                    
-                    {/* Header Title Section */}
-                    <div>
-                      <div className="flex items-center gap-2 font-mono text-xs mb-1" style={{ color: config.accent }}>
-                        <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: config.accent }} />
-                        <span className="tracking-widest uppercase font-bold">
-                          [ CELESTIUS CREW DOSSIER // {selectedMember.leadTag} ]
-                        </span>
-                      </div>
-
-                      <h2 
-                        className="font-ndot text-4xl sm:text-5xl lg:text-6xl text-white tracking-wider uppercase leading-none"
-                        style={{ fontFamily: "'VT323', monospace" }}
-                      >
-                        {selectedMember.name}
-                      </h2>
-
-                      <p className="font-mono text-sm font-bold tracking-wider mt-2 uppercase" style={{ color: config.accent }}>
-                        {selectedMember.role} — <span className="text-zinc-300 font-normal">{selectedMember.domain}</span>
-                      </p>
-                    </div>
-
-                    {/* Section 1: Executive Bio & Focus (High Contrast Glass Container) */}
-                    <div className="p-4 rounded-2xl bg-black/60 border border-white/10 backdrop-blur-md space-y-2 shadow-lg">
-                      <span 
-                        className="font-ndot text-xl uppercase tracking-wider block"
-                        style={{ fontFamily: "'VT323', monospace", color: config.accent }}
-                      >
-                        // DIRECTORIAL MANDATE & FOCUS
-                      </span>
-                      <p className="font-sans text-sm text-zinc-200 leading-relaxed font-light">
-                        {selectedMember.bio}
-                      </p>
-                    </div>
-
-                    {/* Section 2: Core Domain Competencies (High Contrast Glass Container) */}
-                    <div className="p-4 rounded-2xl bg-black/60 border border-white/10 backdrop-blur-md space-y-3 shadow-lg">
-                      <span 
-                        className="font-ndot text-xl uppercase tracking-wider block"
-                        style={{ fontFamily: "'VT323', monospace", color: config.accent }}
-                      >
-                        // DOMAIN EXPERTISE & CAPABILITIES
-                      </span>
-                      <div className="flex flex-wrap gap-2">
-                        {selectedMember.skills.map((skill, sIdx) => (
-                          <span 
-                            key={sIdx}
-                            className="px-3 py-1.5 rounded-lg bg-black/90 hover:bg-black border border-white/20 hover:border-white/40 font-mono text-xs text-zinc-100 hover:text-white transition-all duration-200 hover:-translate-y-0.5 cursor-default flex items-center gap-2 shadow-sm"
-                          >
-                            {renderSkillLogo(skill)}
-                            <span>{skill}</span>
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Section 3: Crew Specifications (Bento Grid) */}
-                    <div className="space-y-2 pt-2">
-                      <span 
-                        className="font-ndot text-xl uppercase tracking-wider block"
-                        style={{ fontFamily: "'VT323', monospace", color: config.accent }}
-                      >
-                        // CREW SPECIFICATIONS
-                      </span>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 font-mono text-xs">
-                        <div className="p-3 rounded-xl bg-black/70 border border-white/15 backdrop-blur-md shadow-md">
-                          <span className="text-zinc-400 text-[9px] uppercase tracking-wider block">COHORT</span>
-                          <span className="text-zinc-100 font-bold text-[11px] block mt-0.5">2026 ACTIVE</span>
-                        </div>
-                        <div className="p-3 rounded-xl bg-black/70 border border-white/15 backdrop-blur-md shadow-md">
-                          <span className="text-zinc-400 text-[9px] uppercase tracking-wider block">STATION</span>
-                          <span className="text-zinc-100 font-bold text-[11px] block mt-0.5">CIT CHENNAI</span>
-                        </div>
-                        <div className="p-3 rounded-xl bg-black/70 border border-white/15 backdrop-blur-md shadow-md col-span-2 sm:col-span-1">
-                          <span className="text-zinc-400 text-[9px] uppercase tracking-wider block">CLEARANCE</span>
-                          <span className="text-emerald-400 font-bold text-[11px] block mt-0.5">LEVEL 4 // CORE</span>
-                        </div>
-                      </div>
-                    </div>
-
-                  </div>
-
-                  {/* Footer Actions */}
-                  <div className="pt-5 border-t border-white/10 flex items-center justify-between">
-                    <span className="font-mono text-[10px] text-zinc-400 uppercase tracking-widest">
-                      CELESTIUS // CIT CHENNAI
-                    </span>
-                    <button
-                      onClick={() => setSelectedMember(null)}
-                      className="px-5 py-2 rounded-xl bg-white/15 hover:bg-white/25 border border-white/25 text-white font-mono text-xs font-bold uppercase tracking-wider transition-all active:scale-95 cursor-pointer shadow-lg"
-                    >
-                      DISMISS DOSSIER
-                    </button>
-                  </div>
-
-                </div>
-
-              </div>
-            );
-          })()}
-        </div>,
-        document.body
-      )}
-
-      {/* 5. Bottom Footer Strip */}
-      <ScrollReveal animation="fade-up" delay={200}>
-        <section className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-zinc-500">
-          <span>CELESTIUS // LEADERSHIP ARCHITECTURE // CIT CHENNAI</span>
-          <div className="flex items-center gap-3">
-            <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-zinc-400">ACTIVE DIRECTORS ROSTER</span>
+          {/* CTA Action Button */}
+          <div className="pt-2 flex justify-center">
+            <button
+              onClick={() => {
+                if (typeof setActivePage === 'function') {
+                  setActivePage('recruitment');
+                } else {
+                  window.location.href = '/recruitment';
+                }
+              }}
+              className="group relative inline-flex items-center gap-3 px-6 sm:px-8 py-3.5 rounded-full bg-[#FFCC00] text-black font-mono text-xs sm:text-sm font-bold uppercase tracking-wider hover:bg-white transition-all duration-300 shadow-[0_0_25px_rgba(255,204,0,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.4)] hover:scale-105 active:scale-95 cursor-pointer"
+            >
+              <span>Explore Recruitments</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </button>
           </div>
         </section>
       </ScrollReveal>

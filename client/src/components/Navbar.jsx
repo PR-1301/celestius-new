@@ -39,7 +39,7 @@ export default function Navbar({ activePage, setActivePage, introCompleted = tru
   const navItems = [
     { id: 'home', label: 'HOME' },
     { id: 'events', label: 'EVENTS' },
-    { id: 'team', label: 'TEAM' },
+    { id: 'team', label: 'WE' },
     { id: 'recruitment', label: 'RECRUITMENT' },
     { id: 'contact', label: 'CONTACT' },
   ];

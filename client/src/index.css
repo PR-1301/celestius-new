@@ -843,8 +843,252 @@
   animation: infographicAuraBreath 6s ease-in-out infinite;
 }
 
-.animate-icon-levitate {
-  animation: iconLevitate 4s ease-in-out infinite;
+/* Vision, Zigzag Conduit & Mission Bespoke Kinetic Keyframes */
+@keyframes radarSweep {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes radarSweepReverse {
+  0% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes beaconPingSlow {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.8;
+  }
+  70% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+@keyframes zigzagPulseFlow {
+  0% {
+    stroke-dashoffset: 240;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes isometricHover {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(1deg);
+  }
+}
+
+@keyframes kineticOrbit {
+  0% {
+    transform: rotate(0deg) translateX(45px) rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg) translateX(45px) rotate(-360deg);
+  }
+}
+
+@keyframes sparkTravel {
+  0% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes sparkleTwinkle {
+  0%, 100% {
+    transform: scale(0.85) rotate(0deg);
+    opacity: 0.45;
+  }
+  50% {
+    transform: scale(1.18) rotate(12deg);
+    opacity: 1;
+  }
+}
+
+@keyframes reticleBreath {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.025);
+  }
+}
+
+@keyframes bullseyePulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+.animate-radar-sweep {
+  animation: radarSweep 20s linear infinite;
+  transform-origin: center;
+}
+
+.animate-radar-reverse {
+  animation: radarSweepReverse 28s linear infinite;
+  transform-origin: center;
+}
+
+.animate-radar-slow {
+  animation: radarSweep 45s linear infinite;
+  transform-origin: center;
+}
+
+.animate-beacon-ping {
+  animation: beaconPingSlow 5.5s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+  transform-origin: center;
+}
+
+.animate-zigzag-flow {
+  animation: zigzagPulseFlow 8s linear infinite;
+}
+
+.animate-isometric-hover {
+  animation: isometricHover 9s ease-in-out infinite;
+}
+
+.animate-kinetic-orbit {
+  animation: kineticOrbit 18s linear infinite;
+}
+
+.animate-sparkle-twinkle {
+  animation: sparkleTwinkle 3.6s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.animate-sparkle-twinkle-delay {
+  animation: sparkleTwinkle 3.6s ease-in-out 1.8s infinite;
+  transform-origin: center;
+}
+
+.animate-reticle-breath {
+  animation: reticleBreath 6s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes arrowTwang {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  10% {
+    transform: rotate(0deg);
+  }
+  14% {
+    transform: rotate(-3.5deg) scale(1.025);
+  }
+  18% {
+    transform: rotate(2.8deg) scale(0.985);
+  }
+  22% {
+    transform: rotate(-1.8deg) scale(1.01);
+  }
+  26% {
+    transform: rotate(1deg) scale(0.995);
+  }
+  30% {
+    transform: rotate(-0.5deg) scale(1.002);
+  }
+  34% {
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+/* Arrow Flight Strike Animation on Scroll */
+@keyframes arrowFlightStrike {
+  0% {
+    transform: translate(-150px, -150px) scale(1.3);
+    opacity: 0;
+  }
+  20% {
+    transform: translate(-90px, -90px) scale(1.15);
+    opacity: 0.7;
+  }
+  48% {
+    transform: translate(0px, 0px) scale(1);
+    opacity: 1;
+  }
+  54% {
+    transform: rotate(-4.5deg) scale(1.03);
+  }
+  60% {
+    transform: rotate(3.5deg) scale(0.98);
+  }
+  66% {
+    transform: rotate(-2.2deg) scale(1.01);
+  }
+  72% {
+    transform: rotate(1.2deg) scale(0.995);
+  }
+  78% {
+    transform: rotate(-0.5deg) scale(1.002);
+  }
+  84%, 100% {
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-arrow-flight-strike {
+  animation: arrowFlightStrike 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  transform-origin: 0px 0px;
+}
+
+/* Bullseye Impact Shockwave Triggered on Strike */
+@keyframes targetImpactShockwave {
+  0%, 45% {
+    r: 16;
+    opacity: 0;
+    stroke-width: 3.5;
+  }
+  50% {
+    r: 20;
+    opacity: 1;
+    stroke-width: 3.5;
+  }
+  100% {
+    r: 104;
+    opacity: 0;
+    stroke-width: 0.5;
+  }
+}
+
+.animate-impact-shockwave-1 {
+  animation: targetImpactShockwave 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
+}
+
+.animate-impact-shockwave-2 {
+  animation: targetImpactShockwave 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.22s both;
 }
 
 /* Accessibility */

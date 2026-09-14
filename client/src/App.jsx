@@ -183,7 +183,10 @@ export default function App() {
           />
         )}
         {activePage === 'team' && (
-          <Team introCompleted={introCompleted} />
+          <Team 
+            introCompleted={introCompleted} 
+            setActivePage={handlePageChange}
+          />
         )}
         {activePage === 'recruitment' && (
           <Recruitment 

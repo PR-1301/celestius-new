@@ -21,7 +21,7 @@ export default function Footer({ setActivePage }) {
   const navLinks = [
     { id: 'home', code: '01', label: 'Home' },
     { id: 'events', code: '02', label: 'Events' },
-    { id: 'team', code: '03', label: 'Team' },
+    { id: 'team', code: '03', label: 'WE' },
     { id: 'recruitment', code: '04', label: 'Recruitment' },
     { id: 'contact', code: '05', label: 'Contact' }
   ];

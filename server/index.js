@@ -69,6 +69,24 @@ app.use(async (req, res, next) => {
 // Immediate initial attempt for local or pre-warmed instances
 connectDB();
 
+// Root & API welcome endpoints for browser checks
+app.get(['/', '/api'], (req, res) => {
+  res.status(200).json({
+    success: true,
+    service: 'Celestius Backend API',
+    status: 'online',
+    timestamp: new Date().toISOString(),
+    endpoints: {
+      health: '/api/health',
+      stats: '/api/stats',
+      recruitmentStatus: '/api/recruitment/status',
+      studentCheck: 'POST /api/students/check',
+      studentRegister: 'POST /api/students/register',
+      contact: 'POST /api/contact'
+    }
+  });
+});
+
 // Register a new student application
 app.post('/register', registerUser);
 app.post('/api/students/register', registerUser);

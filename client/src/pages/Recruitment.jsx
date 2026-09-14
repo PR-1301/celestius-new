@@ -217,7 +217,6 @@ const RECRUITMENT_TEAMS = [
     ],
     whatYoullGet: [
       'Hands-on experience creating event videos, reels and promotional content',
-      'Guidance in video editing, storytelling and motion techniques',
       'Opportunities to work on real club content and projects',
       'A portfolio of creative work and practical production experience'
     ]

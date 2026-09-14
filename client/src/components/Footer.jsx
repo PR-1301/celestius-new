@@ -42,30 +42,21 @@ export default function Footer({ setActivePage }) {
           
           {/* Column 1: Brand & Bio (6 cols) */}
           <div className="md:col-span-6 space-y-5">
-            {/* Logo + Brand Name */}
-            <div className="flex items-center gap-3.5">
+            {/* Logo + Motto Below (matching Navbar) */}
+            <div className="flex flex-col items-start gap-1">
               <img 
                 src={logoImg} 
                 alt="Celestius - Technical Club of Chennai Institute of Technology (CIT Chennai)" 
                 className="h-8 sm:h-9 w-auto object-contain shrink-0 drop-shadow-[0_0_12px_rgba(255,204,0,0.3)]"
               />
-              <div className="flex flex-col">
-                <span 
-                  className="font-ndot text-2xl sm:text-3xl tracking-widest text-white leading-none font-bold block"
-                  style={{ fontFamily: "'VT323', monospace" }}
-                >
-                  CELEST<span className="text-[#FFCC00]">IUS</span>
-                </span>
-                <span className="font-mono text-[10px] text-zinc-500 uppercase tracking-widest block mt-1">
-                  CHENNAI INSTITUTE OF TECHNOLOGY (CIT CHENNAI)
-                </span>
-              </div>
+              <span className="font-mono text-[10px] sm:text-[11px] text-zinc-400 tracking-wider">
+                Innovate. Build. Collaborate.
+              </span>
             </div>
 
             {/* Description */}
             <p className="font-sans text-xs sm:text-sm text-zinc-400 leading-relaxed max-w-md">
-              The premier student-driven technical society of Chennai Institute of Technology. 
-              Architecting open-source software, competitive engineering systems, artificial intelligence, and digital craftsmanship.
+              The premier student-driven technical society of Chennai Institute of Technology. Fostering engineering excellence, open-source innovation, hackathons, and research.
             </p>
 
             {/* Minimal Social Links */}

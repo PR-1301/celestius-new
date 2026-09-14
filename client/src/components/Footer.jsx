@@ -46,7 +46,7 @@ export default function Footer({ setActivePage }) {
             <div className="flex items-center gap-3.5">
               <img 
                 src={logoImg} 
-                alt="Celestius" 
+                alt="Celestius - Technical Club of Chennai Institute of Technology (CIT Chennai)" 
                 className="h-8 sm:h-9 w-auto object-contain shrink-0 drop-shadow-[0_0_12px_rgba(255,204,0,0.3)]"
               />
               <div className="flex flex-col">
@@ -57,7 +57,7 @@ export default function Footer({ setActivePage }) {
                   CELEST<span className="text-[#FFCC00]">IUS</span>
                 </span>
                 <span className="font-mono text-[10px] text-zinc-500 uppercase tracking-widest block mt-1">
-                  CHENNAI INSTITUTE OF TECHNOLOGY
+                  CHENNAI INSTITUTE OF TECHNOLOGY (CIT CHENNAI)
                 </span>
               </div>
             </div>

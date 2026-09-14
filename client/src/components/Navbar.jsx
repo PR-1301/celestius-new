@@ -147,11 +147,13 @@ export default function Navbar({ activePage, setActivePage, introCompleted = tru
                 <button 
                   onClick={() => handleNavClick('home')}
                   className="flex flex-col items-start gap-1 group text-left focus:outline-none select-none cursor-pointer"
+                  aria-label="Celestius CIT Technical Club Homepage"
+                  title="Celestius - Technical Club of Chennai Institute of Technology"
                 >
                   {/* Plain Celestius Logo */}
                   <img 
                     src={logoImg} 
-                    alt="Celestius" 
+                    alt="Celestius - Technical Club of Chennai Institute of Technology" 
                     className="h-7 sm:h-8 w-auto object-contain transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_0_12px_rgba(255,204,0,0.3)]"
                   />
 

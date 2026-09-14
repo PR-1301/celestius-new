@@ -118,6 +118,49 @@ export default function App() {
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
+  // Dynamic SEO metadata per route for enhanced search engine ranking and social cards
+  useEffect(() => {
+    const pageTitles = {
+      home: "Celestius | Technical Club of Chennai Institute of Technology (CIT Chennai)",
+      recruitment: "Recruitment & Auditions | Celestius CIT Technical Club",
+      "recruitment/apply": "Student Registration & Application | Celestius CIT",
+      events: "Flagship Events & Hackathons | Celestius CIT (PromptVerse, Symposiums)",
+      "all-events": "Event Chronicles & Archives | Celestius CIT",
+      team: "Core Team & Leadership | Celestius CIT Technical Club",
+      contact: "Contact & Inquiries | Celestius CIT Technical Club"
+    };
+
+    const pageDescriptions = {
+      home: "Celestius (Celestial CIT) is the official student-led technical community of Chennai Institute of Technology, driving engineering excellence, hackathons, and research.",
+      recruitment: "Join Celestius CIT: Explore domains across Web, AI/ML, App Dev, UI/UX, Cloud, Media, and Event Operations. Applications are live for CIT students.",
+      "recruitment/apply": "Official student registration portal for Celestius Technical Club recruitment at Chennai Institute of Technology.",
+      events: "Explore Celestius flagship events at CIT Chennai: PromptVerse Continuum, Takshashila Tech, Deadlock algorithmic battles, and hands-on workshops.",
+      "all-events": "Complete archive of hackathons, technical conferences, websites, and community milestones built by Celestius CIT.",
+      team: "Meet the executive leads, core engineers, designers, and domain architects driving Celestius at Chennai Institute of Technology.",
+      contact: "Get in touch with Celestius CIT leadership. Official inquiries, partnerships, event sponsorships, and campus collaborations."
+    };
+
+    if (pageTitles[activePage]) {
+      document.title = pageTitles[activePage];
+    }
+
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc && pageDescriptions[activePage]) {
+      metaDesc.setAttribute('content', pageDescriptions[activePage]);
+    }
+
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle && pageTitles[activePage]) {
+      ogTitle.setAttribute('content', pageTitles[activePage]);
+    }
+
+    const ogUrl = document.querySelector('meta[property="og:url"]');
+    if (ogUrl) {
+      const path = activePage === 'home' ? '' : activePage;
+      ogUrl.setAttribute('content', `https://celestius.in/${path}`);
+    }
+  }, [activePage]);
+
   const handleMouseMove = (e) => {
     setMousePos({ x: e.clientX, y: e.clientY });
   };

@@ -12,6 +12,7 @@ import Recruitment from './pages/Recruitment';
 import RecruitmentApply from './pages/RecruitmentApply';
 import Contact from './pages/Contact';
 import AllEvents from './pages/AllEvents';
+import { getApiBaseUrl } from './config/api';
 
 export default function App() {
   const getInitialPage = () => {
@@ -65,21 +66,17 @@ export default function App() {
     let isMounted = true;
     const fetchRecruitmentStatus = async () => {
       try {
-        const apiUrl = import.meta.env.VITE_API_URL
-          ? `${import.meta.env.VITE_API_URL.replace(/\/api$/, '')}/api/recruitment/status`
-          : 'http://localhost:5000/api/recruitment/status';
+        const baseUrl = getApiBaseUrl();
+        const apiUrl = baseUrl.endsWith('/api') ? `${baseUrl}/recruitment/status` : `${baseUrl}/api/recruitment/status`;
 
-        let res;
-        try {
-          res = await fetch(apiUrl);
-        } catch {
-          res = await fetch('/api/recruitment/status');
-        }
-
+        const res = await fetch(apiUrl);
         if (res && res.ok) {
-          const data = await res.json();
-          if (isMounted && typeof data.recruitmentOpenStatus === 'boolean') {
-            setRecruitmentOpenStatus(data.recruitmentOpenStatus);
+          const contentType = res.headers.get('content-type') || '';
+          if (contentType.includes('application/json')) {
+            const data = await res.json();
+            if (isMounted && typeof data.recruitmentOpenStatus === 'boolean') {
+              setRecruitmentOpenStatus(data.recruitmentOpenStatus);
+            }
           }
         }
       } catch (err) {

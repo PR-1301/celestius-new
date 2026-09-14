@@ -21,15 +21,20 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// MongoDB Connection
-let isDbConnected = false;
+// Serverless MongoDB Connection Pooling / Caching
+let cachedConnection = null;
 
 const connectDB = async () => {
+  if (cachedConnection && mongoose.connection.readyState === 1) {
+    return cachedConnection;
+  }
+
   try {
-    await mongoose.connect(MONGODB_URI, {
+    const conn = await mongoose.connect(MONGODB_URI, {
       serverSelectionTimeoutMS: 5000,
+      bufferCommands: false,
     });
-    isDbConnected = true;
+    cachedConnection = conn;
     console.log('✓ [DATABASE] MongoDB connected successfully');
 
     // Ensure recruitment config document exists
@@ -45,14 +50,42 @@ const connectDB = async () => {
     } catch (cfgErr) {
       console.warn('! [DATABASE] Could not verify recruitment_config initialization:', cfgErr.message);
     }
+
+    return conn;
   } catch (err) {
-    isDbConnected = false;
-    console.warn('! [DATABASE] MongoDB connection failed:', err.message);
-    console.warn('! [DATABASE] Server running in offline DB mode. Please ensure MongoDB is running and MONGODB_URI in server/.env is valid.');
+    console.warn('! [DATABASE] MongoDB connection error:', err.message);
+    return null;
   }
 };
 
+// Middleware to ensure DB connection is established on serverless function invocations
+app.use(async (req, res, next) => {
+  if (mongoose.connection.readyState !== 1) {
+    await connectDB();
+  }
+  next();
+});
+
+// Immediate initial attempt for local or pre-warmed instances
 connectDB();
+
+// Root & API welcome endpoints for browser checks
+app.get(['/', '/api'], (req, res) => {
+  res.status(200).json({
+    success: true,
+    service: 'Celestius Backend API',
+    status: 'online',
+    timestamp: new Date().toISOString(),
+    endpoints: {
+      health: '/api/health',
+      stats: '/api/stats',
+      recruitmentStatus: '/api/recruitment/status',
+      studentCheck: 'POST /api/students/check',
+      studentRegister: 'POST /api/students/register',
+      contact: 'POST /api/contact'
+    }
+  });
+});
 
 // Register a new student application
 app.post('/register', registerUser);
@@ -567,10 +600,16 @@ app.get('/api/stats', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`=========================================`);
-  console.log(`  CELESTIUS BACKEND SERVER RUNNING       `);
-  console.log(`  PORT: ${PORT}                          `);
-  console.log(`  URL: http://localhost:${PORT}          `);
-  console.log(`=========================================`);
-});
+// Export default for Vercel serverless functions
+export default app;
+
+// Only bind to local port when not running inside Vercel serverless environment
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`=========================================`);
+    console.log(`  CELESTIUS BACKEND SERVER RUNNING       `);
+    console.log(`  PORT: ${PORT}                          `);
+    console.log(`  URL: http://localhost:${PORT}          `);
+    console.log(`=========================================`);
+  });
+}

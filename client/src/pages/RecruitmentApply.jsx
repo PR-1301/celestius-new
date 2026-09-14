@@ -45,6 +45,7 @@ import {
   X
 } from 'lucide-react';
 import logoImg from '../assets/logo.png';
+import { getApiBaseUrl } from '../config/api';
 
 const RECRUITMENT_CONTACTS = [
   {
@@ -1176,9 +1177,8 @@ export default function RecruitmentApply({
   // Check email, personalEmail, regNumber, and mobileNumber uniqueness against database
   const checkUniquenessApi = useCallback(async (email, regNumber, mobileNumber, personalEmail) => {
     try {
-      const apiUrl = import.meta.env.VITE_API_URL 
-        ? `${import.meta.env.VITE_API_URL.replace(/\/api$/, '')}/api/students/check`
-        : 'http://localhost:5000/api/students/check';
+      const baseUrl = getApiBaseUrl();
+      const apiUrl = baseUrl.endsWith('/api') ? `${baseUrl}/students/check` : `${baseUrl}/api/students/check`;
 
       const payload = {};
       if (email) payload.email = email.trim().toLowerCase();
@@ -1595,9 +1595,8 @@ export default function RecruitmentApply({
     }
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL 
-        ? `${import.meta.env.VITE_API_URL.replace(/\/api$/, '')}/register`
-        : 'http://localhost:5000/register';
+      const baseUrl = getApiBaseUrl();
+      const apiUrl = baseUrl.endsWith('/api') ? `${baseUrl}/students/register` : `${baseUrl}/api/students/register`;
 
       let response;
       try {
@@ -1606,15 +1605,15 @@ export default function RecruitmentApply({
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
-      } catch {
-        response = await fetch('/register', {
+      } catch (networkErr) {
+        response = await fetch('/api/students/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
       }
 
-      const data = await response.json();
+      const data = await response.json().catch(() => ({}));
 
       if (response.status === 201) {
         // Capture profiles before resetting form state

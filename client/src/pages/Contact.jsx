@@ -21,6 +21,7 @@ import {
   Radio,
   Send
 } from 'lucide-react';
+import { getApiBaseUrl } from '../config/api';
 
 // Bespoke 3D Origami Paper Bird / Hummingbird Messenger (Matching Reference Image)
 function CyberOrigamiBird({ size = 160, className = "", style = {}, hue = "gold" }) {
@@ -325,8 +326,8 @@ export default function Contact({ introCompleted = true }) {
     const fallbackId = `CLS-TX-${fallbackCode}`;
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-      const endpoint = apiUrl.endsWith('/api') ? `${apiUrl}/contact` : `${apiUrl}/api/contact`;
+      const baseUrl = getApiBaseUrl();
+      const endpoint = baseUrl.endsWith('/api') ? `${baseUrl}/contact` : `${baseUrl}/api/contact`;
 
       const res = await fetch(endpoint, {
         method: 'POST',

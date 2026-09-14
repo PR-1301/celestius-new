@@ -1,4 +1,5 @@
 import varunPhoto from '../assets/team/IMG_5972.JPG?url';
+import ponnurajPhoto from '../assets/team/ponnuraj.jpeg';
 
 export const teamData = [
   {
@@ -32,6 +33,7 @@ export const teamData = [
   {
     id: "ponnurajan-r",
     name: "Ponnurajan R",
+    image: ponnurajPhoto,
     role: "Tech Lead",
     category: "technical",
     division: "Technical Core",

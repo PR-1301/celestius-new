@@ -2,6 +2,19 @@ import mongoose from "mongoose";
 
 const StudentSchema = new mongoose.Schema(
   {
+    personalEmail: {
+      type: String,
+      required: [true, "Personal email is required"],
+      trim: true,
+      lowercase: true,
+      validate: {
+        validator: function (v) {
+          if (!v) return false;
+          return typeof v === "string" && v.endsWith("@gmail.com");
+        },
+        message: "Personal email must be a valid @gmail.com address.",
+      },
+    },
     email: {
       type: String,
       required: false,
@@ -100,8 +113,9 @@ const StudentSchema = new mongoose.Schema(
   }
 );
 
-// Ensure sparse unique index for optional email
+// Ensure sparse unique index for optional email and personal email
 StudentSchema.index({ email: 1 }, { unique: true, sparse: true });
+StudentSchema.index({ personalEmail: 1 }, { unique: true, sparse: true });
 
 export default mongoose.models.Student || mongoose.model("Student", StudentSchema);
 

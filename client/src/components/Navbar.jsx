@@ -143,30 +143,22 @@ export default function Navbar({ activePage, setActivePage, introCompleted = tru
               {/* Content Row */}
               <div className="flex items-center justify-between relative z-10">
               
-                {/* Brand & Plain Celestius Logo */}
+                {/* Brand & Plain Celestius Logo with Motto Below */}
                 <button 
                   onClick={() => handleNavClick('home')}
-                  className="flex items-center gap-3 group text-left focus:outline-none select-none cursor-pointer"
+                  className="flex flex-col items-start gap-1 group text-left focus:outline-none select-none cursor-pointer"
                 >
-                  {/* Plain Celestius Logo without container */}
+                  {/* Plain Celestius Logo */}
                   <img 
                     src={logoImg} 
                     alt="Celestius" 
                     className="h-7 sm:h-8 w-auto object-contain transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_0_12px_rgba(255,204,0,0.3)]"
                   />
 
-                  {/* Brand text: hidden on mobile view, shown on md and larger screens */}
-                  <div className="hidden md:flex flex-col">
-                    <span 
-                      style={{ fontFamily: "'VT323', monospace" }} 
-                      className="font-ndot text-xl sm:text-2xl tracking-widest text-white group-hover:text-[#FFCC00] transition-colors drop-shadow-sm"
-                    >
-                      CELESTIUS
-                    </span>
-                    <span className="font-mono text-[10px] text-zinc-400 tracking-wider">
-                      Innovate. Build. Collaborate
-                    </span>
-                  </div>
+                  {/* Motto text placed directly below the logo */}
+                  <span className="font-mono text-[9.5px] sm:text-[10px] text-zinc-400 group-hover:text-zinc-200 tracking-wider transition-colors">
+                    Innovate. Build. Collaborate
+                  </span>
                 </button>
 
                 {/* Desktop Nav Items (Nothing OS Monospace / Pixel Pill Tabs with Glass Dock) */}

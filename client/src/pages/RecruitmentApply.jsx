@@ -39,9 +39,35 @@ import {
   Clock,
   Shield,
   Edit3,
-  Lock
+  Lock,
+  PhoneCall,
+  Copy,
+  X
 } from 'lucide-react';
 import logoImg from '../assets/logo.png';
+
+const RECRUITMENT_CONTACTS = [
+  {
+    name: 'Aakashraj S',
+    phone: '9442311522',
+    displayPhone: '+91 94423 11522'
+  },
+  {
+    name: 'Ponnurajan R',
+    phone: '9487790898',
+    displayPhone: '+91 94877 90898'
+  },
+  {
+    name: 'Venkatesh GS',
+    phone: '8838077893',
+    displayPhone: '+91 88380 77893'
+  },
+  {
+    name: 'Varun M',
+    phone: '7550172567',
+    displayPhone: '+91 75501 72567'
+  }
+];
 
 const DEPARTMENTS = [
   'CSE', 'AI&DS', 'AI&ML', 'IT', 'CYBER', 'ECE', 'EEE', 'MECH', 'MCT', 'BME', 'CIVIL', 'ACT', 'VLSI', 'CSBS'
@@ -867,6 +893,29 @@ export default function RecruitmentApply({
   recruitmentOpenStatus = true,
   recruitmentStatusLoading = false
 }) {
+  // Track whether the intro animation was running when this page mounted
+  const wasIntroPlayingOnMount = useRef(!introCompleted);
+
+  useEffect(() => {
+    if (introCompleted) {
+      const timer = setTimeout(() => {
+        wasIntroPlayingOnMount.current = false;
+      }, 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [introCompleted]);
+
+  // Refined Intro-aware Staged Animation Style
+  const getAnimStyle = (delaySec, duration = '0.65s') => {
+    if (!introCompleted) {
+      return { opacity: 0 };
+    }
+    const base = wasIntroPlayingOnMount.current ? 0.25 : 0.0;
+    return {
+      animation: `scrollRevealUp ${duration} cubic-bezier(0.16, 1, 0.3, 1) ${(base + delaySec).toFixed(2)}s both`
+    };
+  };
+
   // Step State (1 to 6) strictly persisted in localStorage so refresh/revisit restores exact active step
   const [currentStep, setCurrentStep] = useState(() => {
     try {
@@ -897,6 +946,15 @@ export default function RecruitmentApply({
 
   // Form Data with LocalStorage Persistence
   const [formData, setFormData] = useState(() => {
+    // Check for role explicitly chosen via "Apply for this role" button
+    let preselectedRole = null;
+    try {
+      const chosen = localStorage.getItem('celestius_recruitment_selected_role');
+      if (chosen) {
+        preselectedRole = JSON.parse(chosen);
+      }
+    } catch (e) {}
+
     try {
       const saved = getStorageItem(LOCAL_STORAGE_KEY, 'celestius_recruitment_application_draft_v2');
       if (saved) {
@@ -904,14 +962,16 @@ export default function RecruitmentApply({
         return {
           Name: parsed.Name || '',
           regNumber: parsed.regNumber || '',
+          personalEmail: parsed.personalEmail || '',
           email: parsed.email || '',
           mobileNumber: parsed.mobileNumber || '',
           department: parsed.department || 'CSE',
           year: '1st Year', // Always strictly locked to 1st Year
           section: parsed.section || '',
-          role: parsed.role || 'Tech',
-          subRole: parsed.subRole || 'Frontend Developer',
+          role: preselectedRole?.role || parsed.role || 'Tech',
+          subRole: preselectedRole?.subRole || parsed.subRole || 'Frontend Developer',
           githubUsername: parsed.githubUsername || '',
+          githubConfirmed: Boolean(parsed.githubConfirmed),
           linkedinUsername: parsed.linkedinUsername || ''
         };
       }
@@ -919,14 +979,16 @@ export default function RecruitmentApply({
     return {
       Name: '',
       regNumber: '',
+      personalEmail: '',
       email: '',
       mobileNumber: '',
       department: 'CSE',
       year: '1st Year',
       section: '',
-      role: 'Tech',
-      subRole: 'Frontend Developer',
+      role: preselectedRole?.role || 'Tech',
+      subRole: preselectedRole?.subRole || 'Frontend Developer',
       githubUsername: '',
+      githubConfirmed: false,
       linkedinUsername: ''
     };
   });
@@ -944,6 +1006,9 @@ export default function RecruitmentApply({
 
   // Validation & Status State
   const [stepErrors, setStepErrors] = useState({});
+  const [checkingPersonalEmail, setCheckingPersonalEmail] = useState(false);
+  const [personalEmailStatus, setPersonalEmailStatus] = useState('idle'); // 'idle' | 'checking' | 'valid' | 'conflict' | 'error'
+  const [personalEmailConflictMsg, setPersonalEmailConflictMsg] = useState('');
   const [checkingEmail, setCheckingEmail] = useState(false);
   const [emailStatus, setEmailStatus] = useState('idle'); // 'idle' | 'checking' | 'valid' | 'conflict' | 'error'
   const [emailConflictMsg, setEmailConflictMsg] = useState('');
@@ -960,29 +1025,75 @@ export default function RecruitmentApply({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitResult, setSubmitResult] = useState(null);
 
-  // Auto-save form data silently to localStorage on every input change
+  // Help & Contact Modal State
+  const [showHelpModal, setShowHelpModal] = useState(false);
+  const [copiedPhoneIndex, setCopiedPhoneIndex] = useState(null);
+
+  const handleCopyPhone = (number, index) => {
+    try {
+      navigator.clipboard.writeText(number.replace(/\s+/g, ''));
+      setCopiedPhoneIndex(index);
+      setTimeout(() => setCopiedPhoneIndex(null), 2000);
+    } catch (e) {}
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && showHelpModal) {
+        setShowHelpModal(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [showHelpModal]);
+
+  // Synchronize preselected role if user navigated from "Apply for this role" button
   useEffect(() => {
     try {
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(formData));
+      const chosen = localStorage.getItem('celestius_recruitment_selected_role');
+      if (chosen) {
+        const parsed = JSON.parse(chosen);
+        if (parsed?.role && parsed?.subRole) {
+          setFormData((prev) => ({
+            ...prev,
+            role: parsed.role,
+            subRole: parsed.subRole
+          }));
+        }
+        localStorage.removeItem('celestius_recruitment_selected_role');
+      }
     } catch (e) {}
-  }, [formData]);
+  }, []);
+
+  // Auto-save form data silently to localStorage on every input change (only while form active)
+  useEffect(() => {
+    try {
+      if (!submitResult) {
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(formData));
+      }
+    } catch (e) {}
+  }, [formData, submitResult]);
 
   // Auto-save current active step & max reached step to localStorage on every step change
   useEffect(() => {
     try {
-      localStorage.setItem(LOCAL_STORAGE_STEP_KEY, currentStep.toString());
-      if (currentStep > maxReachedStep) {
-        setMaxReachedStep(currentStep);
-        localStorage.setItem(LOCAL_STORAGE_MAX_STEP_KEY, currentStep.toString());
+      if (!submitResult) {
+        localStorage.setItem(LOCAL_STORAGE_STEP_KEY, currentStep.toString());
+        if (currentStep > maxReachedStep) {
+          setMaxReachedStep(currentStep);
+          localStorage.setItem(LOCAL_STORAGE_MAX_STEP_KEY, currentStep.toString());
+        }
       }
     } catch (e) {}
-  }, [currentStep, maxReachedStep]);
+  }, [currentStep, maxReachedStep, submitResult]);
 
   useEffect(() => {
     try {
-      localStorage.setItem(LOCAL_STORAGE_MAX_STEP_KEY, maxReachedStep.toString());
+      if (!submitResult) {
+        localStorage.setItem(LOCAL_STORAGE_MAX_STEP_KEY, maxReachedStep.toString());
+      }
     } catch (e) {}
-  }, [maxReachedStep]);
+  }, [maxReachedStep, submitResult]);
 
   // Reset draft handler to clear storage and start over fresh
   const handleResetDraft = () => {
@@ -996,6 +1107,7 @@ export default function RecruitmentApply({
     setFormData({
       Name: '',
       regNumber: '',
+      personalEmail: '',
       email: '',
       mobileNumber: '',
       department: 'CSE',
@@ -1004,12 +1116,23 @@ export default function RecruitmentApply({
       role: 'Tech',
       subRole: 'Frontend Developer',
       githubUsername: '',
+      githubConfirmed: false,
       linkedinUsername: ''
     });
     setCurrentStep(1);
     setMaxReachedStep(1);
     setStepErrors({});
+    setPersonalEmailStatus('idle');
+    setPersonalEmailConflictMsg('');
+    setEmailStatus('idle');
+    setEmailConflictMsg('');
+    setMobileStatus('idle');
+    setMobileConflictMsg('');
+    setGithubData(null);
+    setGithubLoading(false);
+    setGithubError('');
     setHasRestoredDraft(false);
+    setSubmitResult(null);
   };
 
   // GitHub API Live Fetch (Debounced)
@@ -1019,6 +1142,7 @@ export default function RecruitmentApply({
       setGithubData(null);
       setGithubError('');
       setGithubLoading(false);
+      setFormData((prev) => (prev.githubConfirmed ? { ...prev, githubConfirmed: false } : prev));
       return;
     }
 
@@ -1034,9 +1158,11 @@ export default function RecruitmentApply({
         } else if (res.status === 404) {
           setGithubData(null);
           setGithubError('GitHub username not found on GitHub.');
+          setFormData((prev) => (prev.githubConfirmed ? { ...prev, githubConfirmed: false } : prev));
         } else {
           setGithubData(null);
           setGithubError('Unable to verify GitHub profile.');
+          setFormData((prev) => (prev.githubConfirmed ? { ...prev, githubConfirmed: false } : prev));
         }
       } catch (err) {
         setGithubData(null);
@@ -1049,8 +1175,8 @@ export default function RecruitmentApply({
     return () => clearTimeout(timer);
   }, [formData.githubUsername]);
 
-  // Check email and regNumber uniqueness against database
-  const checkUniquenessApi = useCallback(async (email, regNumber, mobileNumber) => {
+  // Check email, personalEmail, regNumber, and mobileNumber uniqueness against database
+  const checkUniquenessApi = useCallback(async (email, regNumber, mobileNumber, personalEmail) => {
     try {
       const apiUrl = import.meta.env.VITE_API_URL 
         ? `${import.meta.env.VITE_API_URL.replace(/\/api$/, '')}/api/students/check`
@@ -1058,6 +1184,7 @@ export default function RecruitmentApply({
 
       const payload = {};
       if (email) payload.email = email.trim().toLowerCase();
+      if (personalEmail) payload.personalEmail = personalEmail.trim().toLowerCase();
       if (regNumber) payload.regNumber = regNumber.trim().toUpperCase();
       if (mobileNumber) payload.mobileNumber = mobileNumber.replace(/\D/g, '');
 
@@ -1085,6 +1212,49 @@ export default function RecruitmentApply({
       return { success: false, exists: false };
     }
   }, []);
+
+  // Live validation on Personal Email input (Compulsory: must end with @gmail.com & unique check)
+  useEffect(() => {
+    const cleanPersonal = formData.personalEmail.trim().toLowerCase();
+    if (!cleanPersonal) {
+      setPersonalEmailStatus('idle');
+      setPersonalEmailConflictMsg('');
+      return;
+    }
+
+    if (!cleanPersonal.endsWith('@gmail.com') || cleanPersonal === '@gmail.com') {
+      setPersonalEmailStatus('error');
+      setPersonalEmailConflictMsg('Personal email must end with @gmail.com');
+      setStepErrors((prev) => ({ ...prev, personalEmail: 'Personal email must end with @gmail.com' }));
+      return;
+    }
+
+    // Domain is valid, query DB with 450ms debounce
+    setPersonalEmailStatus('checking');
+    setPersonalEmailConflictMsg('');
+    const timer = setTimeout(async () => {
+      setCheckingPersonalEmail(true);
+      const result = await checkUniquenessApi(null, null, null, cleanPersonal);
+      setCheckingPersonalEmail(false);
+
+      if (result.exists && (result.field === 'Personal email address' || !result.field)) {
+        setPersonalEmailStatus('conflict');
+        const msg = result.message || 'This personal email is already registered.';
+        setPersonalEmailConflictMsg(msg);
+        setStepErrors((prev) => ({ ...prev, personalEmail: msg }));
+      } else {
+        setPersonalEmailStatus('valid');
+        setPersonalEmailConflictMsg('');
+        setStepErrors((prev) => {
+          const next = { ...prev };
+          delete next.personalEmail;
+          return next;
+        });
+      }
+    }, 450);
+
+    return () => clearTimeout(timer);
+  }, [formData.personalEmail, checkUniquenessApi]);
 
   // Live validation on Email input (Optional: if given, check domain and DB uniqueness)
   useEffect(() => {
@@ -1207,7 +1377,7 @@ export default function RecruitmentApply({
       }));
     } else if (name === 'githubUsername') {
       const cleanUser = value.replace(/^https?:\/\/(www\.)?github\.com\//i, '').replace(/\/+$/, '').trim();
-      setFormData((prev) => ({ ...prev, githubUsername: cleanUser }));
+      setFormData((prev) => ({ ...prev, githubUsername: cleanUser, githubConfirmed: false }));
     } else if (name === 'linkedinUsername') {
       const cleanUser = value.replace(/^https?:\/\/(www\.)?linkedin\.com\/(in\/)?/i, '').replace(/\/+$/, '').trim();
       setFormData((prev) => ({ ...prev, linkedinUsername: cleanUser }));
@@ -1230,8 +1400,15 @@ export default function RecruitmentApply({
       }
     }
 
-    // STEP 2: Communication (Mobile compulsory + unique, Email optional + unique if given)
+    // STEP 2: Communication (Personal Email compulsory @gmail.com + unique, Mobile compulsory + unique, College Email optional + unique if given)
     if (step === 2) {
+      const cleanPersonalEmail = formData.personalEmail.trim().toLowerCase();
+      if (!cleanPersonalEmail) {
+        errors.personalEmail = 'Personal email is required.';
+      } else if (!cleanPersonalEmail.endsWith('@gmail.com') || cleanPersonalEmail === '@gmail.com') {
+        errors.personalEmail = 'Personal email must end with @gmail.com';
+      }
+
       const cleanEmail = formData.email.trim().toLowerCase();
       if (cleanEmail && !cleanEmail.endsWith('@citchennai.net')) {
         errors.email = 'Only official @citchennai.net accounts are permitted.';
@@ -1244,6 +1421,9 @@ export default function RecruitmentApply({
         errors.mobileNumber = 'Please enter a valid 10-digit mobile number.';
       }
 
+      if (personalEmailStatus === 'conflict' && !errors.personalEmail) {
+        errors.personalEmail = personalEmailConflictMsg || 'This personal email is already registered.';
+      }
       if (mobileStatus === 'conflict' && !errors.mobileNumber) {
         errors.mobileNumber = mobileConflictMsg || 'This mobile number is already registered.';
       }
@@ -1252,15 +1432,21 @@ export default function RecruitmentApply({
       }
 
       // Check uniqueness against database
-      if (!errors.email && !errors.mobileNumber) {
+      if (!errors.personalEmail && !errors.email && !errors.mobileNumber) {
+        setCheckingPersonalEmail(true);
         setCheckingMobile(true);
         if (cleanEmail) setCheckingEmail(true);
-        const check = await checkUniquenessApi(cleanEmail || null, null, cleanMobile);
+        const check = await checkUniquenessApi(cleanEmail || null, null, cleanMobile, cleanPersonalEmail);
+        setCheckingPersonalEmail(false);
         setCheckingMobile(false);
-        setCheckingEmail(false);
+        if (cleanEmail) setCheckingEmail(false);
 
         if (check.exists) {
-          if (cleanEmail && check.field === 'Email address') {
+          if (check.field === 'Personal email address') {
+            errors.personalEmail = check.message;
+            setPersonalEmailStatus('conflict');
+            setPersonalEmailConflictMsg(check.message);
+          } else if (cleanEmail && check.field === 'University email address') {
             errors.email = check.message;
             setEmailStatus('conflict');
             setEmailConflictMsg(check.message);
@@ -1272,6 +1458,7 @@ export default function RecruitmentApply({
           setStepErrors(errors);
           return false;
         } else {
+          setPersonalEmailStatus('valid');
           if (cleanEmail) setEmailStatus('valid');
           setMobileStatus('valid');
         }
@@ -1298,9 +1485,17 @@ export default function RecruitmentApply({
       }
     }
 
-    // STEP 5: Developer Deck (GitHub and LinkedIn are optional)
+    // STEP 5: Developer Deck (GitHub and LinkedIn are optional, but if entered, profile must be confirmed)
     if (step === 5) {
-      // Both GitHub and LinkedIn profiles are optional
+      if (formData.githubUsername.trim()) {
+        if (githubLoading) {
+          errors.githubUsername = 'Verifying GitHub profile... Please wait a moment.';
+        } else if (githubError) {
+          errors.githubUsername = githubError;
+        } else if (githubData && !formData.githubConfirmed) {
+          errors.githubUsername = 'Please click to select and confirm your GitHub profile card below, or clear the username.';
+        }
+      }
     }
 
     if (Object.keys(errors).length > 0) {
@@ -1363,6 +1558,7 @@ export default function RecruitmentApply({
     setIsSubmitting(true);
     setSubmitResult(null);
 
+    const cleanPersonalEmail = formData.personalEmail.trim().toLowerCase();
     const cleanEmail = formData.email.trim().toLowerCase() || null;
     const cleanMobile = formData.mobileNumber.replace(/\D/g, '');
     const cleanSection = formData.section.trim().toUpperCase() || 'NIL';
@@ -1371,7 +1567,7 @@ export default function RecruitmentApply({
     const cleanLinkedinUrl = formData.linkedinUsername.trim() ? `https://linkedin.com/in/${formData.linkedinUsername.trim()}` : '';
 
     // Final pre-flight uniqueness re-check to prevent race conditions or bypassed edits
-    const preCheck = await checkUniquenessApi(cleanEmail, null, cleanMobile);
+    const preCheck = await checkUniquenessApi(cleanEmail, null, cleanMobile, cleanPersonalEmail);
     if (preCheck.exists) {
       setIsSubmitting(false);
       setSubmitResult({
@@ -1384,7 +1580,7 @@ export default function RecruitmentApply({
 
     const payload = {
       Name: formData.Name.trim(),
-      email: cleanEmail,
+      personalEmail: cleanPersonalEmail,
       department: formData.department.trim(),
       year: '1st Year',
       section: cleanSection,
@@ -1395,6 +1591,10 @@ export default function RecruitmentApply({
       githubUrl: cleanGithubUrl,
       linkedinUrl: cleanLinkedinUrl
     };
+
+    if (cleanEmail) {
+      payload.email = cleanEmail;
+    }
 
     try {
       const apiUrl = import.meta.env.VITE_API_URL 
@@ -1419,16 +1619,57 @@ export default function RecruitmentApply({
       const data = await response.json();
 
       if (response.status === 201) {
+        // Capture profiles before resetting form state
+        const submittedProfiles = {
+          githubUsername: formData.githubUsername.trim(),
+          linkedinUsername: formData.linkedinUsername.trim(),
+          githubConfirmed: formData.githubConfirmed
+        };
+
         // Clear local storage draft and step upon confirmed success
         try {
           localStorage.removeItem(LOCAL_STORAGE_KEY);
           localStorage.removeItem(LOCAL_STORAGE_STEP_KEY);
+          localStorage.removeItem(LOCAL_STORAGE_MAX_STEP_KEY);
+          localStorage.removeItem('celestius_recruitment_application_draft_v2');
+          localStorage.removeItem('celestius_recruitment_application_step_v2');
         } catch (e) {}
+
+        // Reset the form data state so no prior student information remains
+        setFormData({
+          Name: '',
+          regNumber: '',
+          personalEmail: '',
+          email: '',
+          mobileNumber: '',
+          department: 'CSE',
+          year: '1st Year',
+          section: '',
+          role: 'Tech',
+          subRole: 'Frontend Developer',
+          githubUsername: '',
+          githubConfirmed: false,
+          linkedinUsername: ''
+        });
+        setCurrentStep(1);
+        setMaxReachedStep(1);
+        setStepErrors({});
+        setPersonalEmailStatus('idle');
+        setPersonalEmailConflictMsg('');
+        setEmailStatus('idle');
+        setEmailConflictMsg('');
+        setMobileStatus('idle');
+        setMobileConflictMsg('');
+        setGithubData(null);
+        setGithubLoading(false);
+        setGithubError('');
+        setHasRestoredDraft(false);
 
         setSubmitResult({
           status: 'success',
           message: data.message || 'Application successfully registered!',
-          data: data.data || payload
+          data: data.data || payload,
+          submittedProfiles
         });
       } else if (response.status === 409) {
         setSubmitResult({
@@ -1578,11 +1819,167 @@ export default function RecruitmentApply({
     );
   }
 
+  const renderCareerTip = () => {
+    const profiles = submitResult?.submittedProfiles || {
+      githubUsername: formData.githubUsername?.trim(),
+      linkedinUsername: formData.linkedinUsername?.trim()
+    };
+
+    const hasGithub = Boolean(profiles.githubUsername);
+    const hasLinkedin = Boolean(profiles.linkedinUsername);
+
+    // Case 1: Neither GitHub nor LinkedIn provided
+    if (!hasGithub && !hasLinkedin) {
+      return (
+        <div className="mt-4 p-4 sm:p-5 rounded-2xl bg-amber-500/[0.06] border border-amber-500/20 text-left max-w-lg mx-auto shadow-lg backdrop-blur-md animate-fade-in">
+          <div className="flex items-start gap-3.5">
+            <div className="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 shrink-0 mt-0.5">
+              <Sparkles className="w-4 h-4" />
+            </div>
+            <div className="space-y-1.5 flex-1 min-w-0">
+              <div className="flex items-center justify-between gap-2 flex-wrap">
+                <span className="font-mono text-xs font-bold text-amber-300 uppercase tracking-wider">
+                  Quick Career Tip · Digital Presence
+                </span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                  Stay Ahead
+                </span>
+              </div>
+              <p className="text-xs text-zinc-300 font-sans leading-relaxed">
+                You have not given your <strong className="text-white font-mono">GitHub</strong> and <strong className="text-white font-mono">LinkedIn</strong> usernames. If you don't have an account on these platforms, please go ahead and create your accounts to showcase your work and stay ahead of others!
+              </p>
+              <div className="pt-2 flex items-center gap-2.5 flex-wrap">
+                <a
+                  href="https://github.com/signup"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/15 text-[11px] font-mono text-zinc-200 hover:text-white transition-colors"
+                >
+                  <Github className="w-3.5 h-3.5" />
+                  <span>Create GitHub</span>
+                  <ExternalLink className="w-3 h-3 opacity-60" />
+                </a>
+                <a
+                  href="https://www.linkedin.com/signup"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#0A66C2]/15 hover:bg-[#0A66C2]/25 border border-[#0A66C2]/30 text-[11px] font-mono text-sky-200 hover:text-sky-100 transition-colors"
+                >
+                  <Linkedin className="w-3.5 h-3.5" />
+                  <span>Create LinkedIn</span>
+                  <ExternalLink className="w-3 h-3 opacity-60" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Case 2: Only LinkedIn provided, GitHub missing
+    if (!hasGithub && hasLinkedin) {
+      return (
+        <div className="mt-4 p-4 sm:p-5 rounded-2xl bg-amber-500/[0.06] border border-amber-500/20 text-left max-w-lg mx-auto shadow-lg backdrop-blur-md animate-fade-in">
+          <div className="flex items-start gap-3.5">
+            <div className="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 shrink-0 mt-0.5">
+              <Sparkles className="w-4 h-4" />
+            </div>
+            <div className="space-y-1.5 flex-1 min-w-0">
+              <div className="flex items-center justify-between gap-2 flex-wrap">
+                <span className="font-mono text-xs font-bold text-amber-300 uppercase tracking-wider">
+                  Quick Career Tip · Code Portfolio
+                </span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                  Stay Ahead
+                </span>
+              </div>
+              <p className="text-xs text-zinc-300 font-sans leading-relaxed">
+                You have not given your <strong className="text-white font-mono">GitHub</strong> username. If you don't have an account on GitHub, please go ahead and create your account to showcase your code repositories and stay ahead of others!
+              </p>
+              <div className="pt-2">
+                <a
+                  href="https://github.com/signup"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/15 text-[11px] font-mono text-zinc-200 hover:text-white transition-colors"
+                >
+                  <Github className="w-3.5 h-3.5" />
+                  <span>Create GitHub Account</span>
+                  <ExternalLink className="w-3 h-3 opacity-60" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Case 3: Only GitHub provided, LinkedIn missing
+    if (hasGithub && !hasLinkedin) {
+      return (
+        <div className="mt-4 p-4 sm:p-5 rounded-2xl bg-amber-500/[0.06] border border-amber-500/20 text-left max-w-lg mx-auto shadow-lg backdrop-blur-md animate-fade-in">
+          <div className="flex items-start gap-3.5">
+            <div className="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 shrink-0 mt-0.5">
+              <Sparkles className="w-4 h-4" />
+            </div>
+            <div className="space-y-1.5 flex-1 min-w-0">
+              <div className="flex items-center justify-between gap-2 flex-wrap">
+                <span className="font-mono text-xs font-bold text-amber-300 uppercase tracking-wider">
+                  Quick Career Tip · Professional Network
+                </span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                  Stay Ahead
+                </span>
+              </div>
+              <p className="text-xs text-zinc-300 font-sans leading-relaxed">
+                You have not given your <strong className="text-white font-mono">LinkedIn</strong> username. If you don't have an account on LinkedIn, please go ahead and create your account to expand your network, connect with leaders, and stay ahead of others!
+              </p>
+              <div className="pt-2">
+                <a
+                  href="https://www.linkedin.com/signup"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#0A66C2]/15 hover:bg-[#0A66C2]/25 border border-[#0A66C2]/30 text-[11px] font-mono text-sky-200 hover:text-sky-100 transition-colors"
+                >
+                  <Linkedin className="w-3.5 h-3.5" />
+                  <span>Create LinkedIn Profile</span>
+                  <ExternalLink className="w-3 h-3 opacity-60" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Case 4: Both provided
+    return (
+      <div className="mt-4 p-4 rounded-2xl bg-emerald-500/[0.06] border border-emerald-500/20 text-left max-w-lg mx-auto shadow-lg backdrop-blur-md animate-fade-in">
+        <div className="flex items-start gap-3">
+          <div className="w-8 h-8 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0 mt-0.5">
+            <CheckCircle2 className="w-4 h-4" />
+          </div>
+          <div className="space-y-1 flex-1 min-w-0">
+            <span className="font-mono text-xs font-bold text-emerald-300 uppercase tracking-wider block">
+              Profiles Connected
+            </span>
+            <p className="text-xs text-zinc-300 font-sans leading-relaxed">
+              Awesome! Both your GitHub and LinkedIn profiles are linked, giving your application strong visibility and setting you ahead.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-28 sm:pt-32 pb-16 text-left space-y-4 sm:space-y-5 select-none">
       
       {/* 1. Header & Minimalist Step Progress */}
-      <section className="space-y-3">
+      <section 
+        className="space-y-3"
+        style={getAnimStyle(0.05, '0.7s')}
+      >
         <div className="flex items-center justify-between pb-2">
           <button
             onClick={() => setActivePage('recruitment')}
@@ -1592,11 +1989,22 @@ export default function RecruitmentApply({
             <span className="font-semibold tracking-wide uppercase text-[11px]">Back to Roles</span>
           </button>
           
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.05] border border-white/15 font-mono text-xs shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-[#FFCC00] shadow-[0_0_8px_rgba(255,204,0,0.8)] animate-pulse" />
-            <span className="text-[#FFCC00] font-bold tracking-wider">Step 0{currentStep}</span>
-            <span className="text-zinc-500">/</span>
-            <span className="text-zinc-300 font-semibold">06</span>
+          <div className="flex items-center gap-2.5 flex-wrap">
+            <button
+              type="button"
+              onClick={() => setShowHelpModal(true)}
+              className="inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-full bg-[#FFCC00]/10 hover:bg-[#FFCC00]/20 border border-[#FFCC00]/30 hover:border-[#FFCC00] text-zinc-200 hover:text-[#FFCC00] font-mono text-xs transition-all shadow-sm group cursor-pointer"
+            >
+              <PhoneCall className="w-3.5 h-3.5 text-[#FFCC00] group-hover:scale-110 transition-transform" />
+              <span>Need help in recruitment? Reach us</span>
+            </button>
+
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.05] border border-white/15 font-mono text-xs shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-[#FFCC00] shadow-[0_0_8px_rgba(255,204,0,0.8)] animate-pulse" />
+              <span className="text-[#FFCC00] font-bold tracking-wider">Step 0{currentStep}</span>
+              <span className="text-zinc-500">/</span>
+              <span className="text-zinc-300 font-semibold">06</span>
+            </div>
           </div>
         </div>
 
@@ -1655,7 +2063,7 @@ export default function RecruitmentApply({
         </div>
 
         {/* Discreet Saved Draft Indicator */}
-        {hasRestoredDraft && currentStep > 1 && (
+        {hasRestoredDraft && currentStep > 1 && !submitResult && (
           <div className="flex items-center justify-between px-3 py-1.5 rounded-lg bg-white/[0.02] border border-white/5 text-[11px] font-mono text-zinc-500">
             <span>Resumed from saved draft (Step 0{currentStep})</span>
             <button
@@ -1672,7 +2080,8 @@ export default function RecruitmentApply({
       <section 
         className="relative rounded-[28px] p-5 sm:p-7 lg:p-8 border border-white/15 bg-[#07070a]/85 backdrop-blur-3xl shadow-2xl overflow-hidden transition-all duration-700"
         style={{
-          boxShadow: `0 0 75px ${activePlanet.aura1}25, 0 35px 90px rgba(0,0,0,0.95)`
+          boxShadow: `0 0 75px ${activePlanet.aura1}25, 0 35px 90px rgba(0,0,0,0.95)`,
+          ...getAnimStyle(0.18, '0.8s')
         }}
       >
         {/* Layer 1: Massive Ambient Liquid Mesh Aurora with Deep Diffuse Blur */}
@@ -1724,12 +2133,75 @@ export default function RecruitmentApply({
           <div className="relative z-10 animate-fade-in space-y-6 text-center py-4">
             {submitResult.status === 'success' ? (
               <div className="space-y-6">
-                <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center mx-auto">
-                  <CheckCircle2 className="w-8 h-8" />
+                {/* Animated Tick Mark with Draw-In Stroke & Radial Pulse Shockwave */}
+                <div className="relative w-24 h-24 mx-auto flex items-center justify-center pt-2">
+                  {/* Expanding Shockwave Ring 1 */}
+                  <div 
+                    className="absolute inset-0 rounded-full border-2 border-emerald-400/40 pointer-events-none"
+                    style={{ animation: 'submissionPulseRing 2s cubic-bezier(0.2, 0.8, 0.2, 1) infinite' }}
+                  />
+                  {/* Expanding Shockwave Ring 2 */}
+                  <div 
+                    className="absolute -inset-3 rounded-full border border-emerald-400/20 pointer-events-none"
+                    style={{ animation: 'submissionPulseRing 2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.4s infinite' }}
+                  />
+                  
+                  {/* Glowing Emerald Aura */}
+                  <div className="absolute inset-2 rounded-full bg-emerald-500/25 blur-xl pointer-events-none" />
+
+                  {/* Main Animated SVG Checkmark Badge */}
+                  <div 
+                    className="relative w-20 h-20 rounded-3xl bg-gradient-to-br from-emerald-500/20 via-emerald-900/30 to-emerald-950/70 border border-emerald-400/40 flex items-center justify-center shadow-[0_0_35px_rgba(16,185,129,0.35)]"
+                    style={{ animation: 'submissionBadgePop 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards' }}
+                  >
+                    <svg className="w-12 h-12" viewBox="0 0 52 52" fill="none">
+                      {/* Background circle track */}
+                      <circle 
+                        cx="26" 
+                        cy="26" 
+                        r="22" 
+                        stroke="currentColor" 
+                        strokeWidth="2.5" 
+                        className="text-emerald-500/25"
+                      />
+                      {/* Animated outer circle drawing in */}
+                      <circle 
+                        cx="26" 
+                        cy="26" 
+                        r="22" 
+                        stroke="currentColor" 
+                        strokeWidth="2.8" 
+                        strokeLinecap="round"
+                        className="text-emerald-400"
+                        style={{
+                          strokeDasharray: 140,
+                          strokeDashoffset: 140,
+                          transformOrigin: 'center',
+                          transform: 'rotate(-90deg)',
+                          animation: 'drawCheckCircle 0.8s cubic-bezier(0.65, 0, 0.45, 1) 0.15s forwards'
+                        }}
+                      />
+                      {/* Animated tick drawing in */}
+                      <path 
+                        d="M15 27 L23 35 L37 19" 
+                        stroke="currentColor" 
+                        strokeWidth="3.8" 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round" 
+                        className="text-emerald-300"
+                        style={{
+                          strokeDasharray: 40,
+                          strokeDashoffset: 40,
+                          animation: 'drawCheckTick 0.5s cubic-bezier(0.65, 0, 0.45, 1) 0.7s forwards'
+                        }}
+                      />
+                    </svg>
+                  </div>
                 </div>
+
                 <div className="space-y-2 max-w-md mx-auto">
                   <h2 
-                    className="font-ndot text-3xl sm:text-4xl text-white uppercase"
+                    className="font-ndot text-3xl sm:text-4xl text-white uppercase tracking-wider"
                     style={{ fontFamily: "'VT323', monospace" }}
                   >
                     Application Submitted
@@ -1738,6 +2210,10 @@ export default function RecruitmentApply({
                     Your candidate profile has been recorded. Our team leads will review your application soon.
                   </p>
                 </div>
+
+                {/* DYNAMIC CAREER TIP BASED ON GITHUB & LINKEDIN USERNAMES */}
+                {renderCareerTip()}
+
                 <div className="pt-2 flex justify-center gap-3">
                   <button
                     onClick={() => setActivePage('recruitment')}
@@ -1747,7 +2223,7 @@ export default function RecruitmentApply({
                   </button>
                   <button
                     onClick={handleResetDraft}
-                    className="px-5 py-2.5 rounded-xl bg-[#FFCC00] hover:bg-[#FFE066] text-black font-mono text-xs font-bold uppercase cursor-pointer transition-all"
+                    className="px-5 py-2.5 rounded-xl bg-[#FFCC00] hover:bg-[#FFE066] text-black font-mono text-xs font-bold uppercase cursor-pointer transition-all shadow-[0_0_20px_rgba(255,204,0,0.25)]"
                   >
                     New Application
                   </button>
@@ -1853,7 +2329,7 @@ export default function RecruitmentApply({
                       Contact Information
                     </h2>
                     <p className="text-xs text-zinc-400 font-sans">
-                      Mobile number is required for verification. College email is optional.
+                      Personal email (@gmail.com) and mobile number are required. College email is optional.
                     </p>
                   </div>
                 </div>
@@ -1862,14 +2338,14 @@ export default function RecruitmentApply({
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <label className="font-mono text-xs text-zinc-300">
-                        College Email <span className="text-zinc-500 font-normal">(Optional)</span>
+                        Personal Email * <span className="text-zinc-500 font-normal">(@gmail.com)</span>
                       </label>
-                      {emailStatus === 'checking' && (
+                      {personalEmailStatus === 'checking' && (
                         <span className="text-[10px] text-zinc-500 font-mono flex items-center gap-1">
                           <Loader2 className="w-2.5 h-2.5 animate-spin" /> Checking...
                         </span>
                       )}
-                      {emailStatus === 'valid' && (
+                      {personalEmailStatus === 'valid' && (
                         <span className="text-[10px] text-emerald-400 font-mono flex items-center gap-1">
                           <Check className="w-2.5 h-2.5" /> Available
                         </span>
@@ -1877,23 +2353,23 @@ export default function RecruitmentApply({
                     </div>
                     <input
                       type="email"
-                      name="email"
-                      value={formData.email}
+                      name="personalEmail"
+                      value={formData.personalEmail}
                       onChange={handleInputChange}
                       onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); validateAndProceed(); } }}
-                      placeholder="username@citchennai.net"
+                      placeholder="yourname@gmail.com"
                       className={`w-full px-4 py-3 bg-white/[0.03] border rounded-xl text-white font-sans text-sm placeholder-zinc-600 focus:outline-none transition-colors ${
-                        stepErrors.email || emailStatus === 'conflict'
+                        stepErrors.personalEmail || personalEmailStatus === 'conflict'
                           ? 'border-red-500' 
-                          : emailStatus === 'valid'
+                          : personalEmailStatus === 'valid'
                             ? 'border-emerald-500/60'
                             : 'border-white/10 focus:border-[#FFCC00]'
                       }`}
                     />
-                    {stepErrors.email ? (
-                      <p className="text-[11px] text-red-400 font-mono">{stepErrors.email}</p>
-                    ) : emailConflictMsg ? (
-                      <p className="text-[11px] text-amber-400 font-mono">{emailConflictMsg}</p>
+                    {stepErrors.personalEmail ? (
+                      <p className="text-[11px] text-red-400 font-mono">{stepErrors.personalEmail}</p>
+                    ) : personalEmailConflictMsg ? (
+                      <p className="text-[11px] text-amber-400 font-mono">{personalEmailConflictMsg}</p>
                     ) : null}
                   </div>
 
@@ -1938,6 +2414,44 @@ export default function RecruitmentApply({
                       <p className="text-[11px] text-red-400 font-mono">{stepErrors.mobileNumber}</p>
                     ) : mobileConflictMsg ? (
                       <p className="text-[11px] text-amber-400 font-mono">{mobileConflictMsg}</p>
+                    ) : null}
+                  </div>
+
+                  <div className="space-y-2 sm:col-span-2">
+                    <div className="flex items-center justify-between">
+                      <label className="font-mono text-xs text-zinc-300">
+                        College / University Email <span className="text-zinc-500 font-normal">(Optional · @citchennai.net)</span>
+                      </label>
+                      {emailStatus === 'checking' && (
+                        <span className="text-[10px] text-zinc-500 font-mono flex items-center gap-1">
+                          <Loader2 className="w-2.5 h-2.5 animate-spin" /> Checking...
+                        </span>
+                      )}
+                      {emailStatus === 'valid' && (
+                        <span className="text-[10px] text-emerald-400 font-mono flex items-center gap-1">
+                          <Check className="w-2.5 h-2.5" /> Available
+                        </span>
+                      )}
+                    </div>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); validateAndProceed(); } }}
+                      placeholder="username@citchennai.net"
+                      className={`w-full px-4 py-3 bg-white/[0.03] border rounded-xl text-white font-sans text-sm placeholder-zinc-600 focus:outline-none transition-colors ${
+                        stepErrors.email || emailStatus === 'conflict'
+                          ? 'border-red-500' 
+                          : emailStatus === 'valid'
+                            ? 'border-emerald-500/60'
+                            : 'border-white/10 focus:border-[#FFCC00]'
+                      }`}
+                    />
+                    {stepErrors.email ? (
+                      <p className="text-[11px] text-red-400 font-mono">{stepErrors.email}</p>
+                    ) : emailConflictMsg ? (
+                      <p className="text-[11px] text-amber-400 font-mono">{emailConflictMsg}</p>
                     ) : null}
                   </div>
                 </div>
@@ -2301,15 +2815,29 @@ export default function RecruitmentApply({
                         onChange={handleInputChange}
                         onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); validateAndProceed(); } }}
                         placeholder="e.g. torvalds"
-                        className={`w-full pl-8 pr-4 py-3 bg-white/[0.03] border rounded-xl text-white font-mono text-sm placeholder-zinc-600 focus:outline-none transition-colors ${
+                        className={`w-full pl-8 pr-10 py-3 bg-white/[0.03] border rounded-xl text-white font-mono text-sm placeholder-zinc-600 focus:outline-none transition-colors ${
                           stepErrors.githubUsername 
                             ? 'border-red-500' 
                             : 'border-white/10 focus:border-[#FFCC00]'
                         }`}
                       />
+                      {githubLoading && (
+                        <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none">
+                          <Loader2 className="w-4 h-4 text-amber-400 animate-spin" />
+                        </div>
+                      )}
                     </div>
                     {stepErrors.githubUsername && (
-                      <p className="text-[11px] text-red-400 font-mono">{stepErrors.githubUsername}</p>
+                      <p className="text-[11px] text-red-400 font-mono flex items-center gap-1.5">
+                        <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                        {stepErrors.githubUsername}
+                      </p>
+                    )}
+                    {githubError && !stepErrors.githubUsername && (
+                      <p className="text-[11px] text-amber-400/90 font-mono flex items-center gap-1.5">
+                        <AlertCircle className="w-3.5 h-3.5 shrink-0 text-amber-400" />
+                        {githubError}
+                      </p>
                     )}
                   </div>
 
@@ -2336,33 +2864,158 @@ export default function RecruitmentApply({
                       />
                     </div>
                     {stepErrors.linkedinUsername && (
-                      <p className="text-[11px] text-red-400 font-mono">{stepErrors.linkedinUsername}</p>
+                      <p className="text-[11px] text-red-400 font-mono flex items-center gap-1.5">
+                        <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                        {stepErrors.linkedinUsername}
+                      </p>
                     )}
                   </div>
                 </div>
 
-                {/* Minimal GitHub Profile Preview (if found) */}
+                {/* Interactive GitHub Profile Selection Result Card */}
                 {githubData && (
-                  <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/10 flex items-center justify-between gap-3 text-xs font-mono">
-                    <div className="flex items-center gap-3">
-                      <img 
-                        src={githubData.avatar_url} 
-                        alt={githubData.login} 
-                        className="w-9 h-9 rounded-lg border border-white/10 object-cover"
-                      />
-                      <div>
-                        <span className="text-white font-bold block">{githubData.name || githubData.login}</span>
-                        <span className="text-zinc-500 text-[11px]">@{githubData.login} • {githubData.public_repos} repos</span>
+                  <div className="space-y-2 pt-1 animate-step-enter">
+                    <div className="flex items-center justify-between text-[11px] font-mono">
+                      <span className="text-zinc-400 uppercase tracking-wider flex items-center gap-1.5 font-semibold">
+                        <Github className="w-3.5 h-3.5 text-zinc-300" />
+                        Search Result (1 found)
+                      </span>
+                      <span className={`text-[11px] font-mono flex items-center gap-1 font-semibold ${
+                        formData.githubConfirmed ? 'text-[#FFCC00]' : 'text-amber-400/90'
+                      }`}>
+                        {formData.githubConfirmed ? (
+                          <>
+                            <Check className="w-3 h-3 stroke-[3]" /> Profile Confirmed
+                          </>
+                        ) : (
+                          <>
+                            <AlertCircle className="w-3 h-3" /> Select below to confirm
+                          </>
+                        )}
+                      </span>
+                    </div>
+
+                    {/* Interactive Selectable Profile Card */}
+                    <div
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => {
+                        setFormData((prev) => ({ ...prev, githubConfirmed: !prev.githubConfirmed }));
+                        setStepErrors((prev) => {
+                          const next = { ...prev };
+                          delete next.githubUsername;
+                          return next;
+                        });
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          setFormData((prev) => ({ ...prev, githubConfirmed: !prev.githubConfirmed }));
+                          setStepErrors((prev) => {
+                            const next = { ...prev };
+                            delete next.githubUsername;
+                            return next;
+                          });
+                        }
+                      }}
+                      className={`group relative p-3.5 sm:p-4 rounded-xl border transition-all duration-200 cursor-pointer select-none flex items-center justify-between gap-4 ${
+                        formData.githubConfirmed
+                          ? 'bg-[#FFCC00]/[0.08] border-[#FFCC00] shadow-[0_0_24px_rgba(255,204,0,0.18)] ring-1 ring-[#FFCC00]/50'
+                          : 'bg-white/[0.02] border-white/10 hover:border-amber-400/50 hover:bg-white/[0.05]'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3.5 min-w-0">
+                        {/* Profile Avatar */}
+                        <div className="relative shrink-0">
+                          <img 
+                            src={githubData.avatar_url} 
+                            alt={githubData.login} 
+                            className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl border object-cover transition-colors ${
+                              formData.githubConfirmed ? 'border-[#FFCC00]/60' : 'border-white/10'
+                            }`}
+                          />
+                          {formData.githubConfirmed && (
+                            <div className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-[#FFCC00] text-black flex items-center justify-center shadow-md">
+                              <Check className="w-3 h-3 stroke-[3]" />
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Profile Details */}
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="text-white font-bold text-sm truncate font-mono">
+                              {githubData.name || githubData.login}
+                            </span>
+                            {formData.githubConfirmed ? (
+                              <span className="px-2 py-0.5 rounded-md bg-[#FFCC00]/20 border border-[#FFCC00]/40 text-[#FFCC00] font-mono text-[10px] font-bold tracking-wider uppercase inline-flex items-center gap-1">
+                                <Check className="w-2.5 h-2.5 stroke-[3]" /> Selected
+                              </span>
+                            ) : (
+                              <span className="px-2 py-0.5 rounded-md bg-white/5 border border-white/10 text-zinc-400 font-mono text-[10px] tracking-wider uppercase group-hover:border-amber-400/40 group-hover:text-amber-300 transition-colors">
+                                Click to Select
+                              </span>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-2 text-zinc-400 text-xs font-mono mt-0.5">
+                            <span className="text-zinc-300">@{githubData.login}</span>
+                            <span>•</span>
+                            <span>{githubData.public_repos} {githubData.public_repos === 1 ? 'repo' : 'repos'}</span>
+                            {githubData.bio && (
+                              <>
+                                <span className="hidden sm:inline">•</span>
+                                <span className="truncate max-w-[240px] text-zinc-400 hidden sm:inline">{githubData.bio}</span>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Right Action: Selection Radio & External Link */}
+                      <div className="flex items-center gap-2.5 shrink-0">
+                        {/* Radio Check Circle */}
+                        <div 
+                          className={`w-6 h-6 rounded-full border flex items-center justify-center transition-all ${
+                            formData.githubConfirmed
+                              ? 'bg-[#FFCC00] border-[#FFCC00] text-black'
+                              : 'border-white/20 bg-white/5 group-hover:border-amber-400/50'
+                          }`}
+                        >
+                          {formData.githubConfirmed ? (
+                            <Check className="w-3.5 h-3.5 stroke-[3]" />
+                          ) : (
+                            <div className="w-2 h-2 rounded-full bg-transparent group-hover:bg-amber-400/40 transition-colors" />
+                          )}
+                        </div>
+
+                        {/* View on GitHub External Link */}
+                        <a
+                          href={githubData.html_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="p-2 rounded-lg text-zinc-400 hover:text-white hover:bg-white/10 transition-colors"
+                          title="Open profile on GitHub (external tab)"
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                        </a>
                       </div>
                     </div>
-                    <a
-                      href={githubData.html_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-zinc-400 hover:text-white transition-colors"
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                    </a>
+
+                    {/* Helper status text below card */}
+                    <div className="flex items-center justify-between px-1">
+                      {formData.githubConfirmed ? (
+                        <p className="text-[11px] text-emerald-400 font-mono flex items-center gap-1.5">
+                          <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+                          GitHub profile confirmed and connected to your application.
+                        </p>
+                      ) : (
+                        <p className="text-[11px] text-zinc-400 font-mono flex items-center gap-1.5">
+                          <AlertCircle className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                          Click the card above to verify and confirm that this account belongs to you.
+                        </p>
+                      )}
+                    </div>
                   </div>
                 )}
               </div>
@@ -2442,10 +3095,10 @@ export default function RecruitmentApply({
                           </div>
 
                           {/* Top URL / Subtitle */}
-                          <div className={`absolute top-3.5 left-6 text-[10px] font-mono tracking-widest uppercase font-bold ${isTech ? 'text-zinc-950' : 'text-white/90'}`}>
+                          <div className={`absolute top-3.5 left-6 text-[10px] font-mono tracking-widest uppercase font-bold z-20 ${isTech ? 'text-zinc-950' : 'text-white'}`}>
                             CELESTIUS
                           </div>
-                          <div className={`absolute top-3.5 right-6 text-[10px] font-mono tracking-widest uppercase font-bold ${isTech ? 'text-zinc-950' : 'text-white/90'}`}>
+                          <div className="absolute top-3.5 right-6 text-[10px] font-mono tracking-widest uppercase font-bold z-20 text-zinc-950">
                             {cardTheme.tag}
                           </div>
                         </div>
@@ -2453,7 +3106,7 @@ export default function RecruitmentApply({
                         {/* Circular Avatar Photo (Overlapping the fluid boundary) */}
                         <div className="relative -mt-24 mx-auto z-20 flex flex-col items-center">
                           <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full p-2 bg-white/20 backdrop-blur-md border border-white/40 shadow-[0_14px_35px_rgba(0,0,0,0.7)] relative group/avatar">
-                            {githubData?.avatar_url ? (
+                            {formData.githubConfirmed && githubData?.avatar_url ? (
                               <img src={githubData.avatar_url} alt={formData.Name} className="w-full h-full rounded-full object-cover shadow-inner" />
                             ) : (
                               <div className="w-full h-full rounded-full bg-gradient-to-b from-zinc-800 to-zinc-950 flex items-center justify-center shadow-inner">
@@ -2506,7 +3159,7 @@ export default function RecruitmentApply({
                           <div>
                             <span className="text-[10px] text-zinc-400 uppercase font-semibold block">CONTACT</span>
                             <p className="text-white font-bold text-xs truncate mt-0.5">+91 {formData.mobileNumber || '—'}</p>
-                            <p className="text-zinc-300 text-[11px] truncate" title={formData.email}>{formData.email || '—'}</p>
+                            <p className="text-zinc-300 text-[11px] truncate" title={formData.personalEmail || formData.email}>{formData.personalEmail || formData.email || '—'}</p>
                           </div>
                         </div>
 
@@ -2514,7 +3167,7 @@ export default function RecruitmentApply({
                         <div className="mx-5 my-4 pt-3 border-t border-white/10 flex flex-col items-center justify-center gap-1 z-10">
                           <IdBadgeBarcode />
                           <span className="text-[9px] font-mono text-zinc-400 block tracking-widest uppercase mt-0.5">
-                            Reg-{formData.regNumber || '2026-0000'}
+                            Reg-{formData.regNumber || '2026-2030'}
                           </span>
                         </div>
 
@@ -2601,17 +3254,23 @@ export default function RecruitmentApply({
                             <span>Edit</span>
                           </button>
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs font-mono">
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs font-mono">
                           <div>
-                            <span className="text-[10px] text-zinc-400 block uppercase tracking-wider">Email Address</span>
-                            <span className="text-white font-medium text-xs block mt-0.5 truncate" title={formData.email}>
-                              {formData.email || '—'}
+                            <span className="text-[10px] text-zinc-400 block uppercase tracking-wider">Personal Email</span>
+                            <span className="text-white font-medium text-xs block mt-0.5 truncate" title={formData.personalEmail}>
+                              {formData.personalEmail || '—'}
                             </span>
                           </div>
                           <div>
                             <span className="text-[10px] text-zinc-400 block uppercase tracking-wider">Mobile Number</span>
                             <span className="text-white font-medium text-xs block mt-0.5">
                               {formData.mobileNumber ? `+91 ${formData.mobileNumber}` : '—'}
+                            </span>
+                          </div>
+                          <div>
+                            <span className="text-[10px] text-zinc-400 block uppercase tracking-wider">College Email</span>
+                            <span className="text-white font-medium text-xs block mt-0.5 truncate" title={formData.email}>
+                              {formData.email || 'Not Provided'}
                             </span>
                           </div>
                         </div>
@@ -2737,7 +3396,20 @@ export default function RecruitmentApply({
                             <span className="text-[10px] text-zinc-400 block uppercase tracking-wider">GitHub Handle</span>
                             <span className="text-white font-medium text-xs flex items-center gap-1.5 mt-0.5 truncate">
                               <Github className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
-                              {formData.githubUsername ? `@${formData.githubUsername.replace(/^@/, '')}` : '—'}
+                              {formData.githubUsername ? (
+                                <span className="inline-flex items-center gap-1.5 flex-wrap">
+                                  <span>@{formData.githubUsername.replace(/^@/, '')}</span>
+                                  {formData.githubConfirmed ? (
+                                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-[#FFCC00]/15 border border-[#FFCC00]/30 text-[#FFCC00] text-[9px] font-mono font-semibold">
+                                      <Check className="w-2.5 h-2.5 stroke-[2.5]" /> Verified
+                                    </span>
+                                  ) : (
+                                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-zinc-500/15 border border-zinc-500/30 text-zinc-400 text-[9px] font-mono">
+                                      Unconfirmed
+                                    </span>
+                                  )}
+                                </span>
+                              ) : '—'}
                             </span>
                           </div>
                           <div>
@@ -2768,25 +3440,37 @@ export default function RecruitmentApply({
               className={`pt-4 border-t border-white/10 flex items-center justify-between gap-4 ${currentStep === 6 ? 'animate-detail-card' : ''}`}
               style={currentStep === 6 ? { animationDelay: '1850ms' } : {}}
             >
-              {currentStep > 1 ? (
+              <div className="flex items-center gap-2">
+                {currentStep > 1 ? (
+                  <button
+                    type="button"
+                    onClick={handleGoBack}
+                    className="px-5 py-2.5 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/10 text-zinc-300 hover:text-white font-mono text-xs uppercase flex items-center gap-2 transition-all cursor-pointer"
+                  >
+                    <ArrowLeft className="w-3.5 h-3.5" />
+                    <span>Back</span>
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setActivePage('recruitment')}
+                    className="px-5 py-2.5 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/10 text-zinc-400 hover:text-white font-mono text-xs uppercase flex items-center gap-2 transition-all cursor-pointer"
+                  >
+                    <ArrowLeft className="w-3.5 h-3.5" />
+                    <span>Cancel</span>
+                  </button>
+                )}
+
                 <button
                   type="button"
-                  onClick={handleGoBack}
-                  className="px-5 py-2.5 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/10 text-zinc-300 hover:text-white font-mono text-xs uppercase flex items-center gap-2 transition-all cursor-pointer"
+                  onClick={() => setShowHelpModal(true)}
+                  className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/[0.02] hover:bg-white/[0.06] border border-white/10 text-zinc-400 hover:text-[#FFCC00] font-mono text-xs transition-colors cursor-pointer"
+                  title="Need help in recruitment? Reach us"
                 >
-                  <ArrowLeft className="w-3.5 h-3.5" />
-                  <span>Back</span>
+                  <PhoneCall className="w-3.5 h-3.5 text-[#FFCC00]" />
+                  <span>Need help? Reach us</span>
                 </button>
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => setActivePage('recruitment')}
-                  className="px-5 py-2.5 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/10 text-zinc-400 hover:text-white font-mono text-xs uppercase flex items-center gap-2 transition-all cursor-pointer"
-                >
-                  <ArrowLeft className="w-3.5 h-3.5" />
-                  <span>Cancel</span>
-                </button>
-              )}
+              </div>
 
               {currentStep < 6 ? (
                 <button
@@ -2822,6 +3506,120 @@ export default function RecruitmentApply({
           </div>
         )}
       </section>
+
+      {/* RECRUITMENT ASSISTANCE / REACH US POPUP MODAL */}
+      {showHelpModal && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in"
+          onClick={() => setShowHelpModal(false)}
+        >
+          <div 
+            className="relative w-full max-w-lg rounded-3xl bg-[#0d0f17] border border-white/15 p-6 sm:p-7 shadow-[0_25px_70px_rgba(0,0,0,0.95),0_0_50px_rgba(255,204,0,0.12)] space-y-5 animate-scale-in"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="flex items-start justify-between gap-3 border-b border-white/10 pb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-[#FFCC00]/10 border border-[#FFCC00]/30 text-[#FFCC00] flex items-center justify-center shadow-inner">
+                  <PhoneCall className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-base sm:text-lg font-bold text-white font-mono uppercase tracking-wide flex items-center gap-2">
+                    Recruitment Support
+                  </h3>
+                  <p className="text-xs text-zinc-400 font-sans mt-0.5">
+                    Facing issues with the application? Reach out to our leads directly.
+                  </p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setShowHelpModal(false)}
+                className="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 text-zinc-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+                title="Close"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Contacts List */}
+            <div className="space-y-2.5">
+              {RECRUITMENT_CONTACTS.map((contact, idx) => {
+                const isCopied = copiedPhoneIndex === idx;
+                return (
+                  <div
+                    key={contact.name}
+                    className="p-3.5 rounded-2xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/10 hover:border-[#FFCC00]/40 transition-all duration-200 flex items-center justify-between gap-3"
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-zinc-800 to-zinc-950 border border-white/15 flex items-center justify-center font-mono font-bold text-sm text-[#FFCC00] shrink-0 shadow-inner">
+                        {contact.name.charAt(0)}
+                      </div>
+                      <div className="min-w-0">
+                        <span className="text-white font-semibold text-sm font-mono block truncate">
+                          {contact.name}
+                        </span>
+                        <span className="text-zinc-400 text-xs font-mono block mt-0.5 tracking-wider">
+                          {contact.displayPhone}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      {/* Copy number button */}
+                      <button
+                        type="button"
+                        onClick={() => handleCopyPhone(contact.phone, idx)}
+                        className={`px-2.5 py-1.5 rounded-lg border text-xs font-mono flex items-center gap-1.5 transition-all cursor-pointer ${
+                          isCopied 
+                            ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-300' 
+                            : 'bg-white/5 hover:bg-white/10 border-white/10 text-zinc-300 hover:text-white'
+                        }`}
+                        title="Copy mobile number"
+                      >
+                        {isCopied ? (
+                          <>
+                            <Check className="w-3 h-3 text-emerald-400" />
+                            <span className="text-[11px]">Copied</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="w-3 h-3 text-zinc-400" />
+                            <span className="text-[11px] hidden sm:inline">Copy</span>
+                          </>
+                        )}
+                      </button>
+
+                      {/* Call direct link */}
+                      <a
+                        href={`tel:+91${contact.phone.replace(/\D/g, '')}`}
+                        className="px-3 py-1.5 rounded-lg bg-[#FFCC00]/15 hover:bg-[#FFCC00]/25 border border-[#FFCC00]/30 hover:border-[#FFCC00]/60 text-[#FFCC00] text-xs font-mono flex items-center gap-1.5 transition-all"
+                        title="Call directly"
+                      >
+                        <Phone className="w-3 h-3" />
+                        <span className="text-[11px] font-semibold">Call</span>
+                      </a>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Note / Action footer */}
+            <div className="pt-1 flex items-center justify-between text-[11px] font-mono text-zinc-500 border-t border-white/5">
+              <span>Support available during recruitment hours</span>
+              <button
+                type="button"
+                onClick={() => setShowHelpModal(false)}
+                className="text-zinc-400 hover:text-white transition-colors cursor-pointer"
+              >
+                Close (Esc)
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );

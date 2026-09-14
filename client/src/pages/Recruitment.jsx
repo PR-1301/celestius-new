@@ -434,11 +434,18 @@ export default function Recruitment({ introCompleted = true, setActivePage, recr
     }
 
     try {
-      const existingDraft = localStorage.getItem('celestius_recruitment_application_draft_v2');
-      const parsed = existingDraft ? JSON.parse(existingDraft) : {};
+      const v3Raw = localStorage.getItem('celestius_recruitment_application_draft_v3');
+      const v2Raw = localStorage.getItem('celestius_recruitment_application_draft_v2');
+      const parsed = v3Raw ? JSON.parse(v3Raw) : (v2Raw ? JSON.parse(v2Raw) : {});
       parsed.role = role.division;
       parsed.subRole = role.subRole;
+      localStorage.setItem('celestius_recruitment_application_draft_v3', JSON.stringify(parsed));
       localStorage.setItem('celestius_recruitment_application_draft_v2', JSON.stringify(parsed));
+      // Set explicit flag for pre-selected role
+      localStorage.setItem('celestius_recruitment_selected_role', JSON.stringify({
+        role: role.division,
+        subRole: role.subRole
+      }));
     } catch (e) {}
 
     setSelectedRole(null);
@@ -470,12 +477,12 @@ export default function Recruitment({ introCompleted = true, setActivePage, recr
               {recruitmentOpenStatus ? (
                 <>
                   <span className="w-2 h-2 rounded-full bg-[#FFCC00] animate-pulse" />
-                  <span className="tracking-widest uppercase font-bold text-[#FFCC00]">[ CELESTIUS ADMISSIONS PORTAL 2026 ]</span>
+                  <span className="tracking-widest uppercase font-bold text-[#FFCC00]">CELESTIUS RECRUITMENTS</span>
                 </>
               ) : (
                 <>
                   <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-                  <span className="tracking-widest uppercase font-bold text-amber-400">[ RECRUITMENTS CURRENTLY PAUSED • STAY TUNED ]</span>
+                  <span className="tracking-widest uppercase font-bold text-amber-400">RECRUITMENTS CURRENTLY PAUSED • STAY TUNED </span>
                 </>
               )}
             </div>
@@ -520,7 +527,7 @@ export default function Recruitment({ introCompleted = true, setActivePage, recr
                   className="px-6 py-3.5 rounded-xl bg-[#FFCC00] hover:bg-[#FFE066] text-black font-mono text-sm font-bold uppercase tracking-wider flex items-center gap-2 transition-all shadow-[0_0_25px_rgba(255,204,0,0.35)] active:scale-95 cursor-pointer"
                 >
                   <Send className="w-4 h-4" />
-                  <span>LAUNCH APPLICATION [MULTI-STEP FORM]</span>
+                  <span>APPLY NOW</span>
                 </button>
               ) : (
                 <div className="px-6 py-3.5 rounded-xl bg-white/5 border border-amber-500/30 text-amber-300 font-mono text-sm font-bold uppercase tracking-wider flex items-center gap-2.5 shadow-[0_0_20px_rgba(245,158,11,0.15)] select-none">

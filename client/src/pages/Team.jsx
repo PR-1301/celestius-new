@@ -17,7 +17,8 @@ function ScrollReveal({
   duration = 600,
   threshold = 0.05,
   className = '',
-  style = {}
+  style = {},
+  introCompleted = true
 }) {
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef(null);
@@ -26,6 +27,24 @@ function ScrollReveal({
     const el = ref.current;
     if (!el) return;
 
+    if (!introCompleted) {
+      setIsVisible(false);
+      return;
+    }
+
+    // Check immediately if element is already within viewport on page reload or navigation
+    const checkImmediate = () => {
+      const rect = el.getBoundingClientRect();
+      const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+      if (rect.top <= windowHeight + 100 && rect.bottom >= -100) {
+        setTimeout(() => {
+          setIsVisible(true);
+        }, 60);
+      }
+    };
+
+    checkImmediate();
+
     if (typeof IntersectionObserver === 'undefined') {
       setIsVisible(true);
       return;
@@ -33,17 +52,19 @@ function ScrollReveal({
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsVisible(entry.isIntersecting);
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
       },
       {
-        threshold,
-        rootMargin: '0px 0px -30px 0px'
+        threshold: 0.01,
+        rootMargin: '100px 0px 100px 0px'
       }
     );
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, [threshold]);
+  }, [introCompleted]);
 
   const getHiddenTransform = () => {
     switch (animation) {
@@ -436,6 +457,19 @@ function MissionAnimation({ inView = true }) {
 export default function Team({ introCompleted = true, setActivePage }) {
   const [searchQuery, setSearchQuery] = useState('');
 
+  // Handle auto-scroll to community section if hash or state demands it
+  useEffect(() => {
+    if (window.location.hash === '#community' || window.location.hash === '#community-section') {
+      const timer = setTimeout(() => {
+        const el = document.getElementById('community-section');
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 150);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
   // Extract initials helper
   const getInitials = (name) => {
     const parts = name.trim().split(/\s+/);
@@ -461,7 +495,7 @@ export default function Team({ introCompleted = true, setActivePage }) {
       
       {/* Page Header: Centered "KNOW ABOUT US" Title */}
       <section className="relative text-center pt-2 pb-4">
-        <ScrollReveal animation="fade-up" delay={0}>
+        <ScrollReveal animation="fade-up" delay={0} introCompleted={introCompleted}>
           <h1 
             className="font-ndot text-4xl sm:text-6xl lg:text-7xl text-white tracking-wider uppercase leading-none"
             style={{ fontFamily: "'VT323', monospace" }}
@@ -479,14 +513,14 @@ export default function Team({ introCompleted = true, setActivePage }) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
           {/* Left Column: Vision Graphic (Inspired by Reference Image) */}
           <div className="lg:col-span-5 flex justify-center order-2 lg:order-1">
-            <ScrollReveal animation="zoom-in" delay={60}>
+            <ScrollReveal animation="zoom-in" delay={60} introCompleted={introCompleted}>
               {({ isVisible }) => <VisionAnimation inView={isVisible} />}
             </ScrollReveal>
           </div>
 
           {/* Right Column: Vision Editorial Text */}
           <div className="lg:col-span-7 space-y-5 order-1 lg:order-2">
-            <ScrollReveal animation="fade-up" delay={50}>
+            <ScrollReveal animation="fade-up" delay={50} introCompleted={introCompleted}>
               <div className="space-y-2">
                 <div className="inline-flex items-center gap-2.5 font-mono text-xs font-bold text-[#FFCC00] tracking-[0.25em] uppercase">
                 </div>
@@ -504,7 +538,7 @@ export default function Team({ introCompleted = true, setActivePage }) {
               </div>
             </ScrollReveal>
 
-            <ScrollReveal animation="fade-up" delay={120}>
+            <ScrollReveal animation="fade-up" delay={120} introCompleted={introCompleted}>
               <p className="text-lg sm:text-xl md:text-2xl text-zinc-300 font-light leading-relaxed max-w-2xl tracking-normal pt-1">
                 "To build a learning community where every student can discover their strengths, find their direction, and become capable of turning what they learn into something real."
               </p>
@@ -518,7 +552,7 @@ export default function Team({ introCompleted = true, setActivePage }) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
           {/* Left Column: Mission Editorial Text */}
           <div className="lg:col-span-7 space-y-5 order-2 lg:order-1">
-            <ScrollReveal animation="fade-up" delay={50}>
+            <ScrollReveal animation="fade-up" delay={50} introCompleted={introCompleted}>
               <div className="space-y-2">
                 <div className="inline-flex items-center gap-2.5 font-mono text-xs font-bold text-[#FFCC00] tracking-[0.25em] uppercase">
                 </div>
@@ -536,7 +570,7 @@ export default function Team({ introCompleted = true, setActivePage }) {
               </div>
             </ScrollReveal>
 
-            <ScrollReveal animation="fade-up" delay={120}>
+            <ScrollReveal animation="fade-up" delay={120} introCompleted={introCompleted}>
               <p className="text-lg sm:text-xl md:text-2xl text-zinc-300 font-light leading-relaxed max-w-2xl tracking-normal pt-1">
                 "To help students start early, explore different fields, build strong fundamentals, work on real projects, learn from one another, and grow through practical experience."
               </p>
@@ -545,7 +579,7 @@ export default function Team({ introCompleted = true, setActivePage }) {
 
           {/* Right Column: Mission Graphic (Inspired by Reference Image) */}
           <div className="lg:col-span-5 flex justify-center order-1 lg:order-2">
-            <ScrollReveal animation="zoom-in" delay={80}>
+            <ScrollReveal animation="zoom-in" delay={80} introCompleted={introCompleted}>
               {({ isVisible }) => <MissionAnimation inView={isVisible} />}
             </ScrollReveal>
           </div>
@@ -553,9 +587,9 @@ export default function Team({ introCompleted = true, setActivePage }) {
       </section>
 
       {/* 4. CREW DIRECTORY & ACCESS BADGES */}
-      <section className="relative border-t border-white/10 pt-16 sm:pt-20 space-y-8">
+      <section id="community-section" className="relative border-t border-white/10 pt-16 sm:pt-20 space-y-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <ScrollReveal animation="fade-up" delay={50}>
+          <ScrollReveal animation="fade-up" delay={50} introCompleted={introCompleted}>
             <div className="space-y-2">
               <h2 
                 className="font-ndot text-4xl sm:text-5xl lg:text-6xl text-white tracking-wider uppercase leading-none"
@@ -567,7 +601,7 @@ export default function Team({ introCompleted = true, setActivePage }) {
           </ScrollReveal>
 
           {/* Sizable, High-End Futuristic Search Bar */}
-          <ScrollReveal animation="fade-up" delay={100} className="w-full md:w-auto">
+          <ScrollReveal animation="fade-up" delay={100} className="w-full md:w-auto" introCompleted={introCompleted}>
             <div className="relative w-full md:w-80 lg:w-96 group">
               <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#FFCC00]/20 via-sky-400/20 to-transparent opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300 blur-sm pointer-events-none" />
               <div className="relative flex items-center bg-[#0e121d]/85 backdrop-blur-md border border-white/15 group-hover:border-[#FFCC00]/40 group-focus-within:border-[#FFCC00] rounded-xl transition-all duration-300 shadow-inner">
@@ -620,6 +654,7 @@ export default function Team({ introCompleted = true, setActivePage }) {
                   animation="fade-up"
                   delay={(index % 4) * 60}
                   className="h-full"
+                  introCompleted={introCompleted}
                 >
                   {/* Outer Translucent Acrylic Badge Pouch Holder */}
                   <div
@@ -781,7 +816,7 @@ export default function Team({ introCompleted = true, setActivePage }) {
       </section>
 
       {/* 4. Join Our Community CTA Banner */}
-      <ScrollReveal animation="fade-up" delay={150}>
+      <ScrollReveal animation="fade-up" delay={150} introCompleted={introCompleted}>
         <section className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-white/10 bg-gradient-to-b from-[#121624]/90 to-[#0a0d16]/95 backdrop-blur-xl p-6 sm:p-10 text-center space-y-5 shadow-2xl">
           {/* Subtle Ambient Radial Glow */}
           <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-[#FFCC00]/10 rounded-full blur-3xl pointer-events-none" />

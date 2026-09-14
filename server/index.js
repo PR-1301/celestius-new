@@ -4,6 +4,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import User from './models/User.js';
 import Config from './models/Config.js';
+import ContactMessage from './models/ContactMessage.js';
 import { registerUser, checkStudentExists } from './controllers/UserController.js';
 
 dotenv.config();
@@ -125,6 +126,143 @@ app.get('/api/health', (req, res) => {
     },
   });
 });
+
+// Contact Us API (Saves inquiry to MongoDB and sends Brevo email notification)
+app.post('/api/contact', async (req, res) => {
+  try {
+    const { name, email, category, subject, message } = req.body;
+
+    if (!name?.trim() || !email?.trim() || !message?.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: 'Name, email, and message are required fields.',
+      });
+    }
+
+    // Generate unique reference ID (e.g. CLS-TX-8492)
+    const randomCode = Math.floor(1000 + Math.random() * 9000);
+    const referenceId = `CLS-TX-${randomCode}`;
+
+    let savedMessage = null;
+    try {
+      savedMessage = await ContactMessage.create({
+        referenceId,
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
+        category: category?.trim() || 'General Inquiry',
+        subject: subject?.trim() || 'No Subject Provided',
+        message: message.trim(),
+      });
+      console.log(`✓ [CONTACT] Stored new inquiry ${referenceId} from ${name.trim()} (${email.trim()})`);
+    } catch (dbErr) {
+      console.warn('! [CONTACT] Database save failed (running in offline/fallback mode):', dbErr.message);
+    }
+
+    // Dispatch notification email using Brevo (Sendinblue) Transactional API
+    let emailDispatched = false;
+    let emailError = null;
+
+    const brevoApiKey = process.env.BREVO_API_KEY;
+    const senderEmail = process.env.BREVO_SENDER_EMAIL || 'celestius.club@gmail.com';
+    const senderName = process.env.BREVO_SENDER_NAME || 'Club Celestius';
+    const notificationRecipient = process.env.BREVO_NOTIFICATION_EMAIL || 'celestius.club@gmail.com';
+
+    if (brevoApiKey && brevoApiKey.trim() !== '') {
+      try {
+        const emailPayload = {
+          sender: {
+            name: senderName,
+            email: senderEmail,
+          },
+          to: [
+            {
+              email: notificationRecipient,
+              name: 'Celestius Executive Desk',
+            },
+          ],
+          replyTo: {
+            email: email.trim().toLowerCase(),
+            name: name.trim(),
+          },
+          subject: `[Celestius Dispatch] ${category || 'General'}: ${subject || 'New Inquiry'} (${referenceId})`,
+          htmlContent: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #0c0c10; color: #f4f4f5; border: 1px solid #27272a; border-radius: 12px; overflow: hidden;">
+              <div style="background: linear-gradient(135deg, #18181b 0%, #27272a 100%); padding: 24px; border-bottom: 2px solid #FFCC00;">
+                <h2 style="color: #FFCC00; margin: 0 0 4px 0; font-size: 22px; text-transform: uppercase; letter-spacing: 1px;">Celestius Dispatch System</h2>
+                <p style="color: #a1a1aa; margin: 0; font-size: 12px;">New Contact Inquiry Received &bull; Ref: <strong style="color: #ffffff;">${referenceId}</strong></p>
+              </div>
+              <div style="padding: 24px; font-size: 14px; line-height: 1.6;">
+                <div style="margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid #27272a;">
+                  <p style="margin: 4px 0;"><strong style="color: #FFCC00;">Sender Name:</strong> ${name.trim()}</p>
+                  <p style="margin: 4px 0;"><strong style="color: #FFCC00;">Sender Email:</strong> <a href="mailto:${email.trim()}" style="color: #38bdf8;">${email.trim()}</a></p>
+                  <p style="margin: 4px 0;"><strong style="color: #FFCC00;">Channel / Category:</strong> ${category || 'General Inquiry'}</p>
+                  <p style="margin: 4px 0;"><strong style="color: #FFCC00;">Subject:</strong> ${subject || 'No Subject'}</p>
+                </div>
+                <div style="margin-top: 16px;">
+                  <strong style="color: #FFCC00; display: block; margin-bottom: 8px;">Message Content:</strong>
+                  <div style="background-color: #18181b; padding: 16px; border-radius: 8px; border-left: 3px solid #FFCC00; white-space: pre-wrap; color: #e4e4e7;">${message.trim()}</div>
+                </div>
+              </div>
+              <div style="background-color: #121216; padding: 14px 24px; text-align: center; font-size: 11px; color: #71717a; border-top: 1px solid #27272a;">
+                This dispatch was logged from the Celestius website contact portal. Simply reply to this email to respond directly to the sender.
+              </div>
+            </div>
+          `,
+        };
+
+        const brevoResponse = await fetch('https://api.brevo.com/v3/smtp/email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'api-key': brevoApiKey.trim(),
+            'Accept': 'application/json',
+          },
+          body: JSON.stringify(emailPayload),
+        });
+
+        if (brevoResponse.ok) {
+          emailDispatched = true;
+          console.log(`✓ [BREVO] Email dispatch sent successfully for inquiry ${referenceId}`);
+        } else {
+          const errData = await brevoResponse.json().catch(() => ({}));
+          emailError = errData.message || `Brevo returned HTTP ${brevoResponse.status}`;
+          console.warn(`! [BREVO] Email dispatch failed:`, emailError);
+        }
+      } catch (mailErr) {
+        emailError = mailErr.message;
+        console.warn(`! [BREVO] Network error dispatching email:`, mailErr.message);
+      }
+
+      // Update email dispatch status in database if available
+      if (savedMessage) {
+        try {
+          savedMessage.emailDispatched = emailDispatched;
+          savedMessage.emailError = emailError;
+          await savedMessage.save();
+        } catch (updateErr) {
+          console.warn('! [CONTACT] Could not update email status in DB:', updateErr.message);
+        }
+      }
+    } else {
+      console.log('ℹ [BREVO] BREVO_API_KEY not configured in server/.env — saved to MongoDB only.');
+    }
+
+    return res.status(200).json({
+      success: true,
+      referenceId,
+      message: 'Transmission received successfully.',
+      emailDispatched,
+    });
+  } catch (error) {
+    console.error('Error handling contact submission:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to process transmission.',
+      error: error.message,
+    });
+  }
+});
+
 
 // User Sync API (Called by Frontend after successful Clerk Sign-In / Sign-Up)
 app.post('/api/users/sync', async (req, res) => {

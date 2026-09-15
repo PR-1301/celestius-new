@@ -85,13 +85,27 @@ export default function Footer({ setActivePage }) {
                 rel="noreferrer"
                 className="w-9 h-9 rounded-xl bg-white/[0.03] border border-white/10 hover:border-[#FFCC00]/50 text-zinc-400 hover:text-[#FFCC00] hover:bg-[#FFCC00]/10 transition-all flex items-center justify-center cursor-pointer shadow-sm group"
                 aria-label="Instagram"
+                title="Instagram"
               >
                 <Instagram className="w-4 h-4 transition-transform group-hover:scale-110" />
+              </a>
+              <a 
+                href="https://chat.whatsapp.com/HP3gqZe9BFPDqu1qowiurT" 
+                target="_blank" 
+                rel="noreferrer"
+                className="w-9 h-9 rounded-xl bg-white/[0.03] border border-white/10 hover:border-[#25D366]/60 text-zinc-400 hover:text-[#25D366] hover:bg-[#25D366]/10 transition-all flex items-center justify-center cursor-pointer shadow-sm group"
+                aria-label="WhatsApp Community"
+                title="WhatsApp Community"
+              >
+                <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current transition-transform group-hover:scale-110">
+                  <path d="M17.472 14.382c-.301-.15-1.78-.878-2.056-.978-.276-.1-.476-.15-.677.15-.2.301-.777.978-.952 1.179-.175.2-.351.226-.652.075-.301-.15-1.272-.469-2.423-1.496-.896-.799-1.5-1.786-1.676-2.087-.175-.301-.019-.464.132-.614.136-.135.301-.351.451-.527.151-.175.201-.3.301-.501.101-.2.05-.376-.025-.526-.075-.15-.677-1.633-.928-2.235-.245-.586-.494-.506-.677-.516-.175-.01-.376-.01-.577-.01s-.527.075-.802.376c-.276.301-1.053 1.028-1.053 2.508 0 1.479 1.078 2.908 1.228 3.109.15.2 2.122 3.24 5.141 4.544.718.31 1.279.496 1.716.635.721.23 1.377.198 1.896.12.578-.087 1.78-.727 2.03-1.429.251-.702.251-1.304.176-1.429-.075-.125-.276-.2-.577-.35zM12.042 21.84c-1.77 0-3.504-.475-5.029-1.375l-.36-.213-3.738.98.997-3.644-.235-.374a9.78 9.78 0 0 1-1.502-5.234c0-5.419 4.409-9.828 9.832-9.828 2.625 0 5.093 1.023 6.949 2.88 1.856 1.856 2.878 4.325 2.877 6.95 0 5.42-4.408 9.83-9.786 9.83zm0-17.75c-4.367 0-7.92 3.553-7.92 7.92 0 1.396.365 2.76 1.058 3.966l.164.286-.628 2.296 2.348-.616.276.164a7.886 7.886 0 0 0 4.698 1.5c4.366 0 7.92-3.554 7.92-7.92 0-2.115-.824-4.103-2.32-5.598a7.883 7.883 0 0 0-5.596-2.098z"/>
+                </svg>
               </a>
               <a 
                 href="mailto:celestius.club@gmail.com" 
                 className="w-9 h-9 rounded-xl bg-white/[0.03] border border-white/10 hover:border-sky-400/50 text-zinc-400 hover:text-sky-400 hover:bg-sky-400/10 transition-all flex items-center justify-center cursor-pointer shadow-sm group"
                 aria-label="Email"
+                title="Email"
               >
                 <Mail className="w-4 h-4 transition-transform group-hover:scale-110" />
               </a>

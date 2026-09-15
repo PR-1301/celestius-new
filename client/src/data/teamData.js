@@ -1,5 +1,6 @@
 import varunPhoto from '../assets/team/IMG_5972.JPG?url';
 import ponnurajPhoto from '../assets/team/ponnuraj.jpeg';
+import aakashPhoto from '../assets/team/aakashraj-s.png'
 
 export const teamData = [
   {
@@ -14,6 +15,7 @@ export const teamData = [
   {
     id: "aakash-raj-s",
     name: "Aakashraj S",
+    image: aakashPhoto,
     role: "Vice President",
     category: "leadership",
     division: "Executive Core",

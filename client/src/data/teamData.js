@@ -1,5 +1,6 @@
 import varunPhoto from '../assets/team/IMG_5972.JPG?url';
 import ponnurajPhoto from '../assets/team/ponnuraj.jpeg';
+import aakashPhoto from '../assets/team/aakashraj-s.png'
 
 export const teamData = [
   {
@@ -8,17 +9,18 @@ export const teamData = [
     role: "President",
     category: "leadership",
     division: "Executive Core",
-    github: "https://github.com",
-    linkedin: "https://linkedin.com"
+    github: "https://github.com/venkatesh-window",
+    linkedin: "https://www.linkedin.com/in/venkatesh-gs-80336435a"
   },
   {
     id: "aakash-raj-s",
     name: "Aakashraj S",
+    image: aakashPhoto,
     role: "Vice President",
     category: "leadership",
     division: "Executive Core",
-    github: "https://github.com",
-    linkedin: "https://linkedin.com"
+    github: "https://github.com/aakashraj7",
+    linkedin: "https://www.linkedin.com/in/aakashraj7/"
   },
   {
     id: "varun-m",
@@ -37,8 +39,8 @@ export const teamData = [
     role: "Tech Lead",
     category: "technical",
     division: "Technical Core",
-    github: "https://github.com",
-    linkedin: "https://linkedin.com"
+    github: "https://github.com/PR-1301",
+    linkedin: "https://www.linkedin.com/in/ponnurajan-r/"
   },
   {
     id: "yashikha-janakiraman",
@@ -47,7 +49,7 @@ export const teamData = [
     category: "leadership",
     division: "Executive Core",
     github: "https://github.com",
-    linkedin: "https://linkedin.com"
+    linkedin: "https://www.linkedin.com/in/yashikha-janakiraman/"
   },
   {
     id: "madhavi-chitturi",
@@ -64,8 +66,8 @@ export const teamData = [
     role: "HR",
     category: "leadership",
     division: "Operations & HR",
-    github: "https://github.com",
-    linkedin: "https://linkedin.com"
+    github: "https://github.com/SG-2111",
+    linkedin: "https://www.linkedin.com/in/sanjana-gokulnath-595283372"
   },
   {
     id: "sowmiya-r",
@@ -73,8 +75,8 @@ export const teamData = [
     role: "Events Lead",
     category: "events",
     division: "Events & Operations",
-    github: "https://github.com",
-    linkedin: "https://linkedin.com"
+    github: "https://github.com/SoWmIyA-R-2007",
+    linkedin: "https://www.linkedin.com/in/sowmiya-r-275758381"
   },
   {
     id: "kishore-k-v",
@@ -82,8 +84,8 @@ export const teamData = [
     role: "Treasurer",
     category: "leadership",
     division: "Executive Core",
-    github: "https://github.com",
-    linkedin: "https://linkedin.com"
+    github: "https://github.com/KiShOrE-2008",
+    linkedin: "https://www.linkedin.com/in/kishore-k-v-090491349"
   },
   {
     id: "khathija-farah-s",
@@ -91,8 +93,8 @@ export const teamData = [
     role: "Event Coordinator",
     category: "events",
     division: "Events & Operations",
-    github: "https://github.com",
-    linkedin: "https://linkedin.com"
+    github: "https://github.com/farahkhathijas",
+    linkedin: "https://www.linkedin.com/in/khathija-farah-601aa7372"
   },
   {
     id: "akshaya-s",
@@ -100,8 +102,8 @@ export const teamData = [
     role: "Event Coordinator",
     category: "events",
     division: "Events & Operations",
-    github: "https://github.com",
-    linkedin: "https://linkedin.com"
+    github: "https://github.com/Akshaya-csbs",
+    linkedin: "https://www.linkedin.com/in/akshaya--saravanan/"
   },
   {
     id: "muhammad-yazzir-mr",
@@ -118,8 +120,8 @@ export const teamData = [
     role: "Public Speaker",
     category: "creative",
     division: "Public Speaking",
-    github: "https://github.com",
-    linkedin: "https://linkedin.com"
+    github: "https://github.com/kanagathararajan",
+    linkedin: "https://www.linkedin.com/in/kanagathararajan"
   },
   {
     id: "huzna-fariha",
@@ -136,8 +138,8 @@ export const teamData = [
     role: "Video Editor",
     category: "creative",
     division: "Media & Production",
-    github: "https://github.com",
-    linkedin: "https://linkedin.com"
+    github: "https://github.com/jos-agaciya",
+    linkedin: "https://www.linkedin.com/in/jos-agaciya"
   },
   {
     id: "semmozhi-a",
@@ -145,8 +147,8 @@ export const teamData = [
     role: "Designer",
     category: "creative",
     division: "Creative & Design",
-    github: "https://github.com",
-    linkedin: "https://linkedin.com"
+    github: "https://github.com/Semmozhi2008-04-13",
+    linkedin: "https://www.linkedin.com/in/semmozh"
   },
   {
     id: "ramanathan-manikandan",
@@ -163,8 +165,8 @@ export const teamData = [
     role: "Tech Coordinator",
     category: "technical",
     division: "Technical Core",
-    github: "https://github.com",
-    linkedin: "https://linkedin.com"
+    github: "https://github.com/Logesh-kr",
+    linkedin: "https://www.linkedin.com/in/logesh-kumar-k-15623436b"
   },
   {
     id: "aadhithyan-a",
@@ -190,8 +192,8 @@ export const teamData = [
     role: "Tech Coordinator",
     category: "technical",
     division: "Technical Core",
-    github: "https://github.com",
-    linkedin: "https://linkedin.com"
+    github: "https://github.com/Sanjanaa1604",
+    linkedin: "https://www.linkedin.com/in/sanjanaa-s-26017536b"
   },
   {
     id: "tharun-balaji",
@@ -199,8 +201,8 @@ export const teamData = [
     role: "Tech Coordinator",
     category: "technical",
     division: "Technical Core",
-    github: "https://github.com",
-    linkedin: "https://linkedin.com"
+    github: "https://github.com/Tb-Gith",
+    linkedin: "https://www.linkedin.com/in/tharun-balaji-7807a9382/"
   },
   {
     id: "essakkidevi-a",

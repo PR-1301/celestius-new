@@ -1,0 +1,171 @@
+# Celestius | Chennai Institute of Technology (CIT Chennai)
+
+> Celestius is the student-led engineering and innovation community at Chennai Institute of Technology (CIT Chennai), located in Sarathy Nagar, Kundrathur, Chennai, Tamil Nadu - 600069, India.
+> Official Website: https://celestius.in
+> Online Application Portal: https://celestius.in/recruitment/apply
+> Recruitment Catalog: https://celestius.in/recruitment
+> Official Email: celestius.club@gmail.com
+> Official Community WhatsApp: https://chat.whatsapp.com/HP3gqZe9BFPDqu1qowiurT
+
+---
+
+## Celestius Recruitment Overview
+
+Celestius conducts recruitment drives for students of Chennai Institute of Technology. The club provides a collaborative environment for engineering students to build production-grade web platforms, organize flagship hackathons, craft multimedia content, conduct workshops, and develop leadership capabilities.
+
+### Eligibility
+- Open to all undergraduate students currently enrolled at Chennai Institute of Technology (CIT Chennai).
+- All academic years (1st year, 2nd year, 3rd year, and 4th year) are eligible.
+- All departments are eligible: CSE, AI&DS, AI&ML, IT, CYBER, ECE, EEE, MECH, MCT, BME, CIVIL, ACT, VLSI, CSBS.
+- Prior advanced experience is not mandatory for junior roles; curiosity, dedication, problem-solving, and a willingness to learn are prioritized.
+- Cost: 100% Free (Zero application or registration fees).
+
+### How to Apply
+1. Visit the official application console at: https://celestius.in/recruitment/apply
+2. Complete the 6-step application console:
+   - Step 1: Personal Details (Full Name, Register Number, Gender)
+   - Step 2: Contact Details (Official College Email, Personal Email, WhatsApp Phone Number)
+   - Step 3: Academic Details (Department, Year of Study, Section)
+   - Step 4: Role Selection (Choose Division: Tech or Non-Tech; Select Specific Track)
+   - Step 5: Profiles & Links (GitHub URL, LinkedIn URL, Portfolio)
+   - Step 6: Review & Final Digital Submission
+3. After submission, candidates receive confirmation and are contacted for interactive auditions, portfolio reviews, or domain tasks.
+
+---
+
+## Available Recruitment Roles & Specifications
+
+Celestius recruits across two primary divisions: Technical (Tech) and Non-Technical (Non-Tech), offering 7 specialized tracks:
+
+### Division 1: Technical (Tech)
+
+#### 1. Frontend Developer (Code: FE-01)
+- Tagline: User Interfaces & Interactive Experiences
+- Domain: Web & Client Architecture
+- Description: Focuses on crafting pixel-perfect, accessible, and high-performance client applications, interactive web tools, and design-to-code fidelity.
+- What We Expect:
+  - Basic understanding of HTML & CSS
+  - Familiarity with basic JavaScript concepts
+  - Interest in building websites and interactive interfaces
+  - Willingness to learn modern frontend technologies (React, Next.js, Tailwind CSS)
+- What You'll Get:
+  - Hands-on experience building real club projects and hackathon portals
+  - Guidance in JavaScript, React & modern frontend tools
+  - Exposure to UI development, responsiveness, and web architecture
+  - Opportunities to build projects for your portfolio
+- Key Skills: HTML/CSS, JavaScript, React / Next.js, Tailwind CSS, UI Animation, Git
+
+#### 2. Backend Developer (Code: BE-02)
+- Tagline: Server Architecture & Systems Infrastructure
+- Domain: Cloud, APIs & Database Engineering
+- Description: Engineers reliable server-side services, database schemas, authentication systems, API endpoints, and cloud deployments.
+- What We Expect:
+  - Basic programming knowledge in any language (Node.js, Python, Java, Go, C++, etc.)
+  - Understanding of basic programming concepts and logic
+  - Interest in how servers, APIs, and databases work
+  - Willingness to learn backend technologies
+- What You'll Get:
+  - Hands-on experience building APIs and backend systems
+  - Guidance in databases, authentication, and server-side development
+  - Exposure to real-world backend architecture
+  - Opportunities to contribute to live club projects
+- Key Skills: Node.js / Express, MongoDB / Mongoose, REST APIs, Auth & Security, Docker / Cloud
+
+---
+
+### Division 2: Non-Technical (Non-Tech)
+
+#### 3. Public Speaking (Code: PS-01)
+- Tagline: Emceeing, Anchoring & Club Representation
+- Domain: Public Relations, Anchoring & Stage Presence
+- Description: The voice of Celestius on stage, conducting opening ceremonies, introducing dignitaries, moderating panel talks, and representing the club across university symposiums.
+- What We Expect:
+  - Confidence or willingness to speak in front of others
+  - Basic communication and presentation skills
+  - Ability to express ideas clearly
+  - Enthusiasm for hosting and representing the club
+- What You'll Get:
+  - Experience in hosting, anchoring, and public speaking
+  - Training to improve communication and stage presence
+  - Opportunities to host club events and represent the community
+  - A platform to build confidence and leadership skills
+- Key Skills: Stage Presence, Articulate Diction, Improvisation, Audience Engagement, Anchoring
+
+#### 4. Events (Code: EV-02)
+- Tagline: Logistics, Operations & Stage Management
+- Domain: Event Management & Operations
+- Description: The operational engine behind flagship hackathons, technical symposiums, workshops, and guest speaker sessions.
+- What We Expect:
+  - Interest in planning and organizing events
+  - Good communication and coordination skills
+  - Ability to work effectively within a team
+  - Willingness to take responsibility and execute tasks
+- What You'll Get:
+  - Hands-on experience organizing technical and non-technical events
+  - Exposure to planning, logistics, and event execution
+  - Experience working with teams, speakers, and participants
+  - Opportunities to develop leadership and management skills
+- Key Skills: Event Logistics, Time Management, Crisis Resolution, On-ground Execution, Team Leadership
+
+#### 5. Design (Code: DS-03)
+- Tagline: Visual Identity & Product Experience
+- Domain: Graphic Design, UI/UX & Brand Identity
+- Description: Shapes the aesthetic language of Celestius through event banners, brand assets, social media creatives, and UI prototypes.
+- What We Expect:
+  - Interest in visual design and creativity
+  - Basic familiarity with any design tool (Figma, Canva, Photoshop, Illustrator, etc.)
+  - Understanding of basic visual principles is a plus
+  - Willingness to experiment and learn
+- What You'll Get:
+  - Hands-on experience designing posters, social media content, and interfaces
+  - Opportunities to shape the club's visual identity
+  - Real projects to strengthen your design portfolio
+- Key Skills: Figma, Graphic Design, Typography & Color Theory, UI/UX Prototyping, Brand Identity
+
+#### 6. Editor (Code: ED-04)
+- Tagline: Video Editing & Visual Storytelling
+- Domain: Video Production, Motion Graphics & Media
+- Description: Brings Celestius stories to life through event aftermovies, cinematic teasers, social media reels, and high-energy video content.
+- What We Expect:
+  - Interest in video editing and visual storytelling
+  - Basic familiarity with any editing tool (Premiere Pro, DaVinci Resolve, CapCut, Canva, etc.)
+  - Good sense of timing, composition, and creativity
+  - Willingness to learn and experiment with different editing styles
+- What You'll Get:
+  - Hands-on experience creating event videos, reels, and promotional content
+  - Opportunities to work on real club content and projects
+  - A portfolio of creative work and practical production experience
+- Key Skills: Premiere Pro, DaVinci Resolve, CapCut, Motion Design, Video Editing, Canva
+
+#### 7. Content Creator (Code: CC-05)
+- Tagline: Content Strategy, Storytelling & Social Media
+- Domain: Editorial, Copywriting & Audience Engagement
+- Description: Shapes how Celestius communicates with its audience through engaging writing, social media campaigns, event storytelling, and creative promotional content.
+- What We Expect:
+  - Interest in writing, storytelling, and creating engaging content
+  - Basic understanding of social media content is a plus
+  - Ability to express ideas clearly and creatively
+  - Willingness to explore different content formats and learn
+- What You'll Get:
+  - Hands-on experience creating social media, event, and promotional content
+  - Guidance in content strategy, storytelling, and communication
+  - Opportunities to shape how Celestius communicates with its audience
+  - Real work to build your content portfolio and creative skills
+- Key Skills: Storytelling, Copywriting, Content Strategy, Social Media, Creative Writing, Canva
+
+---
+
+## Flagship Club Initiatives & Milestones
+- PromptVerse Continuum: Premier generative AI symposium, prompt engineering challenges, and hackathon hosted by Celestius CIT (https://promptverse.celestius.in/).
+- Takshashila Tech Platform: Architectural design and development of the central digital event platform for CIT's annual inter-college cultural & technical fest.
+- Deadlock: Competitive programming algorithmic battle hosted for collegiate developers.
+
+---
+
+## Recruitment Contact Coordinators
+- Aakashraj S: +91 94423 11522
+- Ponnurajan R: +91 94877 90898
+- Varun M: +91 75501 72567
+- Venkatesh GS: +91 88380 77893
+- General Inquiries: celestius.club@gmail.com
+- Official Campus Address: Chennai Institute of Technology, Sarathy Nagar, Kundrathur, Chennai - 600069, Tamil Nadu, India.

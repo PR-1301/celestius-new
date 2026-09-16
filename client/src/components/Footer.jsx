@@ -46,7 +46,7 @@ export default function Footer({ setActivePage }) {
             <div className="flex flex-col items-start gap-1">
               <img 
                 src={logoImg} 
-                alt="Celestius - Technical Club of Chennai Institute of Technology (CIT Chennai)" 
+                alt="Celestius · Chennai Institute of Technology" 
                 className="h-8 sm:h-9 w-auto object-contain shrink-0 drop-shadow-[0_0_12px_rgba(255,204,0,0.3)]"
               />
               <span className="font-mono text-[10px] sm:text-[11px] text-zinc-400 tracking-wider">
@@ -56,7 +56,7 @@ export default function Footer({ setActivePage }) {
 
             {/* Description */}
             <p className="font-sans text-xs sm:text-sm text-zinc-400 leading-relaxed max-w-md">
-              The premier student-driven technical society of Chennai Institute of Technology. Fostering engineering excellence, competitive coding and hackathons.
+              The student-led engineering & innovation community at Chennai Institute of Technology. Fostering software development, creative media, and hackathons.
             </p>
 
             {/* Minimal Social Links */}

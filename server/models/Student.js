@@ -80,7 +80,7 @@ const StudentSchema = new mongoose.Schema(
             return ["Backend Developer", "Frontend Developer"].includes(value);
           }
           if (this.role === "Non-Tech") {
-            return ["Public speaking", "Events", "Design", "Editor"].includes(value);
+            return ["Public speaking", "Events", "Design", "Editor", "Content Creator"].includes(value);
           }
           return false;
         },
@@ -89,7 +89,7 @@ const StudentSchema = new mongoose.Schema(
             return `"${props.value}" is not valid for Tech role. Allowed: Backend Developer, Frontend Developer.`;
           }
           if (this.role === "Non-Tech") {
-            return `"${props.value}" is not valid for Non-Tech role. Allowed: Public speaking, Events, Design, Editor.`;
+            return `"${props.value}" is not valid for Non-Tech role. Allowed: Public speaking, Events, Design, Editor, Content Creator.`;
           }
           return `Invalid role category or sub-role combination.`;
         },

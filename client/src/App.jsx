@@ -12,6 +12,7 @@ import Recruitment from './pages/Recruitment';
 import RecruitmentApply from './pages/RecruitmentApply';
 import Contact from './pages/Contact';
 import AllEvents from './pages/AllEvents';
+import RecruitmentPopup from './components/RecruitmentPopup';
 import { getApiBaseUrl } from './config/api';
 
 export default function App() {
@@ -118,19 +119,19 @@ export default function App() {
   // Dynamic SEO metadata per route for enhanced search engine ranking and social cards
   useEffect(() => {
     const pageTitles = {
-      home: "Celestius | Technical Club of Chennai Institute of Technology (CIT Chennai)",
-      recruitment: "Recruitment & Auditions | Celestius CIT Technical Club",
-      "recruitment/apply": "Student Registration & Application | Celestius CIT",
+      home: "Celestius | Chennai Institute of Technology (CIT Chennai)",
+      recruitment: "Celestius Recruitment & Roles | CIT Chennai",
+      "recruitment/apply": "Apply Online: Student Application Portal | Celestius CIT",
       events: "Flagship Events & Hackathons | Celestius CIT (PromptVerse, Symposiums)",
       "all-events": "Event Chronicles & Archives | Celestius CIT",
-      team: "Core Team & Leadership | Celestius CIT Technical Club",
-      contact: "Contact & Inquiries | Celestius CIT Technical Club"
+      team: "Core Team & Leadership | Celestius CIT",
+      contact: "Contact & Inquiries | Celestius CIT"
     };
 
     const pageDescriptions = {
-      home: "Celestius (Celestial CIT) is the official student-led technical community of Chennai Institute of Technology, driving engineering excellence, hackathons, and research.",
-      recruitment: "Join Celestius CIT: Explore domains across Web, AI/ML, App Dev, UI/UX, Cloud, Media, and Event Operations. Applications are live for CIT students.",
-      "recruitment/apply": "Official student registration portal for Celestius Technical Club recruitment at Chennai Institute of Technology.",
+      home: "Celestius is the student-led engineering & innovation community at Chennai Institute of Technology (CIT Chennai), driving software development, creative media, and hackathons.",
+      recruitment: "Explore Celestius CIT recruitment across 7 domains: Frontend Developer, Backend Developer, Public Speaking, Events, Design, Editor, and Content Creator. Open to all CIT Chennai students.",
+      "recruitment/apply": "Official 6-step student application console for Celestius at Chennai Institute of Technology. Register your domain and submit your application online.",
       events: "Explore Celestius flagship events at CIT Chennai: PromptVerse Continuum, Takshashila Tech, Deadlock algorithmic battles, and hands-on workshops.",
       "all-events": "Complete archive of hackathons, technical conferences, websites, and community milestones built by Celestius CIT.",
       team: "Meet the executive leads, core engineers, designers, and domain architects driving Celestius at Chennai Institute of Technology.",
@@ -256,6 +257,13 @@ export default function App() {
           onClose={() => setSelectedEvent(null)} 
         />
       )}
+
+      {/* Bespoke Holographic Recruitment Invitation Popup */}
+      <RecruitmentPopup 
+        onNavigateApply={handlePageChange} 
+        introCompleted={introCompleted} 
+        activePage={activePage} 
+      />
 
       {/* Celestius Gold Minimal Footer with Replay Intro trigger */}
       <Footer setActivePage={handlePageChange} onReplayIntro={handleReplayIntro} />

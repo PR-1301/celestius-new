@@ -25,7 +25,8 @@ import {
   Package,
   Clock,
   Shield,
-  Target
+  Target,
+  PenTool
 } from 'lucide-react';
 
 // Dynamic Bi-directional Scroll Reveal Component
@@ -219,6 +220,25 @@ const RECRUITMENT_TEAMS = [
       'Opportunities to work on real club content and projects',
       'A portfolio of creative work and practical production experience'
     ]
+  },
+  {
+    id: 'content-creator',
+    name: 'Content Creator',
+    division: 'Non-Tech',
+    subRole: 'Content Creator',
+    tagline: 'Content Strategy, Storytelling & Social Media',
+    icon: PenTool,
+    whatWeExpect: [
+      'Interest in writing, storytelling and creating engaging content',
+      'Basic understanding of social media content is a plus',
+      'Ability to express ideas clearly and creatively',
+      'Willingness to explore different content formats and learn'
+    ],
+    whatYoullGet: [
+      'Hands-on experience creating social media, event and promotional content',
+      'Opportunities to shape how Celestius communicates with its audience',
+      'Real work to build your content portfolio and creative skills'
+    ]
   }
 ];
 
@@ -346,8 +366,12 @@ const renderSkillLogo = (skill) => {
   if (s.includes('crisis')) {
     return <Shield className="w-4 h-4 text-red-400 shrink-0" />;
   }
-  if (s.includes('execution') || s.includes('on-ground')) {
-    return <Target className="w-4 h-4 text-emerald-400 shrink-0" />;
+  // 6. Content Creation & Storytelling
+  if (s.includes('story') || s.includes('writing') || s.includes('copy')) {
+    return <PenTool className="w-4 h-4 text-emerald-400 shrink-0" />;
+  }
+  if (s.includes('content') || s.includes('social') || s.includes('media')) {
+    return <MessageSquare className="w-4 h-4 text-pink-400 shrink-0" />;
   }
 
   return <Sparkles className="w-4 h-4 text-zinc-400 shrink-0" />;

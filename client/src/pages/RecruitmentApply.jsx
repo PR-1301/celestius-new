@@ -42,7 +42,8 @@ import {
   Lock,
   PhoneCall,
   Copy,
-  X
+  X,
+  PenTool
 } from 'lucide-react';
 import logoImg from '../assets/logo.png';
 import { getApiBaseUrl } from '../config/api';
@@ -83,7 +84,8 @@ const ROLE_OPTIONS = {
     'Public speaking',
     'Events',
     'Design',
-    'Editor'
+    'Editor',
+    'Content Creator'
   ]
 };
 
@@ -207,6 +209,12 @@ const renderSkillLogo = (skill) => {
   }
   if (s.includes('crisis')) {
     return <Shield className="w-3.5 h-3.5 text-red-400 shrink-0" />;
+  }
+  if (s.includes('story') || s.includes('writing') || s.includes('copy')) {
+    return <PenTool className="w-3.5 h-3.5 text-emerald-400 shrink-0" />;
+  }
+  if (s.includes('content') || s.includes('social')) {
+    return <MessageSquare className="w-3.5 h-3.5 text-pink-400 shrink-0" />;
   }
 
   return <Sparkles className="w-3.5 h-3.5 text-zinc-400 shrink-0" />;
@@ -372,6 +380,32 @@ const ROLE_DETAILS = {
       'Collaborating with event and design teams to capture and showcase club milestones'
     ],
     skills: ['Premiere Pro', 'DaVinci Resolve', 'CapCut', 'Motion Design', 'Video Editing', 'Canva']
+  },
+  'Content Creator': {
+    division: 'Non-Tech',
+    code: 'CC-05',
+    tagline: 'Content Strategy, Storytelling & Social Media',
+    icon: PenTool,
+    accent: '#38bdf8',
+    description: 'Focuses on crafting engaging copy, storytelling narratives, social media strategies, and creative campaigns that represent the voice and spirit of Celestius.',
+    whatWeExpect: [
+      'Interest in writing, storytelling and creating engaging content',
+      'Basic understanding of social media content is a plus',
+      'Ability to express ideas clearly and creatively',
+      'Willingness to explore different content formats and learn'
+    ],
+    whatYoullGet: [
+      'Hands-on experience creating social media, event and promotional content',
+      'Opportunities to shape how Celestius communicates with its audience',
+      'Real work to build your content portfolio and creative skills'
+    ],
+    responsibilities: [
+      'Creating engaging copy for social media posts, event announcements, and newsletters',
+      'Developing creative storytelling angles, campaign hooks, and promotional content',
+      'Collaborating with design and video teams to produce unified multimedia content',
+      'Experimenting with dynamic content formats, hooks, and community engagement strategies'
+    ],
+    skills: ['Storytelling', 'Copywriting', 'Content Strategy', 'Social Media', 'Creative Writing', 'Canva']
   }
 };
 

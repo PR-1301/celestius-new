@@ -141,6 +141,25 @@ export const recruitmentDivisions = {
           "Comfort interacting with faculty, external tech dignitaries, and student peers",
           "Enthusiasm for public speaking and connecting with diverse audiences"
         ]
+      },
+      {
+        id: "content-creator",
+        name: "Content Creator",
+        division: "Non-Technical",
+        tagline: "Content Strategy, Storytelling & Social Media",
+        description: "Shapes how Celestius communicates with its audience through engaging writing, social media campaigns, event storytelling, and creative content.",
+        responsibilities: [
+          "Creating engaging copy for social media posts, event announcements, and newsletters",
+          "Developing creative storytelling angles, campaign hooks, and promotional content",
+          "Collaborating with design and video teams to produce unified multimedia content",
+          "Experimenting with dynamic content formats, hooks, and community engagement strategies"
+        ],
+        skillsLookedFor: [
+          "Interest in writing, storytelling and creating engaging content",
+          "Basic understanding of social media content is a plus",
+          "Ability to express ideas clearly and creatively",
+          "Willingness to explore different content formats and learn"
+        ]
       }
     ]
   }

@@ -12,6 +12,7 @@ import Recruitment from './pages/Recruitment';
 import RecruitmentApply from './pages/RecruitmentApply';
 import Contact from './pages/Contact';
 import AllEvents from './pages/AllEvents';
+import RecruitmentPopup from './components/RecruitmentPopup';
 import { getApiBaseUrl } from './config/api';
 
 export default function App() {
@@ -256,6 +257,13 @@ export default function App() {
           onClose={() => setSelectedEvent(null)} 
         />
       )}
+
+      {/* Bespoke Holographic Recruitment Invitation Popup */}
+      <RecruitmentPopup 
+        onNavigateApply={handlePageChange} 
+        introCompleted={introCompleted} 
+        activePage={activePage} 
+      />
 
       {/* Celestius Gold Minimal Footer with Replay Intro trigger */}
       <Footer setActivePage={handlePageChange} onReplayIntro={handleReplayIntro} />

@@ -1517,16 +1517,16 @@ export default function RecruitmentApply({
       }
     }
 
-    // STEP 5: Developer Deck (GitHub and LinkedIn are optional, but if entered, profile must be confirmed)
+    // STEP 5: Developer Deck (GitHub is compulsory; LinkedIn remains optional)
     if (step === 5) {
-      if (formData.githubUsername.trim()) {
-        if (githubLoading) {
-          errors.githubUsername = 'Verifying GitHub profile... Please wait a moment.';
-        } else if (githubError) {
-          errors.githubUsername = githubError;
-        } else if (githubData && !formData.githubConfirmed) {
-          errors.githubUsername = 'Please click to select and confirm your GitHub profile card below, or clear the username.';
-        }
+      if (!formData.githubUsername.trim()) {
+        errors.githubUsername = 'GitHub username is required.';
+      } else if (githubLoading) {
+        errors.githubUsername = 'Verifying GitHub profile... Please wait a moment.';
+      } else if (githubError) {
+        errors.githubUsername = githubError;
+      } else if (githubData && !formData.githubConfirmed) {
+        errors.githubUsername = 'Please click to select and confirm your GitHub profile card below.';
       }
     }
 
@@ -1579,7 +1579,7 @@ export default function RecruitmentApply({
   // Final Submission Handler (Double-checks against duplicate before final commit)
   const handleFinalSubmit = async () => {
     // Validate all required steps prior to final submission
-    for (let s = 1; s <= 4; s++) {
+    for (let s = 1; s <= 5; s++) {
       const isStepValid = await validateStep(s);
       if (!isStepValid) {
         setCurrentStep(s);
@@ -2825,7 +2825,7 @@ export default function RecruitmentApply({
                       Online Profiles
                     </h2>
                     <p className="text-xs text-zinc-400 font-sans">
-                      Connect your developer and professional profiles (optional).
+                      Add your GitHub profile (required) and optional LinkedIn profile.
                     </p>
                   </div>
                 </div>
@@ -2833,7 +2833,7 @@ export default function RecruitmentApply({
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div className="space-y-2">
                     <label className="block font-mono text-xs text-zinc-300">
-                      GitHub Username <span className="text-zinc-500 font-normal">(Optional)</span>
+                      GitHub Username <span className="text-[#FFCC00] font-normal">(Required)</span>
                     </label>
                     <div className="relative">
                       <span className="absolute left-3.5 top-1/2 -translate-y-1/2 font-mono text-zinc-500 text-sm">

@@ -148,7 +148,7 @@ export const teamData = [
     category: "creative",
     division: "Creative & Design",
     github: "https://github.com/Semmozhi2008-04-13",
-    linkedin: "https://www.linkedin.com/in/semmozh"
+    linkedin: "http://www.linkedin.com/in/semmozhi"
   },
   {
     id: "ramanathan-manikandan",

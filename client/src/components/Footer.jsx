@@ -37,7 +37,7 @@ export default function Footer({ setActivePage }) {
       <div className="absolute inset-0 nothing-dot-grid opacity-15 pointer-events-none" />
 
       {/* Main Footer Content */}
-      <div className="relative z-10 max-w-6xl mx-auto px-6 py-14 sm:py-16">
+      <div className="relative z-10 max-w-6xl mx-auto px-6 pt-14 pb-28 sm:py-16">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-14 text-left">
           
           {/* Column 1: Brand & Bio (6 cols) */}

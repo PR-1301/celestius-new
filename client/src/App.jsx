@@ -202,7 +202,7 @@ export default function App() {
       />
 
       {/* Main Page Container */}
-      <main key={activePage} className="relative z-10 flex-1 w-full animate-page-enter">
+      <main key={activePage} className="relative z-10 flex-1 w-full animate-page-enter pb-16 md:pb-0">
         {activePage === 'home' && (
           <Home 
             setActivePage={handlePageChange} 

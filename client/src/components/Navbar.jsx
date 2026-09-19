@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import logoImg from '../assets/logo.png';
-import { Menu, X } from 'lucide-react';
+import { Home, Calendar, Users, UserPlus, Mail } from 'lucide-react';
 
 export default function Navbar({ activePage, setActivePage, introCompleted = true }) {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const isFirstMount = useRef(true);
 
@@ -24,44 +23,49 @@ export default function Navbar({ activePage, setActivePage, introCompleted = tru
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Prevent background scrolling on mobile when mobile menu is open
-  useEffect(() => {
-    if (mobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [mobileMenuOpen]);
-
   const navItems = [
-    { id: 'home', label: 'HOME' },
-    { id: 'events', label: 'EVENTS' },
-    { id: 'team', label: 'WE' },
-    { id: 'recruitment', label: 'RECRUITMENT' },
-    { id: 'contact', label: 'CONTACT' },
+    { id: 'home', label: 'Home', desktopLabel: 'HOME', icon: Home },
+    { id: 'events', label: 'Events', desktopLabel: 'EVENTS', icon: Calendar },
+    { id: 'team', label: 'We', desktopLabel: 'WE', icon: Users },
+    { id: 'recruitment', label: 'Recruitment', desktopLabel: 'RECRUITMENT', icon: UserPlus },
+    { id: 'contact', label: 'Contact', desktopLabel: 'CONTACT', icon: Mail },
   ];
 
   const handleNavClick = (id) => {
     setActivePage(id);
-    setMobileMenuOpen(false);
     window.scrollTo(0, 0);
   };
 
   return (
     <>
-      {/* Mobile Backdrop Overlay */}
-      {mobileMenuOpen && (
+      {/* Top Header: On mobile transparent with brand logo + tagline; on desktop shows full mechanical capsule navbar */}
+      <header className="fixed top-0 left-0 right-0 z-40 transition-all duration-300 px-4 sm:px-6 pt-3.5 sm:pt-4 pointer-events-none">
+        
+        {/* Mobile Top Brand Header: Logo + Tagline with NO navbar background */}
         <div 
-          className="fixed inset-0 bg-black/80 backdrop-blur-md z-40 md:hidden animate-fade-in"
-          onClick={() => setMobileMenuOpen(false)}
-        />
-      )}
+          className={`md:hidden flex items-center justify-between pointer-events-auto transition-opacity duration-300 ${
+            !introCompleted ? 'opacity-0' : 'opacity-100'
+          }`}
+        >
+          <button 
+            onClick={() => handleNavClick('home')}
+            className="flex flex-col items-start gap-0.5 group text-left focus:outline-none select-none cursor-pointer"
+            aria-label="Celestius CIT Homepage"
+            title="Celestius · Chennai Institute of Technology"
+          >
+            <img 
+              src={logoImg} 
+              alt="Celestius · Chennai Institute of Technology" 
+              className="h-7 w-auto object-contain drop-shadow-[0_0_12px_rgba(255,204,0,0.3)] transition-transform duration-200 active:scale-95"
+            />
+            <span className="font-mono text-[9px] text-zinc-400 group-hover:text-zinc-200 tracking-wider transition-colors">
+              Innovate. Build. Collaborate
+            </span>
+          </button>
+        </div>
 
-      <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-3 sm:px-6 pt-3 sm:pt-4">
-        <div className="relative max-w-6xl mx-auto">
+        {/* Desktop Navbar Capsule with Ultra-Refined Frosted Glass & Minimal Yellow Edge Accents */}
+        <div className="hidden md:block relative max-w-6xl mx-auto pointer-events-auto">
           {/* Architectural Suspension Brackets / Minimal Navbar Holder (Large Screens only) */}
           <div 
             className={`hidden lg:block absolute inset-x-0 top-0 pointer-events-none transition-opacity duration-300 ${
@@ -76,10 +80,7 @@ export default function Navbar({ activePage, setActivePage, introCompleted = tru
             {/* Left Holder Bracket (Minimal Celestius Gold Anchor) */}
             <div className="absolute -left-5 xl:-left-8 -top-3 sm:-top-4 w-5 xl:w-8 h-12 sm:h-14 pointer-events-none">
               <div className="w-full h-full border-l-2 border-b-2 border-[#FFCC00]/50 rounded-bl-2xl relative shadow-[0_0_6px_rgba(255,204,0,0.12)]">
-                {/* Minimal top ceiling anchor point */}
                 <div className="absolute -top-1 -left-[3px] w-2 h-1 bg-[#FFCC00]/70 rounded-t-sm" />
-                
-                {/* Enlarged dock connector node */}
                 <div className="absolute -bottom-[6px] -right-[6px] w-3 h-3 rounded-full bg-[#FFCC00] border-2 border-[#08080c] shadow-[0_0_6px_rgba(255,204,0,0.35)]" />
               </div>
             </div>
@@ -87,23 +88,18 @@ export default function Navbar({ activePage, setActivePage, introCompleted = tru
             {/* Right Holder Bracket (Minimal Celestius Gold Anchor) */}
             <div className="absolute -right-5 xl:-right-8 -top-3 sm:-top-4 w-5 xl:w-8 h-12 sm:h-14 pointer-events-none">
               <div className="w-full h-full border-r-2 border-b-2 border-[#FFCC00]/50 rounded-br-2xl relative shadow-[0_0_6px_rgba(255,204,0,0.12)]">
-                {/* Minimal top ceiling anchor point */}
                 <div className="absolute -top-1 -right-[3px] w-2 h-1 bg-[#FFCC00]/70 rounded-t-sm" />
-                
-                {/* Enlarged dock connector node */}
                 <div className="absolute -bottom-[6px] -left-[6px] w-3 h-3 rounded-full bg-[#FFCC00] border-2 border-[#08080c] shadow-[0_0_6px_rgba(255,204,0,0.35)]" />
               </div>
             </div>
           </div>
 
-          {/* Main Navbar Capsule with Ultra-Refined Frosted Glass & Minimal Yellow Edge Accents */}
+          {/* Main Navbar Capsule */}
           <div 
             className={`w-full transition-all duration-300 relative p-[1px] ${
-              mobileMenuOpen 
-                ? 'rounded-2xl bg-gradient-to-r from-[#FFCC00]/20 via-white/10 to-[#FFCC00]/20 shadow-[0_20px_50px_rgba(0,0,0,0.95)]' 
-                : scrolled 
-                  ? 'rounded-full sm:rounded-2xl bg-gradient-to-r from-[#FFCC00]/15 via-white/[0.07] to-[#FFCC00]/15 shadow-[0_16px_40px_rgba(0,0,0,0.85)]' 
-                  : 'rounded-full sm:rounded-2xl bg-gradient-to-r from-[#FFCC00]/10 via-white/[0.05] to-[#FFCC00]/10 shadow-[0_12px_36px_rgba(0,0,0,0.7)]'
+              scrolled 
+                ? 'rounded-2xl bg-gradient-to-r from-[#FFCC00]/15 via-white/[0.07] to-[#FFCC00]/15 shadow-[0_16px_40px_rgba(0,0,0,0.85)]' 
+                : 'rounded-2xl bg-gradient-to-r from-[#FFCC00]/10 via-white/[0.05] to-[#FFCC00]/10 shadow-[0_12px_36px_rgba(0,0,0,0.7)]'
             } ${!introCompleted ? 'opacity-0' : ''}`}
             style={
               introCompleted && isFirstMount.current
@@ -114,14 +110,12 @@ export default function Navbar({ activePage, setActivePage, introCompleted = tru
             {/* Pure Frosted Glass Core */}
             <div 
               className={`w-full relative overflow-hidden transition-all duration-300 ${
-                mobileMenuOpen 
-                  ? 'rounded-[15px] bg-[#09090e]/85 backdrop-blur-2xl p-4 sm:px-6' 
-                  : scrolled 
-                    ? 'rounded-full sm:rounded-[15px] bg-[#07070b]/60 hover:bg-[#07070b]/70 backdrop-blur-2xl backdrop-saturate-150 py-2.5 px-4 sm:px-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.12),inset_0_-1px_1px_rgba(0,0,0,0.4)]' 
-                    : 'rounded-full sm:rounded-[15px] bg-[#08080d]/45 hover:bg-[#08080d]/55 backdrop-blur-2xl backdrop-saturate-150 py-3 px-4 sm:px-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15),inset_0_-1px_1px_rgba(0,0,0,0.3)]'
+                scrolled 
+                  ? 'rounded-[15px] bg-[#07070b]/60 hover:bg-[#07070b]/70 backdrop-blur-2xl backdrop-saturate-150 py-2.5 px-4 sm:px-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.12),inset_0_-1px_1px_rgba(0,0,0,0.4)]' 
+                  : 'rounded-[15px] bg-[#08080d]/45 hover:bg-[#08080d]/55 backdrop-blur-2xl backdrop-saturate-150 py-3 px-4 sm:px-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15),inset_0_-1px_1px_rgba(0,0,0,0.3)]'
               }`}
             >
-              {/* Left Edge: Barely Perceptible Faint Warm Glow */}
+              {/* Left Edge: Faint Warm Glow */}
               <div 
                 className="absolute -left-6 top-1/2 -translate-y-1/2 w-24 sm:w-32 h-14 sm:h-16 rounded-full pointer-events-none blur-2xl opacity-[0.09] transition-opacity duration-500"
                 style={{
@@ -129,7 +123,7 @@ export default function Navbar({ activePage, setActivePage, introCompleted = tru
                 }}
               />
 
-              {/* Right Edge: Barely Perceptible Faint Warm Glow */}
+              {/* Right Edge: Faint Warm Glow */}
               <div 
                 className="absolute -right-6 top-1/2 -translate-y-1/2 w-24 sm:w-32 h-14 sm:h-16 rounded-full pointer-events-none blur-2xl opacity-[0.09] transition-opacity duration-500"
                 style={{
@@ -142,7 +136,6 @@ export default function Navbar({ activePage, setActivePage, introCompleted = tru
 
               {/* Content Row */}
               <div className="flex items-center justify-between relative z-10">
-              
                 {/* Brand & Plain Celestius Logo with Motto Below */}
                 <button 
                   onClick={() => handleNavClick('home')}
@@ -150,21 +143,18 @@ export default function Navbar({ activePage, setActivePage, introCompleted = tru
                   aria-label="Celestius CIT Homepage"
                   title="Celestius · Chennai Institute of Technology"
                 >
-                  {/* Plain Celestius Logo */}
                   <img 
                     src={logoImg} 
                     alt="Celestius · Chennai Institute of Technology" 
                     className="h-7 sm:h-8 w-auto object-contain transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_0_12px_rgba(255,204,0,0.3)]"
                   />
-
-                  {/* Motto text placed directly below the logo */}
                   <span className="font-mono text-[9.5px] sm:text-[10px] text-zinc-400 group-hover:text-zinc-200 tracking-wider transition-colors">
                     Innovate. Build. Collaborate
                   </span>
                 </button>
 
-                {/* Desktop Nav Items (Nothing OS Monospace / Pixel Pill Tabs with Glass Dock) */}
-                <nav className="hidden md:flex items-center gap-1 bg-black/40 backdrop-blur-md p-1.5 rounded-full border border-white/10 shadow-inner">
+                {/* Desktop Nav Items (Pixel Pill Tabs with Glass Dock) */}
+                <nav className="flex items-center gap-1 bg-black/40 backdrop-blur-md p-1.5 rounded-full border border-white/10 shadow-inner">
                   {navItems.map((item) => {
                     const isActive = activePage === item.id;
                     return (
@@ -177,7 +167,7 @@ export default function Navbar({ activePage, setActivePage, introCompleted = tru
                             : 'text-zinc-400 hover:text-white hover:bg-white/10'
                         }`}
                       >
-                        <span>{item.label}</span>
+                        <span>{item.desktopLabel}</span>
                         {item.badge && (
                           <span className={`ml-1.5 text-[8px] px-1.5 py-0.2 rounded-full font-mono font-bold ${
                             isActive 
@@ -191,65 +181,50 @@ export default function Navbar({ activePage, setActivePage, introCompleted = tru
                     );
                   })}
                 </nav>
-
-                {/* Action CTA & Mobile Toggle */}
-                <div className="flex items-center gap-2.5">
-                  <button
-                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                    className="md:hidden p-2 rounded-full text-zinc-300 hover:text-white bg-white/[0.06] hover:bg-white/10 border border-white/15 backdrop-blur-md focus:outline-none cursor-pointer transition-transform duration-200 active:scale-90"
-                    aria-label="Toggle navigation"
-                  >
-                    <div className="w-5 h-5 flex items-center justify-center transition-transform duration-300">
-                      {mobileMenuOpen ? (
-                        <X className="w-5 h-5 text-[#FFCC00] animate-modal-pop" />
-                      ) : (
-                        <Menu className="w-5 h-5 text-zinc-200" />
-                      )}
-                    </div>
-                  </button>
-                </div>
-
               </div>
-
-              {/* Mobile Dropdown Menu with Glass Backing & Smooth Animation */}
-              {mobileMenuOpen && (
-                <div className="relative z-10 md:hidden mt-3 pt-3 border-t border-white/10 space-y-1.5 animate-mobile-menu">
-                  {navItems.map((item, idx) => {
-                    const isActive = activePage === item.id;
-                    return (
-                      <button
-                        key={item.id}
-                        onClick={() => handleNavClick(item.id)}
-                        style={{ animationDelay: `${(idx * 0.045).toFixed(3)}s` }}
-                        className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl font-mono text-xs transition-all duration-200 cursor-pointer animate-mobile-item ${
-                          isActive
-                            ? 'bg-[#FFCC00] text-black font-bold shadow-md shadow-[#FFCC00]/20'
-                            : 'text-zinc-300 hover:text-white hover:bg-white/10 border border-transparent'
-                        }`}
-                      >
-                        <span 
-                          className="font-ndot tracking-wider text-base uppercase"
-                          style={{ fontFamily: "'VT323', monospace" }}
-                        >
-                          {item.label}
-                        </span>
-                        {item.badge && (
-                          <span className={`text-[9px] px-2 py-0.5 rounded-full font-mono font-bold ${
-                            isActive ? 'bg-black text-[#FFCC00]' : 'bg-[#FFCC00]/20 text-[#FFCC00] border border-[#FFCC00]/40'
-                          }`}>
-                            {item.badge}
-                          </span>
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
-
             </div>
           </div>
-      </div>
-    </header>
+        </div>
+      </header>
+
+      {/* Mobile Floating Toast Navigation Dock (Bottom centered, matching requested capsule pill design) */}
+      <nav
+        aria-label="Mobile Navigation"
+        className={`fixed left-1/2 -translate-x-1/2 z-50 md:hidden pointer-events-auto transition-all duration-500 ease-out ${
+          !introCompleted ? 'opacity-0 translate-y-12' : 'opacity-100 translate-y-0'
+        }`}
+        style={{ bottom: 'calc(1.25rem + env(safe-area-inset-bottom, 0px))' }}
+      >
+        <div className="flex items-center gap-1 sm:gap-1.5 p-1.5 rounded-full bg-[#08080c]/90 backdrop-blur-2xl border border-white/10 shadow-[0_12px_36px_rgba(0,0,0,0.9),0_0_20px_rgba(255,204,0,0.06)] max-w-[calc(100vw-20px)]">
+          {navItems.map((item) => {
+            const isActive = activePage === item.id;
+            const IconComponent = item.icon;
+            return (
+              <button
+                key={item.id}
+                onClick={() => handleNavClick(item.id)}
+                aria-label={item.label}
+                className={`flex items-center justify-center rounded-full transition-all duration-300 ease-out select-none cursor-pointer active:scale-95 ${
+                  isActive
+                    ? 'bg-[#FFCC00] text-black font-semibold shadow-[0_0_16px_rgba(255,204,0,0.35)] px-3.5 py-2'
+                    : 'text-zinc-400 hover:text-white hover:bg-white/5 w-10 h-10'
+                }`}
+              >
+                <IconComponent className="w-4 h-4 shrink-0 transition-transform duration-200" />
+                <span
+                  className={`overflow-hidden transition-all duration-300 ease-out whitespace-nowrap font-mono text-xs font-bold tracking-wide ${
+                    isActive
+                      ? 'max-w-[110px] opacity-100 ml-1.5'
+                      : 'max-w-0 opacity-0 ml-0'
+                  }`}
+                >
+                  {item.label}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </nav>
     </>
   );
 }

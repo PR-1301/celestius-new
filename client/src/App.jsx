@@ -8,6 +8,8 @@ import CircularLoader from './components/CircularLoader';
 import RecruitmentPopup from './components/RecruitmentPopup';
 import { getApiBaseUrl } from './config/api';
 
+import NotFound from './pages/NotFound';
+
 // Route-based code-split dynamic imports for optimal load times
 const Home = lazy(() => import('./pages/Home'));
 const Events = lazy(() => import('./pages/Events'));
@@ -22,6 +24,9 @@ export default function App() {
     const rawPath = window.location.pathname.replace(/^\/+|\/+$/g, '').toLowerCase();
     const rawHash = window.location.hash.replace('#', '').toLowerCase();
     
+    if (rawPath === '' || rawPath === 'home') {
+      return 'home';
+    }
     if (rawPath === 'recruitment/apply' || rawPath === 'apply') {
       return 'recruitment/apply';
     }
@@ -32,9 +37,6 @@ export default function App() {
     const validPages = ['home', 'events', 'team', 'recruitment', 'contact', 'recruitment/apply', 'all-events'];
 
     if (validPages.includes(rawPath)) {
-      if (rawPath === 'home') {
-        window.history.replaceState(null, '', '/');
-      }
       return rawPath;
     }
 
@@ -50,16 +52,17 @@ export default function App() {
       window.history.replaceState(null, '', cleanPath);
       return rawHash;
     }
-    return 'home';
+    return 'not-found';
   };
 
-  const [activePage, setActivePage] = useState(getInitialPage);
+  const initialPage = getInitialPage();
+  const [activePage, setActivePage] = useState(initialPage);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   
-  // Always show intro animation on load
-  const [showIntro, setShowIntro] = useState(true);
-  const [introCompleted, setIntroCompleted] = useState(false);
+  // Show intro animation on valid initial loads, but NEVER on 404
+  const [showIntro, setShowIntro] = useState(initialPage !== 'not-found');
+  const [introCompleted, setIntroCompleted] = useState(initialPage === 'not-found');
 
   // Global recruitment open status control step
   const [recruitmentOpenStatus, setRecruitmentOpenStatus] = useState(true);
@@ -109,8 +112,20 @@ export default function App() {
   useEffect(() => {
     const handlePopState = () => {
       const rawPath = window.location.pathname.replace(/^\/+|\/+$/g, '').toLowerCase();
+      if (rawPath === '' || rawPath === 'home') {
+        setActivePage('home');
+        return;
+      }
+      if (rawPath === 'recruitment/apply' || rawPath === 'apply') {
+        setActivePage('recruitment/apply');
+        return;
+      }
+      if (rawPath === 'all-events' || rawPath === 'events/all') {
+        setActivePage('all-events');
+        return;
+      }
       const validPages = ['home', 'events', 'team', 'recruitment', 'contact', 'recruitment/apply', 'all-events'];
-      const page = validPages.includes(rawPath) ? rawPath : 'home';
+      const page = validPages.includes(rawPath) ? rawPath : 'not-found';
       setActivePage(page);
     };
 
@@ -127,7 +142,8 @@ export default function App() {
       events: "Flagship Events & Hackathons | Celestius CIT (PromptVerse, Symposiums)",
       "all-events": "Event Chronicles & Archives | Celestius CIT",
       team: "Core Team & Leadership | Celestius CIT",
-      contact: "Contact & Inquiries | Celestius CIT"
+      contact: "Contact & Inquiries | Celestius CIT",
+      "not-found": "404 - Page Not Found | Celestius CIT"
     };
 
     const pageDescriptions = {
@@ -137,7 +153,8 @@ export default function App() {
       events: "Explore Celestius flagship events at CIT Chennai: PromptVerse Continuum, Takshashila Tech, Deadlock algorithmic battles, and hands-on workshops.",
       "all-events": "Complete archive of hackathons, technical conferences, websites, and community milestones built by Celestius CIT.",
       team: "Meet the executive leads, core engineers, designers, and domain architects driving Celestius at Chennai Institute of Technology.",
-      contact: "Get in touch with Celestius CIT leadership. Official inquiries, partnerships, event sponsorships, and campus collaborations."
+      contact: "Get in touch with Celestius CIT leadership. Official inquiries, partnerships, event sponsorships, and campus collaborations.",
+      "not-found": "The requested page does not exist on Celestius CIT."
     };
 
     if (pageTitles[activePage]) {
@@ -185,7 +202,7 @@ export default function App() {
       className="relative min-h-screen flex flex-col bg-[#060608] text-zinc-100 antialiased selection:bg-[#FFCC00] selection:text-black overflow-x-hidden font-sans"
     >
       {/* Intro Boot Animation featuring Athena & Hephaestus */}
-      {showIntro && (
+      {showIntro && activePage !== 'not-found' && (
         <IntroAnimation onComplete={handleIntroComplete} />
       )}
 
@@ -203,55 +220,59 @@ export default function App() {
         introCompleted={introCompleted}
       />
 
-      {/* Main Page Container with Simple Circular Loader Fallback */}
+      {/* Main Page Container: Instant render for 404, Suspense for lazy pages */}
       <main key={activePage} className="relative z-10 flex-1 w-full animate-page-enter pb-16 md:pb-0">
-        <Suspense fallback={<CircularLoader />}>
-          {activePage === 'home' && (
-            <Home 
-              setActivePage={handlePageChange} 
-              setSelectedEvent={setSelectedEvent} 
-              introCompleted={introCompleted}
-              recruitmentOpenStatus={recruitmentOpenStatus}
-            />
-          )}
-          {activePage === 'events' && (
-            <Events 
-              setActivePage={handlePageChange}
-              introCompleted={introCompleted}
-            />
-          )}
-          {activePage === 'all-events' && (
-            <AllEvents 
-              setActivePage={handlePageChange}
-              introCompleted={introCompleted}
-            />
-          )}
-          {activePage === 'team' && (
-            <Team 
-              introCompleted={introCompleted} 
-              setActivePage={handlePageChange}
-            />
-          )}
-          {activePage === 'recruitment' && (
-            <Recruitment 
-              introCompleted={introCompleted} 
-              setActivePage={handlePageChange}
-              recruitmentOpenStatus={recruitmentOpenStatus}
-              recruitmentStatusLoading={recruitmentStatusLoading}
-            />
-          )}
-          {activePage === 'recruitment/apply' && (
-            <RecruitmentApply 
-              introCompleted={introCompleted} 
-              setActivePage={handlePageChange}
-              recruitmentOpenStatus={recruitmentOpenStatus}
-              recruitmentStatusLoading={recruitmentStatusLoading}
-            />
-          )}
-          {activePage === 'contact' && (
-            <Contact introCompleted={introCompleted} />
-          )}
-        </Suspense>
+        {activePage === 'not-found' ? (
+          <NotFound setActivePage={handlePageChange} />
+        ) : (
+          <Suspense fallback={<CircularLoader />}>
+            {activePage === 'home' && (
+              <Home 
+                setActivePage={handlePageChange} 
+                setSelectedEvent={setSelectedEvent} 
+                introCompleted={introCompleted}
+                recruitmentOpenStatus={recruitmentOpenStatus}
+              />
+            )}
+            {activePage === 'events' && (
+              <Events 
+                setActivePage={handlePageChange}
+                introCompleted={introCompleted}
+              />
+            )}
+            {activePage === 'all-events' && (
+              <AllEvents 
+                setActivePage={handlePageChange}
+                introCompleted={introCompleted}
+              />
+            )}
+            {activePage === 'team' && (
+              <Team 
+                introCompleted={introCompleted} 
+                setActivePage={handlePageChange}
+              />
+            )}
+            {activePage === 'recruitment' && (
+              <Recruitment 
+                introCompleted={introCompleted} 
+                setActivePage={handlePageChange}
+                recruitmentOpenStatus={recruitmentOpenStatus}
+                recruitmentStatusLoading={recruitmentStatusLoading}
+              />
+            )}
+            {activePage === 'recruitment/apply' && (
+              <RecruitmentApply 
+                introCompleted={introCompleted} 
+                setActivePage={handlePageChange}
+                recruitmentOpenStatus={recruitmentOpenStatus}
+                recruitmentStatusLoading={recruitmentStatusLoading}
+              />
+            )}
+            {activePage === 'contact' && (
+              <Contact introCompleted={introCompleted} />
+            )}
+          </Suspense>
+        )}
       </main>
 
       {/* Event Details Modal */}

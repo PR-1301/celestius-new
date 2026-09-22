@@ -83,30 +83,23 @@ export default function IntroAnimation({ onComplete }) {
           </div>
         </div>
 
-        {/* Wordmark & Catchy Welcome Subtitle */}
-        <div className="space-y-2">
-          <h2 
-            style={{ fontFamily: "'VT323', monospace" }} 
-            className="font-ndot text-4xl sm:text-5xl text-white tracking-[0.25em] uppercase"
-          >
-            CELESTIUS
-          </h2>
-          <p className="font-mono text-xs sm:text-sm text-[#FFCC00] tracking-[0.25em] font-bold uppercase">
-            HAPPILY WELCOMES YOU
-          </p>
-        </div>
 
         {/* Clean Pixel Progress Bar */}
-        <div className="w-52 sm:w-64 space-y-2 pt-2">
-          <div className="flex justify-between font-mono text-[10px] text-zinc-500">
-            <span>LOADING_ENVIRONMENT</span>
-            <span className="text-[#FFCC00] font-bold">{progress}%</span>
+        <div className="w-52 sm:w-64 space-y-2.5 pt-2">
+          <div className="flex justify-between font-mono text-[10px]">
+            <span className="text-zinc-500">
+              {progress === 100 ? 'ENVIRONMENT_INITIALIZED' : 'LOADING_ENVIRONMENT'}
+            </span>
+            <span className="text-[#FFCC00] font-bold tracking-wider">
+              {progress}%
+            </span>
           </div>
 
-          <div className="w-full h-1 bg-zinc-900 rounded-full overflow-hidden border border-white/10 p-[1px]">
+          {/* Progress Bar Track */}
+          <div className="w-full h-2 bg-zinc-950 rounded-full overflow-hidden border border-white/15 shadow-inner relative">
             <div 
-              className="h-full bg-[#FFCC00] rounded-full transition-all duration-100 ease-out shadow-[0_0_10px_#FFCC00]"
-              style={{ width: `${progress}%` }}
+              className="h-full bg-gradient-to-r from-[#FFCC00]/80 via-[#FFCC00] to-[#FFE066] rounded-full transition-all duration-100 ease-out shadow-[0_0_12px_rgba(255,204,0,0.7)]"
+              style={{ width: `${Math.max(progress, 2)}%` }}
             />
           </div>
         </div>

@@ -1,19 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import EventModal from './components/EventModal';
 import IntroAnimation from './components/IntroAnimation';
 import DynamicBackground from './components/DynamicBackground';
-
-import Home from './pages/Home';
-import Events from './pages/Events';
-import Team from './pages/Team';
-import Recruitment from './pages/Recruitment';
-import RecruitmentApply from './pages/RecruitmentApply';
-import Contact from './pages/Contact';
-import AllEvents from './pages/AllEvents';
+import CircularLoader from './components/CircularLoader';
 import RecruitmentPopup from './components/RecruitmentPopup';
 import { getApiBaseUrl } from './config/api';
+
+// Route-based code-split dynamic imports for optimal load times
+const Home = lazy(() => import('./pages/Home'));
+const Events = lazy(() => import('./pages/Events'));
+const Team = lazy(() => import('./pages/Team'));
+const Recruitment = lazy(() => import('./pages/Recruitment'));
+const RecruitmentApply = lazy(() => import('./pages/RecruitmentApply'));
+const Contact = lazy(() => import('./pages/Contact'));
+const AllEvents = lazy(() => import('./pages/AllEvents'));
 
 export default function App() {
   const getInitialPage = () => {
@@ -201,53 +203,55 @@ export default function App() {
         introCompleted={introCompleted}
       />
 
-      {/* Main Page Container */}
+      {/* Main Page Container with Simple Circular Loader Fallback */}
       <main key={activePage} className="relative z-10 flex-1 w-full animate-page-enter pb-16 md:pb-0">
-        {activePage === 'home' && (
-          <Home 
-            setActivePage={handlePageChange} 
-            setSelectedEvent={setSelectedEvent} 
-            introCompleted={introCompleted}
-            recruitmentOpenStatus={recruitmentOpenStatus}
-          />
-        )}
-        {activePage === 'events' && (
-          <Events 
-            setActivePage={handlePageChange}
-            introCompleted={introCompleted}
-          />
-        )}
-        {activePage === 'all-events' && (
-          <AllEvents 
-            setActivePage={handlePageChange}
-            introCompleted={introCompleted}
-          />
-        )}
-        {activePage === 'team' && (
-          <Team 
-            introCompleted={introCompleted} 
-            setActivePage={handlePageChange}
-          />
-        )}
-        {activePage === 'recruitment' && (
-          <Recruitment 
-            introCompleted={introCompleted} 
-            setActivePage={handlePageChange}
-            recruitmentOpenStatus={recruitmentOpenStatus}
-            recruitmentStatusLoading={recruitmentStatusLoading}
-          />
-        )}
-        {activePage === 'recruitment/apply' && (
-          <RecruitmentApply 
-            introCompleted={introCompleted} 
-            setActivePage={handlePageChange}
-            recruitmentOpenStatus={recruitmentOpenStatus}
-            recruitmentStatusLoading={recruitmentStatusLoading}
-          />
-        )}
-        {activePage === 'contact' && (
-          <Contact introCompleted={introCompleted} />
-        )}
+        <Suspense fallback={<CircularLoader />}>
+          {activePage === 'home' && (
+            <Home 
+              setActivePage={handlePageChange} 
+              setSelectedEvent={setSelectedEvent} 
+              introCompleted={introCompleted}
+              recruitmentOpenStatus={recruitmentOpenStatus}
+            />
+          )}
+          {activePage === 'events' && (
+            <Events 
+              setActivePage={handlePageChange}
+              introCompleted={introCompleted}
+            />
+          )}
+          {activePage === 'all-events' && (
+            <AllEvents 
+              setActivePage={handlePageChange}
+              introCompleted={introCompleted}
+            />
+          )}
+          {activePage === 'team' && (
+            <Team 
+              introCompleted={introCompleted} 
+              setActivePage={handlePageChange}
+            />
+          )}
+          {activePage === 'recruitment' && (
+            <Recruitment 
+              introCompleted={introCompleted} 
+              setActivePage={handlePageChange}
+              recruitmentOpenStatus={recruitmentOpenStatus}
+              recruitmentStatusLoading={recruitmentStatusLoading}
+            />
+          )}
+          {activePage === 'recruitment/apply' && (
+            <RecruitmentApply 
+              introCompleted={introCompleted} 
+              setActivePage={handlePageChange}
+              recruitmentOpenStatus={recruitmentOpenStatus}
+              recruitmentStatusLoading={recruitmentStatusLoading}
+            />
+          )}
+          {activePage === 'contact' && (
+            <Contact introCompleted={introCompleted} />
+          )}
+        </Suspense>
       </main>
 
       {/* Event Details Modal */}

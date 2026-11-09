@@ -643,6 +643,9 @@ export default function Events({ introCompleted = true, setActivePage }) {
     }
   }, [isSpatialOpen, isGridOpen, activePhotoIndex]);
 
+  // Dynamic Live Status for LARPER OR CODER (Live until 13 Nov 2026 23:59:59 IST)
+  const isLocLive = new Date() <= new Date('2026-11-13T23:59:59+05:30');
+
   const currentPhoto = activePhotoIndex !== null ? galleryPhotos[activePhotoIndex] : null;
 
   // Single Cohesive Organic Flow (Fixed natural drift across any number of columns)
@@ -785,6 +788,247 @@ export default function Events({ introCompleted = true, setActivePage }) {
         style={{
           ...getAnimStyle('recruitSlideLeft', 0.26, '0.6s'),
           ...getScrollStyle('divider-2', 'up', 0.05)
+        }}
+      />
+
+      {/* 3. FLAGSHIP INITIATIVE: LARPER OR CODER CONSOLE (Top Flagship Showcase) */}
+      <div 
+        data-scroll-id="loc-console"
+        className="relative pt-2"
+        style={{
+          ...getAnimStyle('recruitSlideLeft', 0.28, '0.75s'),
+          ...getScrollStyle('loc-console', 'up', 0.1)
+        }}
+      >
+        {/* Main Console Frame: Flame Orange & Cyber Obsidian Deck */}
+        <div className="relative rounded-3xl border border-[#F26B3A]/30 bg-gradient-to-b from-[#120e10]/95 via-[#09080b]/98 to-black/95 backdrop-blur-2xl shadow-[0_20px_70px_rgba(0,0,0,0.85),0_0_50px_rgba(242,107,58,0.12)] overflow-hidden group/loc">
+          
+          {/* Cyber Corner Reticles */}
+          <div className="absolute top-4 left-4 font-mono text-[10px] text-[#F26B3A]/40 select-none pointer-events-none">+ + +</div>
+          <div className="absolute top-4 right-4 font-mono text-[10px] text-[#F26B3A]/40 select-none pointer-events-none">+ + +</div>
+          <div className="absolute bottom-4 left-4 font-mono text-[10px] text-[#F26B3A]/40 select-none pointer-events-none">+ + +</div>
+          <div className="absolute bottom-4 right-4 font-mono text-[10px] text-[#F26B3A]/40 select-none pointer-events-none">+ + +</div>
+
+          {/* Ambient Lighting Conduits */}
+          <div className="absolute -top-32 -left-32 w-80 h-80 bg-[#F26B3A]/20 rounded-full blur-[100px] pointer-events-none" />
+          <div className="absolute -bottom-32 -right-32 w-80 h-80 bg-[#FAA012]/15 rounded-full blur-[100px] pointer-events-none" />
+          <div className="absolute inset-0 nothing-dot-grid opacity-10 pointer-events-none" />
+
+          {/* Top Horizon Neon Line */}
+          <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-[#F26B3A] to-[#FAA012] opacity-80" />
+
+          {/* Console Header Bar */}
+          <div className="relative z-10 p-6 sm:p-10 border-b border-white/10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+            <div className="space-y-2 max-w-2xl text-left">
+              <div className="flex flex-wrap items-center gap-3">
+                {/* Dynamic Live Badge until Nov 13, 2026 */}
+                {isLocLive && (
+                  <div className="px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 font-mono text-[10px] text-emerald-400 font-bold uppercase tracking-wider flex items-center gap-1.5 shrink-0 shadow-[0_0_15px_rgba(52,211,153,0.2)]">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    <span>LIVE EVENT</span>
+                  </div>
+                )}
+                
+                <span className="font-mono text-xs tracking-widest text-[#F26B3A] uppercase font-bold">
+                  CELESTIUS FLAGSHIP DUO CODING CRUCIBLE
+                </span>
+                <span className="text-zinc-600 hidden sm:inline">//</span>
+                <span className="font-mono text-[10px] text-zinc-500 hidden sm:inline">
+                  SYS_ID: LOC-2026-DUO
+                </span>
+              </div>
+
+              {/* LOC Flagship Brand Logo (From public folder) */}
+              <div className="pt-1 pb-1">
+                <picture className="block filter drop-shadow-[0_4px_30px_rgba(242,107,58,0.4)]">
+                  <source srcSet="/loc-logo.webp" type="image/webp" />
+                  <img 
+                    src="/loc-logo.png" 
+                    alt="LARPER OR CODER" 
+                    className="h-14 sm:h-20 lg:h-24 w-auto object-contain max-w-[280px] sm:max-w-[380px] lg:max-w-[420px] transition-transform duration-300 group-hover/loc:scale-[1.02]"
+                  />
+                </picture>
+              </div>
+
+              <p className="text-zinc-300 font-sans text-xs sm:text-sm leading-relaxed max-w-xl">
+                No amount of resume glazing can save you here. Just you, your homie, and the algorithmic problems that are about to humble you. Two intense tracks: a competitive coding masterclass followed by the DEADLOCK showdown.
+              </p>
+
+              <div className="flex items-center gap-2 font-mono text-[11px] text-[#F7EDD8] font-bold">
+                <span className="text-[#F26B3A]">&gt;</span>
+                <span>no larping. just lock in.</span>
+              </div>
+            </div>
+
+            {/* Tactical Portal Launcher Keycard */}
+            <a
+              href="https://loc.celestius.in"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group/portal relative inline-flex items-center gap-4 p-4 pr-6 rounded-2xl bg-black/60 hover:bg-[#F26B3A]/10 border border-[#F26B3A]/30 hover:border-[#F26B3A] backdrop-blur-xl transition-all duration-300 shadow-xl hover:shadow-[0_0_35px_rgba(242,107,58,0.25)] hover:scale-[1.02] active:scale-95 cursor-pointer shrink-0 overflow-hidden"
+            >
+              {/* Animated top edge line */}
+              <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-[#F26B3A] to-transparent opacity-0 group-hover/portal:opacity-100 transition-opacity duration-500" />
+
+              <div className="w-12 h-12 rounded-xl bg-[#F26B3A] text-black flex items-center justify-center font-mono font-bold shadow-[0_4px_20px_rgba(242,107,58,0.4)] group-hover/portal:rotate-45 transition-transform duration-300">
+                <ArrowUpRight className="w-6 h-6 stroke-[2.5]" />
+              </div>
+
+              <div className="text-left font-mono">
+                {isLocLive ? (
+                  <div className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="text-[10px] text-emerald-400 font-bold tracking-widest uppercase">
+                      PORTAL ACTIVE
+                    </span>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] text-zinc-400 font-bold tracking-widest uppercase">
+                      ARCHIVE PORTAL
+                    </span>
+                  </div>
+                )}
+                <div className="text-sm sm:text-base font-bold text-white group-hover/portal:text-[#F26B3A] transition-colors uppercase tracking-wider">
+                  VISIT LOC SITE
+                </div>
+                <div className="text-[10px] text-zinc-400">
+                  loc.celestius.in ↗
+                </div>
+              </div>
+            </a>
+          </div>
+
+          {/* Split Dual-Chamber Flight Deck (Sector 01: The Training Arc vs Sector 02: TLE) */}
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-white/10 text-left">
+            
+            {/* Sector 01: The Training Arc */}
+            <div 
+              data-scroll-id="loc-sector-1"
+              className="p-6 sm:p-10 space-y-6 relative group/sec1 hover:bg-[#F26B3A]/[0.02] transition-colors duration-500"
+              style={getScrollStyle('loc-sector-1', 'left', 0.1)}
+            >
+              {/* Sector Watermark 01 */}
+              <span className="absolute right-6 bottom-4 font-mono text-8xl sm:text-9xl font-black text-white/[0.05] group-hover/sec1:text-[#F26B3A]/[0.12] select-none pointer-events-none transition-colors">
+                01
+              </span>
+
+              {/* Sector Header */}
+              <div className="flex items-center justify-between gap-4">
+                <div className="space-y-1.5">
+                  <div className="font-mono text-[10px] tracking-widest text-[#F26B3A] font-bold uppercase">
+                    SECTOR_01 // WORKSHOP
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-bold text-white font-sans tracking-wide">
+                    The Training Arc
+                  </h3>
+                </div>
+
+                <div className="px-3 py-1.5 rounded-full bg-[#FAA012]/15 border border-[#FAA012]/30 font-mono text-[10px] text-[#FAA012] font-bold tracking-wider uppercase shrink-0">
+                  10:15 - 11:15 AM
+                </div>
+              </div>
+
+              <p className="text-zinc-300 font-sans text-xs sm:text-sm leading-relaxed">
+                Every main character needs a training arc. A hands-on masterclass on competitive coding and algorithmic problem-solving conducted by CIT's top competitive coder (3rd year senior). Level up before the final boss fight.
+              </p>
+
+              {/* Workshop Highlights */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/10 group-hover/sec1:border-[#F26B3A]/30 transition-colors space-y-1">
+                  <div className="font-mono text-[10px] text-[#FAA012] font-bold uppercase">TOPIC 01</div>
+                  <div className="font-mono text-xs font-bold text-white">Problem Solving Tactics</div>
+                  <div className="text-[11px] text-zinc-400 font-sans">Pattern recognition &amp; optimal DSA strategies.</div>
+                </div>
+
+                <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/10 group-hover/sec1:border-[#F26B3A]/30 transition-colors space-y-1">
+                  <div className="font-mono text-[10px] text-[#FAA012] font-bold uppercase">TOPIC 02</div>
+                  <div className="font-mono text-xs font-bold text-white">Speed Debugging</div>
+                  <div className="text-[11px] text-zinc-400 font-sans">Edge case testing and TLE prevention in contest setups.</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Sector 02: TLE: Think, Lock In, Execute */}
+            <div 
+              data-scroll-id="loc-sector-2"
+              className="p-6 sm:p-10 space-y-6 relative group/sec2 hover:bg-[#FAA012]/[0.02] transition-colors duration-500"
+              style={getScrollStyle('loc-sector-2', 'right', 0.1)}
+            >
+              {/* Sector Watermark 02 */}
+              <span className="absolute right-6 bottom-4 font-mono text-8xl sm:text-9xl font-black text-white/[0.05] group-hover/sec2:text-[#FAA012]/[0.12] select-none pointer-events-none transition-colors">
+                02
+              </span>
+
+              {/* Sector Header */}
+              <div className="flex items-center justify-between gap-4">
+                <div className="space-y-1.5">
+                  <div className="font-mono text-[10px] tracking-widest text-[#FAA012] font-bold uppercase">
+                    SECTOR_02 // COMPETITION
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-bold text-white font-sans tracking-wide">
+                    TLE: Think, Lock In, Execute
+                  </h3>
+                </div>
+
+                <div className="px-3 py-1.5 rounded-full bg-[#F26B3A]/15 border border-[#F26B3A]/30 font-mono text-[10px] text-[#F26B3A] font-bold tracking-wider uppercase shrink-0">
+                  12:00 - 2:30 PM
+                </div>
+              </div>
+
+              <p className="text-zinc-300 font-sans text-xs sm:text-sm leading-relaxed">
+                The DEADLOCK coding arena where reputations are tested. Two high-stakes rounds: <span className="text-[#FAA012] font-bold">Tug of Aura</span> (live digital tug-of-war pulling kinetic force) and <span className="text-[#FAA012] font-bold">Who's the GOAT?</span> (pure raw I/O reverse-engineering).
+              </p>
+
+              {/* Competition Highlights */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/10 group-hover/sec2:border-[#FAA012]/30 transition-colors space-y-1">
+                  <div className="font-mono text-[10px] text-[#F26B3A] font-bold uppercase">ROUND 01</div>
+                  <div className="font-mono text-xs font-bold text-white">Tug of Aura</div>
+                  <div className="text-[11px] text-zinc-400 font-sans">Digital tug-of-war where solved challenges pull kinetic force.</div>
+                </div>
+
+                <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/10 group-hover/sec2:border-[#FAA012]/30 transition-colors space-y-1">
+                  <div className="font-mono text-[10px] text-[#F26B3A] font-bold uppercase">ROUND 02</div>
+                  <div className="font-mono text-xs font-bold text-white">Who's the GOAT?</div>
+                  <div className="text-[11px] text-zinc-400 font-sans">Zero problem statement: reverse-engineer code from raw I/O.</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Console Sub-Footer */}
+          <div className="relative z-10 px-6 sm:px-10 py-4 bg-black/60 border-t border-white/10 flex flex-wrap items-center justify-between gap-4 font-mono text-xs text-zinc-400">
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="text-white font-bold">D-DAY: 13 NOV 2026</span>
+              <span className="text-zinc-600">//</span>
+              <span>FORMAT: DUO CODERS</span>
+              <span className="text-zinc-600">//</span>
+              <span>VENUE: CIT CAMPUS</span>
+            </div>
+
+            <a
+              href="https://loc.celestius.in"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-[#F26B3A] hover:text-white font-bold transition-colors cursor-pointer"
+            >
+              <span>ACCESS EVENT PORTAL</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+      {/* Horizontal Rule Divider */}
+      <hr 
+        data-scroll-id="divider-loc"
+        className="border-t border-white/10 w-full" 
+        style={{
+          ...getAnimStyle('recruitSlideLeft', 0.28, '0.6s'),
+          ...getScrollStyle('divider-loc', 'up', 0.05)
         }}
       />
 

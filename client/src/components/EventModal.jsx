@@ -180,13 +180,25 @@ export default function EventModal({ event, onClose }) {
                 {event.status === 'Completed' ? '// SESSION_CONCLUDED' : '// CIT_STUDENT_OPEN_ADMISSION'}
               </span>
               {event.status !== 'Completed' ? (
-                <button
-                  onClick={() => setShowRegForm(true)}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-white text-black font-mono text-xs font-bold hover:bg-zinc-200 transition-colors"
-                >
-                  <span>REGISTER_SLOT</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
+                event.externalUrl ? (
+                  <a
+                    href={event.externalUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-[#F26B3A] text-black font-mono text-xs font-bold hover:bg-[#FA7B4C] shadow-lg shadow-[#F26B3A]/25 transition-all cursor-pointer"
+                  >
+                    <span>LOCK IN & REGISTER</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </a>
+                ) : (
+                  <button
+                    onClick={() => setShowRegForm(true)}
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-white text-black font-mono text-xs font-bold hover:bg-zinc-200 transition-colors"
+                  >
+                    <span>REGISTER_SLOT</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                )
               ) : (
                 <button
                   onClick={onClose}

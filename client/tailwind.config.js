@@ -10,6 +10,8 @@ export default {
         sans: ['Outfit', 'sans-serif'],
         ndot: ['"VT323"', '"Pixelify Sans"', 'monospace'],
         mono: ['"Space Mono"', 'monospace'],
+        pixel: ['"Press Start 2P"', 'monospace'],
+        display: ['"Space Grotesk"', 'sans-serif'],
       },
       colors: {
         nothing: {

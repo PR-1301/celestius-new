@@ -2,6 +2,7 @@ import React, { useState, useEffect, lazy, Suspense } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import EventModal from './components/EventModal';
+import LocEventPopup from './components/LocEventPopup';
 import IntroAnimation from './components/IntroAnimation';
 import DynamicBackground from './components/DynamicBackground';
 import CircularLoader from './components/CircularLoader';
@@ -300,6 +301,12 @@ export default function App() {
           onClose={() => setSelectedEvent(null)} 
         />
       )}
+
+      {/* Official LARPER OR CODER (LOC) Announcement Modal & Floating Launcher */}
+      <LocEventPopup 
+        introCompleted={introCompleted}
+        activePage={activePage}
+      />
 
       {/* Celestius Gold Minimal Footer with Replay Intro trigger */}
       <Footer setActivePage={handlePageChange} onReplayIntro={handleReplayIntro} />

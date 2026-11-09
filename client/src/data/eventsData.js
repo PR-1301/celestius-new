@@ -1,5 +1,33 @@
 export const eventsData = [
   {
+    id: "larper-or-coder-2026",
+    title: "LARPER OR CODER (The Training Arc + TLE)",
+    category: "Competitive Coding",
+    type: "Flagship Duo Battle",
+    date: "November 13, 2026",
+    time: "10:00 AM - 03:00 PM IST",
+    location: "Informed through message, CIT Campus",
+    status: "Registrations Open",
+    description: "No amount of resume glazing can save you here. Just you, your homie, and the problems that are about to humble you. Featuring 'The Training Arc' workshop and the DEADLOCK 'TLE' coding showdown.",
+    tracks: [
+      "The Training Arc (Competitive Coding Workshop)",
+      "Round 1: Tug of Aura (Live Digital Tug-of-War)",
+      "Round 2: Who's the GOAT? (Crack the Code with Raw I/O)",
+      "Duo Battle Protocol (Teams of 2)"
+    ],
+    prizePool: "Leaderboard Glory + Cash Prizes",
+    prerequisites: "CIT students only. Teams of strictly 2 coders. ₹149/head (₹298/duo covers both events). Max 60 coders.",
+    agenda: [
+      { time: "10:00 AM", item: "Inauguration & Protocol Kick-off" },
+      { time: "10:15 AM", item: "The Training Arc: Hands-on Competitive Coding Masterclass by 3rd Year Senior" },
+      { time: "11:15 AM", item: "AFK Lunch & Refuel Mode" },
+      { time: "12:00 PM", item: "TLE Coding Boss Fight: Tug of Aura & Who's the GOAT?" },
+      { time: "02:30 PM", item: "Results, Leaderboard Reveal & Prize Distribution" }
+    ],
+    featured: true,
+    externalUrl: "https://loc.celestius.in"
+  },
+  {
     id: "celestia-hackathon-2026",
     title: "Celestia 24-Hour Flagship Hackathon",
     category: "Hackathon",

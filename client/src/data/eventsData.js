@@ -3,7 +3,7 @@ export const eventsData = [
     id: "larper-or-coder-2026",
     title: "LARPER OR CODER (The Training Arc + TLE)",
     category: "Competitive Coding",
-    type: "Flagship Duo Battle",
+    type: "Duo Coding Duel",
     date: "November 13, 2026",
     time: "10:00 AM - 03:00 PM IST",
     location: "Informed through message, CIT Campus",

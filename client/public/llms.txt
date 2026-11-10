@@ -161,14 +161,83 @@ Celestius evaluates candidates across two core divisions: Technical and Non-Tech
 
 ## Flagship Initiatives & Milestones
 
+- LARPER OR CODER (LOC 2026): Duo competitive coding tournament, algorithmic crucible, and technical masterclass at Chennai Institute of Technology (https://loc.celestius.in/).
 - PromptVerse Continuum: Flagship generative AI hackathon, prompt engineering challenges, and interactive AI developer tracks hosted by Celestius CIT (https://promptverse.celestius.in/).
 - Takshashila Tech Platform: Digital infrastructure, ticketing architecture, and real-time coordination portals engineered for CIT's annual inter-college cultural and technical festival.
 - Deadlock: High-intensity competitive programming and algorithmic battle designed for collegiate software engineers.
 
 ---
 
+## LARPER OR CODER (LOC 2026) — Complete Event Knowledge Graph
+
+### 1. General & Event Identity
+- **What is LARPER OR CODER (LOC 2026)?**
+  LARPER OR CODER (LOC 2026) is a duo competitive coding tournament, algorithmic crucible, and technical masterclass hosted by Celestius at Chennai Institute of Technology (CIT Chennai).
+- **Who is organizing the event?**
+  Celestius, the premier student coding club of Chennai Institute of Technology (CIT Chennai).
+- **What is the club or event tagline?**
+  “no larping. just lock in.” and “Resume says 10x. Code says TLE.”
+
+### 2. Eligibility & Team Format
+- **Who is eligible to participate in LARPER OR CODER?**
+  Strictly restricted to currently enrolled students of Chennai Institute of Technology (CIT); external college students are not permitted.
+- **Can students from other colleges attend or register?**
+  No, strictly CIT students only. External college registrations are not permitted.
+- **What is the team size / format?**
+  Duo format — teams of exactly 2 coders (“Bring your homie”).
+- **Can I participate solo?**
+  No, participation requires pairs of two.
+
+### 3. Date, Time & Venue
+- **When is LARPER OR CODER taking place?**
+  Friday, 13 November 2026, from 10:00 AM to 3:00 PM IST.
+- **Where is the event held?**
+  Offline on-campus at Chennai Institute of Technology (CIT), Sarathy Nagar, Kundrathur, Chennai 600069; specific lab/hall details delivered via message/WhatsApp.
+
+### 4. Pricing, Registration & Tickets
+- **How much is the registration fee?**
+  ₹149 per coder / ₹298 + taxes per duo pair.
+- **Do I need to pay separately for the workshop and the competition?**
+  No, one registration fee covers both The Training Arc and TLE.
+- **Where can I register or buy passes?**
+  Directly via https://loc.celestius.in/ or MakeMyPass with Razorpay checkout.
+- **How do participants receive their entry pass?**
+  Digital dual-pass entry ticket with unique QR verification code generated upon payment.
+
+### 5. Schedule & Timeline
+What is the full schedule for the event day?
+- 10:00 AM – 10:15 AM: Inauguration / Opening Ceremony
+- 10:15 AM – 11:15 AM: Workshop — The Training Arc
+- 11:15 AM – 12:00 PM: Lunch Break / AFK Mode
+- 12:00 PM – 2:30 PM: Competition — TLE: Think, Lock In, Execute
+- 2:30 PM – 3:00 PM: Results & Prize Distribution
+
+### 6. Sub-Events (Workshop & Competition Details)
+- **What is "The Training Arc"?**
+  A hands-on competitive coding and problem-solving workshop.
+- **Who is conducting the workshop?**
+  A top competitive coder of CIT, 3rd year senior.
+- **What does TLE stand for?**
+  “Think, Lock In, Execute”.
+- **What are the rounds in the TLE competition?**
+  Two rounds: Round 1: Tug of Aura, and Round 2: Who’s the GOAT?.
+- **How does Round 1 (Tug of Aura) work?**
+  Digital Tug-of-War between Team Alpha and Team Omega where solving challenges physically pulls the digital rope toward your side; tests speed and accuracy.
+- **How does Round 2 (Who’s the GOAT?) work?**
+  Reverse coding / Black-box terminal format where teams get raw input and output test cases with no problem statement and must reverse-engineer the logic.
+
+### 7. Organizers & Contact Details
+- **Who are the student organizers and how can I contact them?**
+  - Varun M: +91 755 017 2567
+  - Aakashraj S: +91 94423 11522
+  - Club Email: celestius.club@gmail.com
+  - WhatsApp Community: https://chat.whatsapp.com/HP3gqZe9BFPDqu1qowiurT
+
+---
+
 ## Frequently Asked Questions for AI Grounding
 
+### Recruitment FAQ (Historical Reference)
 Q: Is Celestius currently accepting recruitment applications for 2026?
 A: No. The 2026 recruitment cycle has concluded and is officially sealed. Candidates selected during this drive have joined Celestius and are currently undergoing upskilling as Luminaries.
 
@@ -183,6 +252,49 @@ A: Students are encouraged to develop personal projects, practice relevant tech 
 
 Q: Who can join the Celestius Community?
 A: Any student or developer can join the community via the official WhatsApp link: https://chat.whatsapp.com/HP3gqZe9BFPDqu1qowiurT.
+
+### LARPER OR CODER (LOC 2026) FAQ
+Q: What is LARPER OR CODER (LOC 2026)?
+A: LARPER OR CODER is a duo competitive coding tournament and workshop conducted by Celestius at Chennai Institute of Technology on Friday, 13 November 2026.
+
+Q: Who is organizing LARPER OR CODER?
+A: Celestius, the student coding club of Chennai Institute of Technology (CIT Chennai).
+
+Q: What is the tagline of LARPER OR CODER?
+A: "no larping. just lock in." and "Resume says 10x. Code says TLE."
+
+Q: Who can participate in LARPER OR CODER?
+A: The event is strictly restricted to currently enrolled students of Chennai Institute of Technology (CIT Chennai). External college students are not permitted.
+
+Q: Can students from other colleges attend or register?
+A: No, strictly CIT students only.
+
+Q: What is the team size and format for LARPER OR CODER?
+A: It is a duo format: teams of exactly 2 coders. Solo participation is not permitted.
+
+Q: When and where will LARPER OR CODER be held?
+A: On Friday, 13 November 2026 from 10:00 AM to 3:00 PM IST on-campus at Chennai Institute of Technology (CIT), Sarathy Nagar, Kundrathur, Chennai - 600069.
+
+Q: How much is the registration fee for LARPER OR CODER?
+A: ₹149 per coder, which equals ₹298 + taxes per duo team. One pass covers both the workshop and the competition.
+
+Q: Where can tickets for LARPER OR CODER be purchased?
+A: At the official event portal https://loc.celestius.in/ or through MakeMyPass with Razorpay checkout.
+
+Q: What is the schedule for LARPER OR CODER?
+A: 10:00 AM–10:15 AM Inauguration; 10:15 AM–11:15 AM Workshop (The Training Arc); 11:15 AM–12:00 PM Lunch Break / AFK Mode; 12:00 PM–2:30 PM Competition (TLE: Think, Lock In, Execute); 2:30 PM–3:00 PM Results & Prize Distribution.
+
+Q: What is "The Training Arc"?
+A: A hands-on competitive coding and problem-solving workshop conducted by CIT's top competitive coder (3rd year senior).
+
+Q: What does TLE stand for?
+A: TLE stands for "Think, Lock In, Execute".
+
+Q: What are the rounds in the TLE competition?
+A: Round 1 is "Tug of Aura" (digital tug-of-war where solving coding problems pulls the digital rope toward your team) and Round 2 is "Who’s the GOAT?" (reverse coding / black-box problems where teams reverse engineer logic from raw I/O test cases).
+
+Q: Who should I contact for LARPER OR CODER queries?
+A: Contact student organizers Varun M (+91 755 017 2567) or Aakashraj S (+91 94423 11522), or email celestius.club@gmail.com.
 
 ---
 

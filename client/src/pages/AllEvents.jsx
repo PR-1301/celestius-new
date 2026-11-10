@@ -78,8 +78,8 @@ export default function AllEvents({ setActivePage }) {
       id: 'larper-or-coder',
       title: 'LARPER OR CODER — Duo Coding Duel & Workshop',
       category: 'competitions',
-      categoryTag: 'FLAGSHIP DUO BATTLE',
-      description: "Celestius flagship duo competitive coding tournament and masterclass. Two high-stakes tracks: 'The Training Arc' workshop led by a top CIT coder, followed by the DEADLOCK 'TLE' algorithmic arena featuring Tug of Aura and Who's the GOAT.",
+      categoryTag: 'DUO CODING DUEL',
+      description: "Celestius duo competitive coding tournament and masterclass. Two high-stakes tracks: 'The Training Arc' workshop led by a top CIT coder, followed by the DEADLOCK 'TLE' algorithmic arena featuring Tug of Aura and Who's the GOAT.",
       icon: Swords,
       accent: '#F26B3A',
       highlights: [

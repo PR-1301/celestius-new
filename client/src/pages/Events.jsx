@@ -791,7 +791,7 @@ export default function Events({ introCompleted = true, setActivePage }) {
         }}
       />
 
-      {/* 3. FLAGSHIP INITIATIVE: LARPER OR CODER CONSOLE (Top Flagship Showcase) */}
+      {/* 3. EVENT INITIATIVE: LARPER OR CODER CONSOLE */}
       <div 
         data-scroll-id="loc-console"
         className="relative pt-2"
@@ -830,7 +830,7 @@ export default function Events({ introCompleted = true, setActivePage }) {
                 )}
                 
                 <span className="font-mono text-xs tracking-widest text-[#F26B3A] uppercase font-bold">
-                  CELESTIUS FLAGSHIP DUO CODING CRUCIBLE
+                  CELESTIUS DUO CODING CRUCIBLE
                 </span>
                 <span className="text-zinc-600 hidden sm:inline">//</span>
                 <span className="font-mono text-[10px] text-zinc-500 hidden sm:inline">
@@ -838,7 +838,7 @@ export default function Events({ introCompleted = true, setActivePage }) {
                 </span>
               </div>
 
-              {/* LOC Flagship Brand Logo (From public folder) */}
+              {/* LOC Brand Logo (From public folder) */}
               <div className="pt-1 pb-1">
                 <picture className="block filter drop-shadow-[0_4px_30px_rgba(242,107,58,0.4)]">
                   <source srcSet="/loc-logo.webp" type="image/webp" />
@@ -1001,11 +1001,13 @@ export default function Events({ introCompleted = true, setActivePage }) {
           {/* Console Sub-Footer */}
           <div className="relative z-10 px-6 sm:px-10 py-4 bg-black/60 border-t border-white/10 flex flex-wrap items-center justify-between gap-4 font-mono text-xs text-zinc-400">
             <div className="flex flex-wrap items-center gap-3">
-              <span className="text-white font-bold">D-DAY: 13 NOV 2026</span>
+              <span className="text-white font-bold">D-DAY: 13 NOV 2026 (10:00 AM - 3:00 PM)</span>
               <span className="text-zinc-600">//</span>
-              <span>FORMAT: DUO CODERS</span>
+              <span>FORMAT: CIT DUO CODERS ONLY</span>
               <span className="text-zinc-600">//</span>
-              <span>VENUE: CIT CAMPUS</span>
+              <span>ENTRY: ₹149/CODER (₹298/PAIR)</span>
+              <span className="text-zinc-600">//</span>
+              <span>CONTACT: VARUN M &amp; AAKASHRAJ S</span>
             </div>
 
             <a
